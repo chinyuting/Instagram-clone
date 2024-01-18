@@ -15,6 +15,7 @@ coverage
 *.local
 
 *.jpg
+
 *.png
 
 /cypress/videos/
