@@ -16,7 +16,6 @@ coverage
 
 *.jpg
 *.png
-*.doc
 
 /cypress/videos/
 /cypress/screenshots/
