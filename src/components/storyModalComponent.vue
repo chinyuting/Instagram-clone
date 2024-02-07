@@ -14,7 +14,6 @@
     countTime =  setInterval(() => {
       const newTime = new Date();
       const total = storyContent.value[0].duration;
-      console.log('123');
       if(newTime - start >= total) {
         hideModal();
         
@@ -66,9 +65,9 @@
 
 <template>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="storyModal" >
+<div class="modal fade custom-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="storyModal">
   <div class="modal-dialog modal-fullscreen-sm-down">
-    <div class="modal-content bg-transparent">
+    <div class="modal-content bg-transparent b-0">
       <div class="modal-body text-end story-modal-body" v-for="story in storyContent" :key="story.storyId">
         <!-- 時間條 -->
         <div class="progress" style="height: 2px;">
@@ -105,5 +104,8 @@
 .story-content-pic{
   z-index: -5;
   height: 100%;
+}
+.modal-backdrop{
+  opacity: 1;
 }
 </style>
