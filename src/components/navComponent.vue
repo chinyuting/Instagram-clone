@@ -1,5 +1,10 @@
 <script setup>
-
+import { ref, } from 'vue';
+import addNewModalComponent from '../components/addNewModalComponent.vue';
+const addNewModal = ref(null);
+const openModal = function() {
+  addNewModal.value.showModal();
+}
 </script>
 
 <template>
@@ -19,7 +24,7 @@
           </RouterLink>
         </div>
         <div class="nav-item rounded">
-          <RouterLink to="/addNew" class="mx-4 mx-md-0 text-decoration-none text-secondary d-flex px-2">
+          <RouterLink to="/" class="mx-4 mx-md-0 text-decoration-none text-secondary d-flex px-2" @click.prevent="openModal"> 
             <div><i class="bi bi-plus-square icon-size "></i></div>
             <div><span class="d-none d-lg-inline p-2">建立</span></div>
           </RouterLink>
@@ -34,6 +39,7 @@
     </div>
     
   </div>
+  <addNewModalComponent ref="addNewModal"/>
 </template>
 
 <style lang="scss">
