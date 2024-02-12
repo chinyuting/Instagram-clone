@@ -7,6 +7,7 @@ const props = defineProps({
 })
 const canvas = ref(null);
 /** 
+TODO 示範如果是我會怎麼寫
 限動外框繪製 
 */ 
 const drawStoryOutline = function() {
@@ -18,8 +19,8 @@ const drawStoryOutline = function() {
     grd.addColorStop(0,"red");
     grd.addColorStop(0.5,"yellow");
 
-    // 外框圖形設定
-    ctx.arc(39,39,36,0,2*Math.PI,true) //畫圓
+    // 外框圖形設定:圓形
+    ctx.arc(39,39,36,0,2*Math.PI,true)
     
     // 已看過顏色為灰，未看過顏色為漸層
     if(!props.ownerItem.isWatched) {

@@ -28,6 +28,7 @@ const openModal = function(owner) {
 
 
 let position = ref(0);
+//TODO 如果是boolean通常會取名為isXXX
 let leftIsShow = ref(false);
 let rightIsShow = ref(true);
 let left = 1; // TODO 單從left很難知道這變數的用法，命名的更清楚，或是寫註解
@@ -59,7 +60,7 @@ const positionCount = function(n) {
   rightIsShow = ref( right <  storyLen);
 }
 const story = computed(() => {
-  return { transform: `translate(${positionposition.value}px)` };
+  return { transform: `translate(${position.value}px)` };
 })
 
 </script>
