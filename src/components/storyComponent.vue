@@ -6,16 +6,22 @@ const props = defineProps({
   ownerItem: Object,
 })
 const canvas = ref(null);
-const draw = function() {
+/** 
+限動外框繪製 
+*/ 
+const drawStoryOutline = function() {
   if(canvas.value.getContext) {
-    const ctx = canvas.value.getContext('2d')
+    const ctx = canvas.value.getContext('2d');
+    // 外框顏色設定
     ctx.beginPath();
-
     var grd=ctx.createLinearGradient(0,0,175,0);
     grd.addColorStop(0,"red");
     grd.addColorStop(0.5,"yellow");
 
+    // 外框圖形設定
     ctx.arc(39,39,36,0,2*Math.PI,true) //畫圓
+    
+    // 已看過顏色為灰，未看過顏色為漸層
     if(!props.ownerItem.isWatched) {
       ctx.fillStyle=grd 
     } else {
@@ -23,6 +29,7 @@ const draw = function() {
     }
     ctx.fill() 
 
+    // canvas 中心為空白
     ctx.beginPath()
     ctx.arc(39,39,34,0,2*Math.PI,true) //畫圓
     ctx.fillStyle='white' 
@@ -31,7 +38,7 @@ const draw = function() {
 }
 
 onMounted(()=> {
-  draw();
+  drawStoryOutline();
 })
 </script>
 

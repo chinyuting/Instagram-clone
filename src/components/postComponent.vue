@@ -4,6 +4,7 @@ import { getCurrentInstance } from "vue";
 
 const { proxy } = getCurrentInstance();
 const postData = ref([]);
+// TODO 變數寫在一起，方法寫下面
 // const getPost = function(){
 proxy.$axios({
     url:'/getPost',

@@ -7,6 +7,7 @@ import storyModalComponent from '../components/storyModalComponent.vue';
 
 const { proxy } = getCurrentInstance();
 const storyOwnerData = ref([]);
+//TODO 可以用個init()，把需要初始的動作放在裡面，讓變數都放在一起比較好看
 // const getStory = function(){
 proxy.$axios({
     url:'/getStoryOwner',
@@ -29,11 +30,14 @@ const openModal = function(owner) {
 let position = ref(0);
 let leftIsShow = ref(false);
 let rightIsShow = ref(true);
-let left = 1;
+let left = 1; // TODO 單從left很難知道這變數的用法，命名的更清楚，或是寫註解
 let right = 7;
 
 const moveNum = 3;
-
+// TODO n*(storyLen - right)*(78)的78可以宣告成變數上面的right
+// TODO 可以載prettier 讓格式統一，減號前後空一格，乘號卻相連
+// TODO 方法都需要加上註解
+// TODO storyLen = 100 或是 0 可以試試看會不會噴bug
 const positionCount = function(n) {
   const storyLen = storyOwnerData.value.length;
   if(storyLen - right < moveNum && n===-1) {
@@ -55,7 +59,7 @@ const positionCount = function(n) {
   rightIsShow = ref( right <  storyLen);
 }
 const story = computed(() => {
-  return { transform: `translate(${position.value}px)` };
+  return { transform: `translate(${positionposition.value}px)` };
 })
 
 </script>

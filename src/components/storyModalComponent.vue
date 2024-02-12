@@ -7,6 +7,7 @@
   const progress = ref(0);
   let countTime;
 
+  // TODO 註解
   const showModal = function() {
     progress.value = 0;
     modal.value.show();
@@ -45,6 +46,7 @@
       'storyOwnerId': String,
     }
   )
+  // TODO 可以宣告在上面
   const { proxy } = getCurrentInstance();
   const storyData = ref([]);
   // const getStories = function(){
@@ -64,6 +66,7 @@
 </script>
 
 <template>
+<!--TODO 參考如bootstrap 寫註解-->
 <!-- Modal -->
 <div class="modal fade custom-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="storyModal">
   <div class="modal-dialog modal-fullscreen-sm-down">

@@ -16,6 +16,7 @@
   })
 
   const imgSrc = ref(null);
+  // TODO 註解
   const addImage = function(e) {
     let input = e.target;
       if (input.files) {
