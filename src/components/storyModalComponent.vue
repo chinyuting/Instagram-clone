@@ -6,7 +6,7 @@
   const storyModal = ref(null);
   const progress = ref(0);
   let countTime;
-
+  // 開啟modal ＆ 更新story計時
   const showModal = function() {
     progress.value = 0;
     modal.value.show();
@@ -14,18 +14,20 @@
     countTime =  setInterval(() => {
       const newTime = new Date();
       const total = storyContent.value[0].duration;
+      // 時間到則關閉Modal
       if(newTime - start >= total) {
         hideModal();
-        
       }
+      // 計算時長比例
       const percentage = Math.round(( (newTime - start) / total) * 100) 
       progress.value = percentage 
     }, 100)
   }
+  // 時間條長度
   const progressWidth = computed(()=> {
     return { width: progress.value + '%'};
   });
-
+  // 關閉Modal時重整限時時間
   const hideModal = function() {
     if(countTime) {
       clearInterval(countTime);
@@ -47,15 +49,14 @@
   )
   const { proxy } = getCurrentInstance();
   const storyData = ref([]);
-  // const getStories = function(){
+  // 取得story資料
   proxy.$axios({
       url:'/getStories',
       method:'post'
   },{ storyOwnerId: props.storyOwnerId }).then((res)=>{
     storyData.value = res.data.dataList;
   });
-  // }
-  // getStories();
+  // 篩選出符合作者的story
   const storyContent = computed(() => {
     return storyData.value.filter((story) => story.storyOwnerId === props.storyOwnerId);
   })
@@ -81,7 +82,7 @@
           <button type="button" class="btn-close btn-close-white position-relative" data-bs-dismiss="modal" aria-label="Close" @click.prevent="hideModal"></button>
         </div>
         <div class="rounded story-pic-area">
-          <img :src="story.img" class="story-content-pic " alt="">
+          <img :src="story.img" class="story-content-pic" alt="">
         </div>
       </div>
     </div>

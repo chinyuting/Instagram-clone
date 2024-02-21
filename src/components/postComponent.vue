@@ -1,28 +1,25 @@
 <script setup>
-import { ref } from 'vue';
-import { getCurrentInstance } from "vue";
+import { ref, getCurrentInstance } from 'vue';
 
+// 取得post資料
 const { proxy } = getCurrentInstance();
 const postData = ref([]);
-// const getPost = function(){
 proxy.$axios({
-    url:'/getPost',
-    method:'post'
+  url:'/getPost',
+  method:'post'
 }, { userId: '123' }).then((res)=>{
   postData.value = res.data.dataList;
 });
-// }
-// getPost();
 
+// 字數過長隱藏
 const readMoreActivated = ref(false);
 const activateReadMore = function(){
   readMoreActivated.value = true;
-}
+} 
 
 </script>
 
 <template>
-  
   <div class="card mt-3 post-card w-100 border-0" v-for="post in postData" :key="post.postId">
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
@@ -48,18 +45,20 @@ const activateReadMore = function(){
           <img :src="img" class="d-block w-100  " alt="..." >
         </div>
       </div>
+      <!-- 僅多張照片時顯示左右按鈕 -->
       <button class="carousel-control-prev" type="button" 
       :data-bs-target="'#post' + post.postId" 
-      data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true" v-if="post.imgs.length>1"></span>
+      data-bs-slide="prev" v-if="post.imgs.length > 1">
+        <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
         <span class="visually-hidden">Previous</span>
       </button>
       <button class="carousel-control-next" type="button"
       :data-bs-target="'#post' + post.postId" 
-      data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true" v-if="post.imgs.length>1"></span>
+      data-bs-slide="next" v-if="post.imgs.length > 1">
+        <span class="carousel-control-next-icon" aria-hidden="true" ></span>
         <span class="visually-hidden">Next</span>
       </button>
+
     </div>
     <div class="card-body px-md-0 py-1 mb-3">
       <a href="">
@@ -69,9 +68,11 @@ const activateReadMore = function(){
       <p class="card-text mb-2">{{ post.thumbNum }}個讚</p>
       <div>
         <span class="card-text d-inline fw-bold">{{ post.postOwnerName }}</span>
+        <!-- post description僅顯示20字 -->
+        <!-- 用readMoreActivated值判斷是否顯示"更多" -->
         <div v-if="!readMoreActivated" class="card-text ms-2 d-inline">{{post.description.slice(0, 20)}}...</div>
         <a class="text-decoration-none text-secondary fs-6" v-if="!readMoreActivated" @click="activateReadMore" href="#">
-        更多
+          更多
         </a>
         <div v-if="readMoreActivated" class="card-text ms-2 d-inline">{{ post.description }}</div>
       </div>
@@ -97,6 +98,7 @@ const activateReadMore = function(){
   object-fit: contain;
   position: relative;
   img{
+    /* 圖片置中 */
     position: absolute;
     top: 50%;
     left: 50%;

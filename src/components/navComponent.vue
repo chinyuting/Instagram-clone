@@ -1,6 +1,7 @@
 <script setup>
 import { ref, } from 'vue';
 import addNewModalComponent from '../components/addNewModalComponent.vue';
+
 const addNewModal = ref(null);
 const openModal = function() {
   addNewModal.value.showModal();
