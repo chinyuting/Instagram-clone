@@ -9,3 +9,4 @@ import { RouterView } from 'vue-router'
 <style scoped lang="scss">
 @import "./assets/all.scss";
 </style>
+<!--hello world-->
