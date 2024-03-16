@@ -1,5 +1,22 @@
 <script setup>
 import navComponent from '../components/navComponent.vue'
+import axios from 'axios';
+import { computed, watch, onMounted, ref } from "vue"
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+
+if(route.query.code){
+  console.log(route.query.code);
+}else{
+  window.location.href = "https://api.instagram.com/oauth/authorize?client_id=1436185210327402&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code";
+}
+
+// https://api.instagram.com/oauth/authorize?
+// client_id=1436185210327402
+// &redirect_uri=https://chinyuting.github.io/Instagram-Imitation/
+// &scope=user_profile,user_media&response_type=code
+
 </script>
 
 <template>
