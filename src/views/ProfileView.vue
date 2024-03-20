@@ -9,7 +9,7 @@ const route = useRoute()
 if(route.query.code){
   console.log(route.query.code);
 }else{
-  window.location.href = "https://api.instagram.com/oauth/authorize?client_id=1436185210327402&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code";
+  window.location.href = "https://api.instagram.com/oauth/authorize?client_id=1436185210327402&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/profile&scope=user_profile,user_media&response_type=code";
 }
 
 // https://api.instagram.com/oauth/authorize?
