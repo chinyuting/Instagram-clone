@@ -1,5 +1,16 @@
 <script setup>
+// import { getCurrentInstance } from 'vue'
+import { useRoute } from 'vue-router'
 import navComponent from '../components/navComponent.vue'
+
+const route = useRoute()
+console.log(route.query.code)
+if (route.query.code) {
+  console.log(route.query.code)
+} else {
+  window.location.href =
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+}
 </script>
 
 <template>
@@ -50,6 +61,7 @@ import navComponent from '../components/navComponent.vue'
           </div>
         </div>
       </article>
+      <button class="btn"></button>
     </main>
   </div>
 </template>
