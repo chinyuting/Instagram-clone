@@ -19,7 +19,7 @@ if (route.query.code) {
     <main class="col m-0 border-start min-vh-100">
       <div class="profile mx-auto py-md-4">
         <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
-          <img src="../assets/images/test.jpg" alt="" />
+          <!-- <img src="../assets/images/test.jpg" alt="" /> -->
         </div>
         <div>shelly</div>
       </div>
@@ -27,37 +27,37 @@ if (route.query.code) {
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
         <div class="mt-1 col-4 px-0 ps-1">
           <div class="profile-post">
-            <img src="../assets/images/test.jpg" alt="" />
+            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
           </div>
         </div>
       </article>

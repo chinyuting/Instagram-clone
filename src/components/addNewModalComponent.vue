@@ -97,7 +97,7 @@ const addNewImg = function () {
           <div class="border-start p-2" v-if="isModalSideShow">
             <div class="d-flex align-self-center align-middle">
               <div class="rounded-circle user-pic">
-                <img src="../assets/images/test.jpg" alt="" />
+                <!-- <img src="../assets/images/test.jpg" alt="" /> -->
               </div>
               <p class="align-middle my-auto ms-2 fw-bold">shelly</p>
             </div>

@@ -95,7 +95,7 @@ const storyContent = computed(() => {
           </div>
           <div class="d-flex mt-2 justify-content-between align-items-center">
             <div class="rounded-circle user-pic">
-              <img src="../assets/images/test.jpg" alt="" />
+              <!-- <img src="../assets/images/test.jpg" alt="" />  -->
             </div>
             <div class="text-light flex-grow-1 text-start ps-2">{{ story.storyOwnerName }}</div>
             <button
