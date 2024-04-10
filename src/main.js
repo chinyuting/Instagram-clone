@@ -14,11 +14,8 @@ import "bootstrap"
 import "./assets/all.scss";
 
 import VueAxios from 'vue-axios';
-// import './mock/mock';
 
 import './mock/mock'
-//axios文件
-// import axios from './utils/request.js'
 
 const app = createApp(App)
 
@@ -28,3 +25,5 @@ app.use(router);
 
 app.mount('#app');
 app.config.globalProperties.$axios=axios;  
+
+
