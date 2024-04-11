@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios';
+
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
@@ -25,7 +25,7 @@ proxy
 const storyModal = ref(null)
 let storyOwner = ref('')
 
-/** 
+/**
   open story modal
   @param {Object} owner - story owner
 */
@@ -77,17 +77,23 @@ const story = computed(() => {
 })
 
 // 取得ig api code
-let code = '';
+let code = ''
 const route = useRoute()
-if(location.search) {
-  code = location.search.slice(6);
-  console.log(code);
-  console.log(route.query.code);
-}
-let data = '';
-if(code) {
-  axios.post(`https://api.instagram.com/oauth/access_token`, { client_id: '461541476203224', client_secret:'2f7242993cbd4b8c802b4b533198be85', grant_type:'authorization_code', redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/', code: `${code}` })
-  .then( (res) => { console.log(res)  })
+if (location.search) {
+  code = location.search.slice(6)
+  if (code) {
+    axios
+      .post('https://api.instagram.com/oauth/access_token', {
+        client_id: '461541476203224',
+        client_secret: '2f7242993cbd4b8c802b4b533198be85',
+        grant_type: 'authorization_code',
+        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+        code: `${code}`
+      })
+      .then((res) => {
+        console.log(res)
+      })
+  }
 }
 </script>
 
