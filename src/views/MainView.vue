@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, getCurrentInstance } from 'vue'
+import { useRoute } from 'vue-router'
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
@@ -75,6 +76,17 @@ const story = computed(() => {
 })
 
 // 取得ig api code
+let code = '';
+if(location.search) {
+  code = location.search.slice(6);
+  console.log(code);
+  console.log(route.query.code);
+}
+
+// const route = useRoute()
+// if(code) {
+
+// }
 </script>
 
 <template>
