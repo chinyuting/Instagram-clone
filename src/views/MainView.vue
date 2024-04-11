@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
-
+import axios from 'axios';
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
