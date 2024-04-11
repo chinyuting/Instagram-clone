@@ -82,14 +82,17 @@ const route = useRoute()
 if (location.search) {
   code = location.search.slice(6)
   if (code) {
-    const corsURL = 'https://cors-anywhere.herokuapp.com/';
     axios
-      .post(`${corsURL}https://api.instagram.com/oauth/access_token`, {
-        client_id: '461541476203224',
-        client_secret: '2f7242993cbd4b8c802b4b533198be85',
-        grant_type: 'authorization_code',
-        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-        code: `${code}`
+      ({
+        method: 'post',
+        url: `https://api.instagram.com/oauth/access_token`,
+        data: {
+          client_id: '461541476203224',
+          client_secret: '2f7242993cbd4b8c802b4b533198be85',
+          grant_type: 'authorization_code',
+          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+          code: `${code}`
+        }
       })
       .then((res) => {
         console.log(res)
