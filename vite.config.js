@@ -9,6 +9,15 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://your-remote-domain.com",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   base: '/Instagram-Imitation/',
   resolve: {
     alias: {
