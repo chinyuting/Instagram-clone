@@ -9,12 +9,13 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  devServer: {
+  server: {
     proxy: {
       "/igGetID": {
         target: "https://api.instagram.com",
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path.replace(/^\/igGetID/, ''),
       },
     },
   },
