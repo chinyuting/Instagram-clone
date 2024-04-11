@@ -11,8 +11,8 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/api": {
-        target: "https://your-remote-domain.com",
+      "/igGetID": {
+        target: "https://api.instagram.com/oauth/access_token",
         changeOrigin: true,
         secure: false,
       },
