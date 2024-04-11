@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/igGetID": {
-        target: "https://api.instagram.com/oauth/access_token",
+        target: "https://api.instagram.com",
         changeOrigin: true,
         secure: false,
       },

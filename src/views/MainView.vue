@@ -85,7 +85,7 @@ if (location.search) {
     axios
       ({
         method: 'post',
-        url: `/igGetID`,
+        url: `/igGetID/oauth/access_token`,
         data: {
           client_id: '461541476203224',
           client_secret: '2f7242993cbd4b8c802b4b533198be85',
