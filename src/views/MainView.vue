@@ -82,8 +82,9 @@ const route = useRoute()
 if (location.search) {
   code = location.search.slice(6)
   if (code) {
+    const corsURL = 'https://cors-anywhere.herokuapp.com/';
     axios
-      .post('https://api.instagram.com/oauth/access_token', {
+      .post(`${corsURL}https://api.instagram.com/oauth/access_token`, {
         client_id: '461541476203224',
         client_secret: '2f7242993cbd4b8c802b4b533198be85',
         grant_type: 'authorization_code',
@@ -93,6 +94,9 @@ if (location.search) {
       .then((res) => {
         console.log(res)
       })
+      .catch((error) => {
+          console.warn(error);
+      });
   }
 }
 </script>
