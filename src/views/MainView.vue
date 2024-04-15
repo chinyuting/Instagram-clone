@@ -91,7 +91,7 @@ const callApi = function () {
       console.log(client_secret.value)
       axios
         .post(
-          `https://api.instagram.com/oauth/access_token`,
+          `/igGetID/oauth/access_token`,
           {
             client_id: '461541476203224',
             client_secret: `${client_secret.value}`,
