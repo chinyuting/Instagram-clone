@@ -17,7 +17,7 @@ export default defineConfig({
   //     },
   //   },
   // },
-  // base: '/Instagram-Imitation/',
+  base: '/Instagram-Imitation/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
