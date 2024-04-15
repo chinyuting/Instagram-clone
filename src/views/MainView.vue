@@ -86,10 +86,11 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
+      // /igGetID/oauth/access_token
       console.log(code)
       console.log(client_secret.value)
       axios
-        .post(`/igGetID/oauth/access_token`, {
+        .post(`https://api.instagram.com/oauth/access_token`, {
           client_id: '461541476203224',
           client_secret: `${client_secret.value}`,
           grant_type: 'authorization_code',
