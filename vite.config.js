@@ -7,17 +7,16 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  server: {
-    proxy: {
-      "/igGetID": {
-        target: "https://api.instagram.com",
-        changeOrigin: true,
-        secure: false,
-        cors: false,
-        rewrite: (path) => path.replace(/^\/igGetID/, ''),
-      },
-    },
-  },
+  // server: {
+  //   proxy: {
+  //     "/igGetID": {
+  //       target: "https://api.instagram.com",
+  //       changeOrigin: true,
+  //       secure: false,
+  //       rewrite: (path) => path.replace(/^\/igGetID/, ''),
+  //     },
+  //   },
+  // },
   base: '/Instagram-Imitation/',
   resolve: {
     alias: {

@@ -86,6 +86,8 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
+      console.log(code)
+      console.log(client_secret.value)
       axios
         .post(`/igGetID/oauth/access_token`, {
           client_id: '461541476203224',
