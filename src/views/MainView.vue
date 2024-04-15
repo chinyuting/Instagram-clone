@@ -90,13 +90,23 @@ const callApi = function () {
       console.log(code)
       console.log(client_secret.value)
       axios
-        .post(`https://api.instagram.com/oauth/access_token`, {
-          client_id: '461541476203224',
-          client_secret: `${client_secret.value}`,
-          grant_type: 'authorization_code',
-          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-          code: `${code}`
-        })
+        .post(
+          `https://api.instagram.com/oauth/access_token`,
+          {
+            client_id: '461541476203224',
+            client_secret: `${client_secret.value}`,
+            grant_type: 'authorization_code',
+            redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+            code: `${code}`
+          },
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+            }
+          }
+        )
         .then((res) => {
           console.log(res)
         })
