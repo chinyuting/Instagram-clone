@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios';
+import axios from 'axios'
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
@@ -78,31 +78,36 @@ const story = computed(() => {
 
 // 取得ig api code
 let code = ''
+const client_secret = ref('')
+
 const route = useRoute()
-if (location.search) {
-  code = location.search.slice(6)
-  if (code) {
-    axios
-      ({
-        method: 'post',
-        url: `/igGetID/oauth/access_token`,
-        data: {
+const callApi = function () {
+  if (location.search) {
+    // 取得code
+    code = location.search.slice(6)
+    if (code) {
+      axios
+        .post(`/igGetID/oauth/access_token`, {
+          client_id: '461541476203224',
+          client_secret: `${client_secret.value}`,
           grant_type: 'authorization_code',
           redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
           code: `${code}`
-        }
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((error) => {
-          console.warn(error);
-      });
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.warn(error)
+        })
+    }
   }
 }
 </script>
 
 <template>
+  <input type="text" v-model="client_secret" />
+  <button type="btn" @click="callApi">api</button>
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">

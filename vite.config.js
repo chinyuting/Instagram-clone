@@ -12,7 +12,7 @@ export default defineConfig({
       "/igGetID": {
         target: "https://api.instagram.com",
         changeOrigin: true,
-        secure: false,
+        // secure: false,
         rewrite: (path) => path.replace(/^\/igGetID/, ''),
       },
     },
