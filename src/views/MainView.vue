@@ -94,9 +94,8 @@ const callApi = function () {
           grant_type: 'authorization_code',
           redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
           code: `${code}`
-        }
-      },{
-        mode: 'no-cors'
+        },
+        mode: 'no-cors',
       })
         .then((res) => {
           console.log('response', res)
