@@ -86,31 +86,40 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
-      // /igGetID/oauth/access_token
-      axios
-        .post(
-          `/igGetID/oauth/access_token`,
-          {
-            client_id: '461541476203224',
-            client_secret: `${client_secret.value}`,
-            grant_type: 'authorization_code',
-            redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-            code: `${code}`
-          },
-          {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-              'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-            }
-          }
-        )
+      fetch('https://api.instagram.com/oauth/access_token', {
+        mode: 'no-cors'
+      })
         .then((res) => {
-          console.log(res)
+          console.log('response', res)
         })
-        .catch((error) => {
-          console.warn(error)
+        .then((body) => {
+          console.log('body', body)
         })
+      // /igGetID/oauth/access_token
+      // axios
+      //   .post(
+      //     `/igGetID/oauth/access_token`,
+      //     {
+      //       client_id: '461541476203224',
+      //       client_secret: `${client_secret.value}`,
+      //       grant_type: 'authorization_code',
+      //       redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+      //       code: `${code}`
+      //     },
+      //     {
+      //       headers: {
+      //         'Access-Control-Allow-Origin': '*',
+      //         'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+      //         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+      //       }
+      //     }
+      //   )
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
+      //   .catch((error) => {
+      //     console.warn(error)
+      //   })
     }
   }
 }
