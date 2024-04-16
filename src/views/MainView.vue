@@ -86,7 +86,7 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
-      fetch('https://api.instagram.com/oauth/access_token', {
+      fetch('/igGetID/oauth/access_token', {
         method: "POST",
         body:{
           client_id: '461541476203224',
