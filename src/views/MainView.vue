@@ -87,6 +87,7 @@ const callApi = function () {
     code = location.search.slice(6)
     if (code) {
       fetch('https://api.instagram.com/oauth/access_token', {
+        method: "POST",
         body:{
           client_id: '461541476203224',
           client_secret: `${client_secret.value}`,
