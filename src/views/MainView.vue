@@ -87,6 +87,14 @@ const callApi = function () {
     code = location.search.slice(6)
     if (code) {
       fetch('https://api.instagram.com/oauth/access_token', {
+        body:{
+          client_id: '461541476203224',
+          client_secret: `${client_secret.value}`,
+          grant_type: 'authorization_code',
+          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+          code: `${code}`
+        }
+      },{
         mode: 'no-cors'
       })
         .then((res) => {
