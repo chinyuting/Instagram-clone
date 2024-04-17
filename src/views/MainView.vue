@@ -86,14 +86,17 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
-      axios
-        .post('https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token', JSON.stringify({
+      axios({
+        method: 'post',
+        url: 'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
+        data: {
           client_id: '461541476203224',
           client_secret: '${client_secret.value}',
           grant_type: 'authorization_code',
           redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
           code: `${code}`
-        }))
+        },
+      })
         .then((res) => {
           console.log('response', res)
         })
