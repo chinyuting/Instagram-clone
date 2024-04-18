@@ -86,48 +86,46 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
-      axios({
-        method: 'post',
-        url: 'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
-        data: {
-          client_id: '461541476203224',
-          client_secret: '${client_secret.value}',
-          grant_type: 'authorization_code',
-          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-          code: `${code}`
-        },
-      })
-        .then((res) => {
-          console.log('response', res)
-        })
-        .catch((err) => {
-          console.log('err', err)
-        })
-      // /igGetID/oauth/access_token
-      // axios
-      //   .post(
-      //     `/igGetID/oauth/access_token`,
-      //     {
-      //       client_id: '461541476203224',
-      //       client_secret: `${client_secret.value}`,
-      //       grant_type: 'authorization_code',
-      //       redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-      //       code: `${code}`
-      //     },
-      //     {
-      //       headers: {
-      //         'Access-Control-Allow-Origin': '*',
-      //         'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-      //         'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-      //       }
-      //     }
-      //   )
+      // axios({
+      //   method: 'post',
+      //   url: 'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
+      //   data: {
+      //     client_id: '461541476203224',
+      //     client_secret: '${client_secret.value}',
+      //     grant_type: 'authorization_code',
+      //     redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+      //     code: '${code}'
+      //   }
+      // })
       //   .then((res) => {
-      //     console.log(res)
+      //     console.log('response', res)
       //   })
-      //   .catch((error) => {
-      //     console.warn(error)
+      //   .catch((err) => {
+      //     console.log('err', err)
       //   })
+      // /igGetID/oauth/access_token
+
+      const data = {
+        client_id: '461541476203224',
+        client_secret: `${client_secret.value}`,
+        grant_type: 'authorization_code',
+        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+        code: `${code}`
+      }
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(data)
+      }
+      fetch(
+        `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
+        options
+      )
+        .then((res) => {
+          console.log(res.json)
+        })
+        .catch((error) => {
+          console.warn(error)
+        })
     }
   }
 }
