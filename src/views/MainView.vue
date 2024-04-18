@@ -87,22 +87,39 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     console.log(code)
+   
     if (code) {
-      const data = {
-        client_id: '461541476203224',
-        client_secret: `${client_secret.value}`,
-        grant_type: 'authorization_code',
-        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-        code: `${code}`
+      async function exchangeCodeForToken(code) {
+      try {
+        const response = await axios.post('https://api.instagram.com/oauth/access_token', {
+          client_id: '461541476203224',
+          client_secret: `${client_secret.value}`,
+          grant_type: 'authorization_code',
+          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+          code: `${code}`
+        });
+        this.accessToken = response.data.access_token;
+        localStorage.setItem('accessToken', this.accessToken);
+      } catch (error) {
+        console.error('Error exchanging code for access token:', error);
       }
-      const request = axios.create({
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        transformRequest: [(data) => qs.stringify(data)]
-      })
+    }
+      
+      // const data = {
+      //   client_id: '461541476203224',
+      //   client_secret: `${client_secret.value}`,
+      //   grant_type: 'authorization_code',
+      //   redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+      //   code: `${code}`
+      // }
+      // const request = axios.create({
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   },
+      //   transformRequest: [(data) => qs.stringify(data)]
+      // })
 
-      request.then((res) => console.log(res)).catch((err) => console.log(err))
+      // request.post.then((res) => console.log(res)).catch((err) => console.log(err))
       // form
       // document.querySelector('#code').value = code
       // document.getElementById('apiForm').submit()
