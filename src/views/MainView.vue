@@ -116,7 +116,7 @@ const callApi = function () {
         method: 'POST',
         body: JSON.stringify(data)
       }
-      const request = etch(
+      const request = fetch(
         `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
         options
       )
