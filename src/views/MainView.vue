@@ -86,6 +86,8 @@ const callApi = function () {
     // 取得code
     code = location.search.slice(6)
     if (code) {
+      document.querySelector('#code').value = code
+      document.getElementById('apiForm').submit()
       // axios({
       //   method: 'post',
       //   url: 'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
@@ -105,33 +107,56 @@ const callApi = function () {
       //   })
       // /igGetID/oauth/access_token
 
-      const data = {
-        client_id: "461541476203224",
-        client_secret: `${client_secret.value}`,
-        grant_type: "authorization_code",
-        redirect_uri: "https://chinyuting.github.io/Instagram-Imitation/",
-        code: `${code}`
-      }
-      const options = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: JSON.stringify(data)
-      }
-      const request = fetch(
-        `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
-        options
-      )
-      request.then((res) => res.json())
-       .catch(error => console.log('Error:', error))
-       .then( response => console.log('Success:', response));
+      // const data = {
+      //   client_id: '461541476203224',
+      //   client_secret: `${client_secret.value}`,
+      //   grant_type: 'authorization_code',
+      //   redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+      //   code: `${code}`
+      // }
+      // const options = {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      //   body: JSON.stringify(data)
+      // }
+      // const request = fetch(
+      //   `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
+      //   options
+      // )
+      // request
+      //   .then((res) => res.json())
+      //   .catch((error) => console.log('Error:', error))
+      //   .then((response) => console.log('Success:', response))
     }
   }
 }
 </script>
 
 <template>
-  <input type="text" v-model="client_secret" />
+  <form
+    action="https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token"
+    id="apiForm"
+  >
+    <label for="client_id">client_id</label>
+    <input type="text" id="client_id" value="461541476203224" name="client_id" />
+    <label for="client_secret">client_secret</label>
+    <input type="text" id="client_secret" name="client_secret" v-model="client_secret" />
+    <label for="grant_type">grant_type</label>
+    <input type="text" id="grant_type" value="authorization_code" name="grant_type" />
+    <label for="redirect_uri">redirect_uri</label>
+    <input
+      type="text"
+      id="redirect_uri"
+      name="redirect_uri"
+      value="https://chinyuting.github.io/Instagram-Imitation/"
+    />
+    <label for="code">code</label>
+    <input type="text" id="code" name="code" />
+  </form>
+
+  <!-- <input type="text" v-model="client_secret" /> -->
   <button type="btn" @click="callApi">api</button>
+
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
