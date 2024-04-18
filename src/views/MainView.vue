@@ -106,15 +106,15 @@ const callApi = function () {
       // /igGetID/oauth/access_token
 
       const data = {
-        client_id: '461541476203224',
+        client_id: "461541476203224",
         client_secret: `${client_secret.value}`,
-        grant_type: 'authorization_code',
-        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+        grant_type: "authorization_code",
+        redirect_uri: "https://chinyuting.github.io/Instagram-Imitation/",
         code: `${code}`
       }
       const options = {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: data
       }
       const request = fetch(
         `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
