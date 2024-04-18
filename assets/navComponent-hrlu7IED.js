@@ -1,4 +1,4 @@
-import{p as V,q as Ot,_ as kt,r as Y,o as Lt,a as U,c as z,b as E,e as ht,s as It,x as Rt,y as $t,j as J,z as et,w as Vt,F as jt}from"./index-n9Ljvsrj.js";const qt="/Instagram-Imitation/assets/Instagram_logo_light-WGj1KLTg.png";var Tt={exports:{}},X={exports:{}};/*!
+import{p as V,q as Ot,_ as kt,r as Y,o as Lt,a as U,c as z,b as E,e as ht,s as It,x as Rt,y as $t,j as J,z as et,w as Vt,F as jt}from"./index-foFP9cvj.js";const qt="/Instagram-Imitation/assets/Instagram_logo_light-WGj1KLTg.png";var Tt={exports:{}},X={exports:{}};/*!
   * Bootstrap index.js v5.2.3 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
