@@ -115,7 +115,7 @@ const callApi = function () {
       const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: data
+        body: JSON.stringify(data)
       }
       const request = fetch(
         `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
