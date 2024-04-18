@@ -96,7 +96,7 @@ const callApi = function () {
         code: `${code}`
       }
       const request = axios.create({
-        header: {
+        headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
         transformRequest: [(data) => qs.stringify(data)]
