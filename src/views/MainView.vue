@@ -2,6 +2,7 @@
 import { ref, computed, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import qs from 'qs'
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
@@ -85,9 +86,28 @@ const callApi = function () {
   if (location.search) {
     // 取得code
     code = location.search.slice(6)
+    console.log(code)
     if (code) {
-      document.querySelector('#code').value = code
-      document.getElementById('apiForm').submit()
+      const data = {
+        client_id: '461541476203224',
+        client_secret: `${client_secret.value}`,
+        grant_type: 'authorization_code',
+        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+        code: `${code}`
+      }
+      const request = axios.create({
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        transformRequest: [(data) => qs.stringify(data)]
+      })
+
+      request.then((res) => console.log(res)).catch((err) => console.log(err))
+      // form
+      // document.querySelector('#code').value = code
+      // document.getElementById('apiForm').submit()
+
+      // axios
       // axios({
       //   method: 'post',
       //   url: 'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
@@ -107,6 +127,7 @@ const callApi = function () {
       //   })
       // /igGetID/oauth/access_token
 
+      // fetch
       // const data = {
       //   client_id: '461541476203224',
       //   client_secret: `${client_secret.value}`,
