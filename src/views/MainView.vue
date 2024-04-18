@@ -82,28 +82,52 @@ let code = ''
 const client_secret = ref('')
 
 const route = useRoute()
+
 const callApi = function () {
   if (location.search) {
     // 取得code
     code = location.search.slice(6)
     console.log(code)
-   
+  
     if (code) {
-      async function exchangeCodeForToken(code) {
-      try {
-        const response = await axios.post('https://api.instagram.com/oauth/access_token', {
-          client_id: '461541476203224',
-          client_secret: `${client_secret.value}`,
-          grant_type: 'authorization_code',
-          redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-          code: `${code}`
-        });
-        this.accessToken = response.data.access_token;
-        localStorage.setItem('accessToken', this.accessToken);
-      } catch (error) {
-        console.error('Error exchanging code for access token:', error);
+      const instance = axios.create({
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        transformRequest: [(data) => qs.stringify(data)], // Transform request data to x-www-form-urlencoded format
+      });
+
+      async function postData() {
+        try {
+          const response = await instance.post('https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token', {
+            client_id: '461541476203224',
+            client_secret: `${client_secret.value}`,
+            grant_type: 'authorization_code',
+            redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+            code: `${code}`
+          });
+          console.log('Response:', response.data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
       }
-    }
+      postData()
+    //   async function exchangeCodeForToken(code) {
+    //   try {
+    //     const response = await axios.post('https://api.instagram.com/oauth/access_token', {
+    //       client_id: '461541476203224',
+    //       client_secret: `${client_secret.value}`,
+    //       grant_type: 'authorization_code',
+    //       redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+    //       code: `${code}`
+    //     });
+    //     this.accessToken = response.data.access_token;
+    //     localStorage.setItem('accessToken', this.accessToken);
+    //   } catch (error) {
+    //     console.error('Error exchanging code for access token:', error);
+    //   }
+    // }
+   
       
       // const data = {
       //   client_id: '461541476203224',
