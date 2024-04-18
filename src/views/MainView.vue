@@ -116,16 +116,13 @@ const callApi = function () {
         method: 'POST',
         body: JSON.stringify(data)
       }
-      fetch(
+      const request = etch(
         `https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token`,
         options
       )
-        .then((res) => {
-          console.log(res.json)
-        })
-        .catch((error) => {
-          console.warn(error)
-        })
+      request.then((res) => res.json())
+       .catch(error => console.log('Error:', error))
+       .then( response => console.log('Success:', response));
     }
   }
 }
