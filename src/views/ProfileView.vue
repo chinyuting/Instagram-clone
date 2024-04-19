@@ -1,28 +1,18 @@
 <script setup>
 // import { getCurrentInstance } from 'vue'
 // import { useRoute } from 'vue-router'
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
 import { postDataStore } from '../stores/postDataList'
 
 const postData = postDataStore()
-onMounted(() => {
-  console.log(postData);
-})
-
-
-// const route = useRoute()
-// console.log(route.query.code)
-// if (route.query.code) {
-//   console.log(route.query.code)
-// } else {
-//   window.location.href =
-//     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-// }
+// onMounted(() => {
+//   console.log(postData);
+// })
 </script>
 
 <template>
-
+  {{ postData.postData }}
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
@@ -34,39 +24,9 @@ onMounted(() => {
       </div>
 
       <article class="row mx-auto border-top">
-        <div class="mt-1 col-4 px-0 ps-1">
+        <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in postData.postData" :key="index">
           <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
-          </div>
-        </div>
-        <div class="mt-1 col-4 px-0 ps-1">
-          <div class="profile-post">
-            <!-- <img src="../assets/images/test.jpg" alt="" /> -->
+            <img :src="post.media_url" alt="" />
           </div>
         </div>
       </article>

@@ -79,9 +79,10 @@ const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
 
+// 轉址 api取得code
 onMounted(() => {
   const route = useRoute()
-  if (route.query.code) {
+  if (localStorage.getItem('code')) {
     console.log(route.query.code)
   } else {
     window.location.href =
@@ -94,12 +95,12 @@ let code = ''
 const client_secret = ref('')
 
 const route = useRoute()
-
 const callApi = function () {
   if (location.search) {
     // 取得code
     code = location.search.slice(6)
     console.log(code)
+    localStorage.setItem('code', code)
 
     if (code) {
       const instance = axios.create({
@@ -141,7 +142,7 @@ const callApi = function () {
               .then((res) => {
                 console.log(res)
                 const postData = postDataStore()
-                postData.postData = res.data.data;
+                postData.postData = res.data.data
                 console.log(postData)
               })
               .catch((err) => {
@@ -152,7 +153,6 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      getToken()
     }
   }
 }
