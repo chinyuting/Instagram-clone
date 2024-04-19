@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import qs from 'qs'
@@ -79,6 +79,16 @@ const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
 
+onMounted(() => {
+  const route = useRoute()
+  if (route.query.code) {
+    console.log(route.query.code)
+  } else {
+    window.location.href =
+      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  }
+})
+
 // 取得ig api code
 let code = ''
 const client_secret = ref('')
@@ -131,6 +141,7 @@ const callApi = function () {
               .then((res) => {
                 console.log(res)
                 const postData = postDataStore()
+                postData.postData = res.data.data;
                 console.log(postData)
               })
               .catch((err) => {
@@ -148,28 +159,7 @@ const callApi = function () {
 </script>
 
 <template>
-  <form
-    action="https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token"
-    id="apiForm"
-  >
-    <label for="client_id">client_id</label>
-    <input type="text" id="client_id" value="461541476203224" name="client_id" />
-    <label for="client_secret">client_secret</label>
-    <input type="text" id="client_secret" name="client_secret" v-model="client_secret" />
-    <label for="grant_type">grant_type</label>
-    <input type="text" id="grant_type" value="authorization_code" name="grant_type" />
-    <label for="redirect_uri">redirect_uri</label>
-    <input
-      type="text"
-      id="redirect_uri"
-      name="redirect_uri"
-      value="https://chinyuting.github.io/Instagram-Imitation/"
-    />
-    <label for="code">code</label>
-    <input type="text" id="code" name="code" />
-  </form>
-
-  <!-- <input type="text" v-model="client_secret" /> -->
+  <input type="text" v-model="client_secret" />
   <button type="btn" @click="callApi">api</button>
 
   <div class="row mx-0">
