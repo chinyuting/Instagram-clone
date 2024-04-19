@@ -122,6 +122,16 @@ const callApi = function () {
               .catch((err) => {
                 console.log(err)
               })
+            axios
+              .get(
+                `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
+              )
+              .then((res) => {
+                console.log(res)
+              })
+              .catch((err) => {
+                console.log(err)
+              })
           }
         } catch (error) {
           console.error('Error:', error)
