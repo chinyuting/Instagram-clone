@@ -116,7 +116,7 @@ const callApi = function () {
           if (access_token) {
             axios
               .get(
-                `https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
+                `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
               )
               .then((res) => {
                 console.log(res)
