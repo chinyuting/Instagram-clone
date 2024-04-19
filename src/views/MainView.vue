@@ -80,19 +80,16 @@ const story = computed(() => {
 })
 
 // 轉址 api取得code
-onMounted(() => {
-  const route = useRoute()
-  if (localStorage.getItem('code')) {
-    console.log(route.query.code)
-  } else {
-    window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-  }
-})
+const route = useRoute()
+if (route.query.code) {
+  console.log(route.query.code)
+} else {
+  window.location.href =
+  'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+}
 
 let code = ''
 const client_secret = ref('')
-const route = useRoute()
 const callApi = function () {
   if (location.search) {
     // 取得code

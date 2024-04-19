@@ -1,18 +1,15 @@
 <script setup>
-// import { getCurrentInstance } from 'vue'
-// import { useRoute } from 'vue-router'
 import { onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
 import { postDataStore } from '../stores/postDataList'
 
-const postData = postDataStore()
-// onMounted(() => {
-//   console.log(postData);
-// })
+onMounted(() => {
+  const postData = postDataStore()
+  console.log(postData.postData)
+})
 </script>
 
 <template>
-  {{ postData.postData }}
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
