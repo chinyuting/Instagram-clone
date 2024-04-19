@@ -85,15 +85,10 @@ onMounted(() => {
   if (localStorage.getItem('code')) {
     console.log(route.query.code)
   } else {
-    getCode()
+    window.location.href =
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
   }
 })
-
-// 取得ig轉址
-const getCode = function () {
-  window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-}
 
 let code = ''
 const client_secret = ref('')
