@@ -8,6 +8,8 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 
+import { postDataStore } from '../stores/postDataList'
+
 // 取得story資料
 const { proxy } = getCurrentInstance()
 const storyOwnerData = ref([])
@@ -128,6 +130,8 @@ const callApi = function () {
               )
               .then((res) => {
                 console.log(res)
+                const postData = postDataStore()
+                console.log(postData)
               })
               .catch((err) => {
                 console.log(err)
