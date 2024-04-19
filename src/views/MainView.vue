@@ -84,8 +84,6 @@ const client_secret = ref('')
 const route = useRoute()
 
 const callApi = function () {
-  const access_token = ''
-
   if (location.search) {
     // 取得code
     code = location.search.slice(6)
@@ -112,7 +110,7 @@ const callApi = function () {
             }
           )
           console.log(response.data)
-          access_token = response.data.access_token
+          let access_token = response.data.access_token
           if (access_token) {
             axios
               .get(
