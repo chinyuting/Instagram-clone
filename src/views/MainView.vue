@@ -8,7 +8,7 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 
-import { postDataStore } from '../stores/postDataList'
+import { usepostDataStore } from '../stores/postDataList.js'
 
 // 取得story資料
 const { proxy } = getCurrentInstance()
@@ -90,12 +90,11 @@ if (route.query.code) {
 
 let code = ''
 const client_secret = ref('')
+const postData = usepostDataStore()
 const callApi = function () {
   if (location.search) {
     // 取得code
     code = location.search.slice(6)
-    console.log(code)
-    localStorage.setItem('code', code)
 
     if (code) {
       const instance = axios.create({
@@ -119,30 +118,34 @@ const callApi = function () {
           )
           console.log(response.data)
           let access_token = response.data.access_token
+          localStorage.setItem('access_token', access_token);
+
           if (access_token) {
-            axios
-              .get(
-                `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
-              )
-              .then((res) => {
-                console.log(res)
-              })
-              .catch((err) => {
-                console.log(err)
-              })
-            axios
-              .get(
-                `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
-              )
-              .then((res) => {
-                console.log(res)
-                const postData = postDataStore()
-                postData.postData = res.data.data
-                console.log(postData)
-              })
-              .catch((err) => {
-                console.log(err)
-              })
+            postData.getData();
+            console.log(postData.postData);
+            // axios
+            //   .get(
+            //     `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
+            //   )
+            //   .then((res) => {
+            //     console.log(res)
+            //   })
+            //   .catch((err) => {
+            //     console.log(err)
+            //   })
+            // axios
+            //   .get(
+            //     `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
+            //   )
+            //   .then((res) => {
+            //     console.log(res)
+            //     const postData = postDataStore()
+            //     postData.postData = res.data.data
+            //     console.log(postData)
+            //   })
+            //   .catch((err) => {
+            //     console.log(err)
+            //   })
           }
         } catch (error) {
           console.error('Error:', error)

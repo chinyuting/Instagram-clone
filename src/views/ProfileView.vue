@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
-import { postDataStore } from '../stores/postDataList'
+import { usepostDataStore } from '../stores/postDataList.js'
 
-onMounted(() => {
-  const postData = postDataStore()
-  console.log(postData.postData)
-})
+const postData = usepostDataStore()
+// onMounted(() => {
+//   console.log(postData.postData)
+// })
 </script>
 
 <template>
