@@ -4,19 +4,23 @@ import axios from 'axios'
 
 export const usepostDataStore = defineStore('PostDataList', () => {
   const postData = ref([])
-  // function getUser() {
-  //   const access_token = localStorage.getItem('access_token');
-  //   axios
-  //   .get(
-  //     `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
-  //   )
-  //   .then((res) => {
-  //     console.log(res)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
+  const userData = ref({})
+
+  function getUser() {
+    const access_token = localStorage.getItem('access_token');
+    axios
+    .get(
+      `https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
+    )
+    .then((res) => {
+      console.log(res)
+      userData.value = res.data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
   function getData() {
     const access_token = localStorage.getItem('access_token');
     axios
@@ -34,5 +38,5 @@ export const usepostDataStore = defineStore('PostDataList', () => {
   }
   
 
-  return { postData, getData }
+  return { postData, userData, getData, getUser }
 })
