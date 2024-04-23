@@ -3,7 +3,9 @@ import navComponent from '../components/navComponent.vue'
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
+// 引入 postDataStore 呼叫getData方法取得PostDataList並儲存
 const postData = usePostDataStore()
+postData.getData();
 const userData = useUserDataStore()
 
 </script>

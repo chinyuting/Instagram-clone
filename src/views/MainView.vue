@@ -141,9 +141,9 @@ const callApi = function () {
               console.log(err)
             })
             // 引入 postDataStore 呼叫getData方法取得PostDataList並儲存
-            const postData = usePostDataStore()
-            postData.getData();
-            console.log(postData.postData);
+            // const postData = usePostDataStore()
+            // postData.getData();
+            // console.log(postData.postData);
           }
         } catch (error) {
           console.error('Error:', error)
