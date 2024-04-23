@@ -30,7 +30,7 @@ Mock.mock('/getStories', 'post', {
     dataList:[
         {
             storyId: '1',
-            storyOwnerName: 'shelly',
+            storyOwnerName: 'Mary0209',
             storyOwnerId: '1',
             img: 'src/assets/images/people-1.jpg',
             storyDateTime: 1706007150829,
@@ -39,7 +39,7 @@ Mock.mock('/getStories', 'post', {
         },
         {
             storyId: '2',
-            storyOwnerName: 'shellychiu',
+            storyOwnerName: 'kkkevin_0909',
             storyOwnerId: '2',
             img: 'src/assets/images/story-2.jpg',
             storyDateTime: 1706007226706,
@@ -134,14 +134,14 @@ Mock.mock('/getStoryOwner', 'post', {
     dataList:[
         {
             storyOwnerId: '1',
-            storyOwnerName: 'shelly',
-            storyOwnerPic: 'src/assets/images/people-3.jpg',
+            storyOwnerName: 'Mary0209',
+            storyOwnerPic: 'src/assets/images/people-1.jpg',
             isWatched: true,
         },
         {
             storyOwnerId: '2',
-            storyOwnerName: 'shellychiu',
-            storyOwnerPic: 'src/assets/images/people-4.jpg',
+            storyOwnerName: 'kkkevin_0909',
+            storyOwnerPic: 'src/assets/images/people-2.jpg',
             isWatched: false,
         },
         {
