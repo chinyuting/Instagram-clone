@@ -1,14 +1,16 @@
 <script setup>
 import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+
 import axios from 'axios'
 import qs from 'qs'
+
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 
-import { usepostDataStore } from '../stores/postDataList.js'
+import { usePostDataStore } from '../stores/postDataListStore.js'
 
 // 取得story資料
 const { proxy } = getCurrentInstance()
@@ -79,7 +81,7 @@ const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
 
-// 轉址 api取得code
+// 轉址 api
 const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
@@ -88,22 +90,26 @@ if (route.query.code) {
   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
+// 取得ig api code 且轉換為token
 let code = ''
+// client_secret用輸入的
 const client_secret = ref('')
-const postData = usepostDataStore()
+
 const callApi = function () {
   if (location.search) {
     // 取得code
-    code = location.search.slice(6)
+    code = location.search.slice(6) // 取得網址參數並移除'#_''
 
+    // 成功取得code則轉換為token
     if (code) {
       const instance = axios.create({
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded' // Body型態
         },
-        transformRequest: [(data) => qs.stringify(data)]
+        transformRequest: [(data) => qs.stringify(data)] // 將data(body內容)轉型
       })
 
+      // code則轉換為token
       async function getToken() {
         try {
           const response = await instance.post(
@@ -117,35 +123,27 @@ const callApi = function () {
             }
           )
           console.log(response.data)
+          // 取得短期token
           let access_token = response.data.access_token
-          localStorage.setItem('access_token', access_token);
 
+          // 取得長期token
           if (access_token) {
+            axios
+            .get(
+              `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${client_secret.value}&access_token=${access_token}`
+            )
+            .then((res) => {
+              console.log(res)
+              // 儲存長期token至localStorage
+              localStorage.setItem('long-lived-access-token', res.data.access_token);
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+            // 引入 postDataStore 呼叫getData方法取得PostDataList並儲存
+            const postData = usePostDataStore()
             postData.getData();
             console.log(postData.postData);
-            // axios
-            //   .get(
-            //     `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
-            //   )
-            //   .then((res) => {
-            //     console.log(res)
-            //   })
-            //   .catch((err) => {
-            //     console.log(err)
-            //   })
-            // axios
-            //   .get(
-            //     `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
-            //   )
-            //   .then((res) => {
-            //     console.log(res)
-            //     const postData = postDataStore()
-            //     postData.postData = res.data.data
-            //     console.log(postData)
-            //   })
-            //   .catch((err) => {
-            //     console.log(err)
-            //   })
           }
         } catch (error) {
           console.error('Error:', error)

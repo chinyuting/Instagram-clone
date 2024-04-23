@@ -1,12 +1,11 @@
 <script setup>
-import { onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
-import { usepostDataStore } from '../stores/postDataList.js'
+import { usePostDataStore } from '../stores/postDataListStore.js'
+import { useUserDataStore } from '../stores/userDataStore.js'
 
-const postData = usepostDataStore()
-// onMounted(() => {
-//   console.log(postData.postData)
-// })
+const postData = usePostDataStore()
+const userData = useUserDataStore()
+
 </script>
 
 <template>
@@ -17,7 +16,7 @@ const postData = usepostDataStore()
         <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
           <!-- <img src="../assets/images/test.jpg" alt="" /> -->
         </div>
-        <div>shelly</div>
+        <div>{{ userData.username }}</div>
       </div>
 
       <article class="row mx-auto border-top">
