@@ -23,7 +23,8 @@ const postData = usepostDataStore()
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in postData.postData" :key="index">
           <div class="profile-post">
-            <img :src="post.media_url" alt="" />
+            <img :src="post.media_url" alt="" v-if="post.media_type === 'IMAGE'" />
+            <img :src="post.thumbnail_url" alt="" v-if="post.media_type === 'VIDEO'" />
           </div>
         </div>
       </article>
@@ -44,7 +45,9 @@ const postData = usepostDataStore()
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 150%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 }
 .profile-pic {
