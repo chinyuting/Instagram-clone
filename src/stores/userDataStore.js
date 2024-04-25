@@ -5,7 +5,7 @@ import axios from 'axios'
 export const useUserDataStore = defineStore('UserDataList', () => {
   const userData = ref({})
 
-  function getUser() {
+  function getUserData() {
     const access_token = localStorage.getItem('long-lived-access-token');
     axios
     .get(
@@ -20,5 +20,5 @@ export const useUserDataStore = defineStore('UserDataList', () => {
     })
   }
   
-  return { userData, getUser }
+  return { userData, getUserData }
 })
