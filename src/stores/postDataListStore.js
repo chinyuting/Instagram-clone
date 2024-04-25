@@ -14,7 +14,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
     .then((res) => {
       console.log(res)
       postData.value = res.data.data
-      console.log(postData.value)
+      console.log('post', postData.value)
     })
     .catch((err) => {
       console.log(err)

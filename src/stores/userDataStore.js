@@ -14,6 +14,7 @@ export const useUserDataStore = defineStore('UserDataList', () => {
     .then((res) => {
       console.log(res)
       userData.value = res.data
+      console.log('user', userData.value)
     })
     .catch((err) => {
       console.log(err)
