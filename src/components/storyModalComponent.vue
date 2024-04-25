@@ -108,7 +108,7 @@ const storyContent = computed(() => {
           </div>
           <div class="rounded story-pic-area">
             <img :src="story.img" class="story-content-pic" alt="" />
-            <input type="text" />
+            <!-- <input type="text" /> -->
           </div>
         </div>
       </div>
