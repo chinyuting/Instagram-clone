@@ -10,9 +10,6 @@ postData.getPostData()
 const userData = useUserDataStore()
 userData.getUserData()
 
-const getPost = function(id) {
-  console.log(id);
-}
 </script>
 
 <template>
@@ -28,7 +25,7 @@ const getPost = function(id) {
 
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post) in postData.postData" :key="post.id">
-          <div class="profile-post" @click="getPost(post.id)" :id="post.id">
+          <div class="profile-post" >
             <img :src="post.media_url" alt="" v-if="post.media_type === 'IMAGE'" />
             <img :src="post.thumbnail_url" alt="" v-if="post.media_type === 'VIDEO'" />
           </div>
