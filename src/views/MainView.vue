@@ -10,8 +10,6 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 
-import { usePostDataStore } from '../stores/postDataListStore.js'
-
 // 取得story資料
 const { proxy } = getCurrentInstance()
 const storyOwnerData = ref([])
@@ -87,7 +85,7 @@ if (route.query.code) {
   console.log(route.query.code)
 } else {
   window.location.href =
-  'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -129,21 +127,17 @@ const callApi = function () {
           // 取得長期token
           if (access_token) {
             axios
-            .get(
-              `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${client_secret.value}&access_token=${access_token}`
-            )
-            .then((res) => {
-              console.log(res)
-              // 儲存長期token至localStorage
-              localStorage.setItem('long-lived-access-token', res.data.access_token);
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-            // 引入 postDataStore 呼叫getData方法取得PostDataList並儲存
-            // const postData = usePostDataStore()
-            // postData.getData();
-            // console.log(postData.postData);
+              .get(
+                `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${client_secret.value}&access_token=${access_token}`
+              )
+              .then((res) => {
+                console.log(res)
+                // 儲存長期token (long-lived-access-token) 至localStorage
+                localStorage.setItem('long-lived-access-token', res.data.access_token)
+              })
+              .catch((err) => {
+                console.log(err)
+              })
           }
         } catch (error) {
           console.error('Error:', error)
