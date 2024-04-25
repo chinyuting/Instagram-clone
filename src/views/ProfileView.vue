@@ -5,9 +5,10 @@ import { useUserDataStore } from '../stores/userDataStore.js'
 
 // 引入 postDataStore 呼叫getData方法取得PostDataList並儲存
 const postData = usePostDataStore()
-postData.getData();
-const userData = useUserDataStore()
+postData.getPostData()
 
+const userData = useUserDataStore()
+userData.getUserData()
 </script>
 
 <template>
@@ -34,23 +35,6 @@ const userData = useUserDataStore()
   </div>
 </template>
 <style lang="scss">
-.profile-post {
-  // height: 150px;
-  width: 100%;
-  padding-bottom: 100%;
-  // height: 100%;
-  overflow: hidden;
-  position: relative;
-  img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-}
 .profile-pic {
   height: 90px;
   width: 90px;
@@ -70,6 +54,23 @@ const userData = useUserDataStore()
 .profile,
 article {
   width: 100%;
+}
+.profile-post {
+  // height: 150px;
+  width: 100%;
+  padding-bottom: 100%;
+  // height: 100%;
+  overflow: hidden;
+  position: relative;
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
 }
 @media (min-width: 768px) {
   .profile-pic {
