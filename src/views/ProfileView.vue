@@ -20,7 +20,7 @@ userData.getUserData()
         <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
           <!-- <img src="../assets/images/test.jpg" alt="" /> -->
         </div>
-        <div>{{ userData }}</div>
+        <!-- <div>{{ userData }}</div> -->
       </div>
 
       <article class="row mx-auto border-top">
