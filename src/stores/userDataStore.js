@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const useUserDataStore = defineStore('UserDataList', () => {
+export const useUserDataStore = defineStore('userDataList', () => {
   const userData = ref({})
 
   function getUserData() {
@@ -13,7 +13,9 @@ export const useUserDataStore = defineStore('UserDataList', () => {
     )
     .then((res) => {
       console.log(res)
+      console.log(res.data)
       userData.value = res.data
+      console.log('user', userData.value)
       console.log('user', userData.value)
     })
     .catch((err) => {
