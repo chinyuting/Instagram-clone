@@ -11,15 +11,14 @@ postData.getPostData()
 const userData = useUserDataStore()
 userData.getUserData()
 console.log(userData);
-console.log(userData.value);
 
 const getPost = function (id) {
   console.log(id)
 }
 
-onMounted(() => {
-  console.log('userData.value', userData.value)
-})
+// onMounted(() => {
+//   console.log('userData.value', userData.value)
+// })
 </script>
 
 <template>
