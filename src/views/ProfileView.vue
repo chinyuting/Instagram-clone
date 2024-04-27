@@ -10,7 +10,7 @@ postData.getPostData()
 
 const userData = useUserDataStore()
 userData.getUserData()
-console.log(userData);
+console.log(userData.userData.value);
 
 const getPost = function (id) {
   console.log(id)
@@ -29,7 +29,7 @@ const getPost = function (id) {
         <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
           <!-- <img src="../assets/images/test.jpg" alt="" /> -->
         </div>
-        <div>{{ userData.username }}</div>
+        <div>{{ userData.userData.username }}</div>
       </div>
 
       <article class="row mx-auto border-top">
