@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
