@@ -10,10 +10,13 @@ postData.getPostData()
 const userData = useUserDataStore()
 userData.getUserData()
 
-
-const getPost = function(id) {
-  console.log(id);
+const getPost = function (id) {
+  console.log(id)
 }
+
+onMounted(() => {
+  console.log(userData) // 数据加载后再查看 userData 对象内容
+})
 </script>
 
 <template>
@@ -30,8 +33,10 @@ const getPost = function(id) {
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in postData.postData" :key="index">
           <div class="profile-post" @click="getPost(post.id)">
-            <img :src="post.media_url" alt="" v-if="post.media_type === 'IMAGE'" />
-            <img :src="post.thumbnail_url" alt="" v-if="post.media_type === 'VIDEO'" />
+            <div class="post-pic position-absolute w-100 h-100">
+              <img :src="post.media_url" alt="" v-if="post.media_type === 'IMAGE'" />
+              <img :src="post.thumbnail_url" alt="" v-if="post.media_type === 'VIDEO'" />
+            </div>
           </div>
         </div>
       </article>
@@ -56,17 +61,18 @@ const getPost = function(id) {
     height: 150%;
   }
 }
+
 .profile,
 article {
   width: 100%;
 }
+
 .profile-post {
-  // height: 150px;
   width: 100%;
-  padding-bottom: 100%;
-  // height: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   position: relative;
+  transition: all 1s ease;
   img {
     position: absolute;
     top: 50%;
@@ -77,6 +83,23 @@ article {
     object-fit: cover;
   }
 }
+
+.post-pic {
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+  &:hover::before {
+    opacity: 0.3; //hover改變透明度
+  }
+}
+
 @media (min-width: 768px) {
   .profile-pic {
     height: 150px;

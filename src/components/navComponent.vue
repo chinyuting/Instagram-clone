@@ -16,9 +16,11 @@ const openModal = function () {
       </nav>
     </div>
 
-    <div class="my-md-3 nav-selection align-items-md-stretch flex-md-column align-items-stretch">
+    <div
+      class="my-md-3 nav-selection align-items-md-stretch flex-md-column align-items-stretch display-flex"
+    >
       <nav class="bg-body">
-        <div class="nav-item rounded">
+        <div class="nav-item rounded w-100">
           <RouterLink to="/" class="mx-4 mx-md-0 text-decoration-none text-secondary d-flex px-2">
             <div><i class="bi bi-house-door icon-size"></i></div>
             <div><span class="d-none d-lg-inline p-2">首頁</span></div>
@@ -60,7 +62,6 @@ const openModal = function () {
 .nav-selection {
   position: fixed;
   bottom: 0;
-  width: 100%;
   display: flex;
   justify-content: center;
   padding: 0.5rem;
