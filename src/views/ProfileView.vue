@@ -16,7 +16,7 @@ const getPost = function (id) {
 }
 
 onMounted(() => {
-  console.log(userData) // 数据加载后再查看 userData 对象内容
+  console.log('userData.value', userData.value)
 })
 </script>
 
@@ -97,7 +97,7 @@ article {
     transition: opacity 0.2s ease-in-out;
   }
   &:hover::before {
-    opacity: 0.3; //hover改變透明度
+    opacity: 0.5; //hover改變透明度
   }
 }
 
