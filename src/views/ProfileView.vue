@@ -10,7 +10,7 @@ postData.getPostData()
 
 const userData = useUserDataStore()
 userData.getUserData()
-console.log(userData.userData.value);
+// console.log(userData.userData.value);
 
 const getPost = function (id) {
   console.log(id)
