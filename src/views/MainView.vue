@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, getCurrentInstance, onMounted } from 'vue'
+import { ref, computed, getCurrentInstance } from 'vue'
 import { useRoute } from 'vue-router'
 
 import axios from 'axios'
@@ -78,14 +78,27 @@ const positionCount = function (n) {
 const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
+// 取得post資料
+const postData = ref([])
+proxy
+  .$axios(
+    {
+      url: '/getPost',
+      method: 'post'
+    },
+    { userId: '123' }
+  )
+  .then((res) => {
+    postData.value = res.data.dataList
+  })
 
 // 轉址 api
 const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
 } else {
-  window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  // window.location.href =
+  //   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -143,54 +156,59 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      getToken()
+      // getToken()
     }
   }
 }
 </script>
 
 <template>
-  <input type="text" v-model="client_secret" />
-  <button type="btn" @click="callApi">api</button>
-
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
+      <input type="text" v-model="client_secret" />
+      <button type="btn" @click="callApi">api</button>
+
       <!-- stories -->
-      <div class="stories overflow-scroll w-md-75 mx-auto flex-nowrap mt-md-2 position-relative">
-        <div class="d-flex justify-content-start align-items-center">
-          <storyComponent
-            @click.prevent="openModal(owner)"
-            v-for="owner in storyOwnerData"
-            :key="owner.storyOwnerId"
-            :ownerItem="owner"
-            :style="story"
-          />
-        </div>
+      <div class="stories position-relative w-md-75 mx-auto">
         <!-- 向左按鈕 傳入1 -->
         <button
           type="button"
-          class="position-absolute top-50 start-0 translate-middle-y btn"
+          class="position-absolute top-50 start-0 translate-middle-y btn stories-btn"
           @click.prevent="positionCount(1)"
           v-if="isShownToLeft"
         >
           <i class="bi bi-arrow-left-circle-fill icon-size text-light"></i>
         </button>
+
         <!-- 向右按鈕 傳入-1 -->
         <button
           type="button"
-          class="position-absolute top-50 end-0 translate-middle-y btn"
+          class="position-absolute top-50 end-0 translate-middle-y btn stories-btn"
           @click.prevent="positionCount(-1)"
           v-if="isShownToRight"
         >
           <i class="bi bi-arrow-right-circle-fill icon-size text-light"></i>
         </button>
+        <div class="stories overflow-scroll flex-nowrap mt-md-2 position-relative">
+          <div class="d-flex justify-content-start align-items-center">
+            <storyComponent
+              @click.prevent="openModal(owner)"
+              class="storyComponent"
+              v-for="owner in storyOwnerData"
+              :key="owner.storyOwnerId"
+              :ownerItem="owner"
+              :style="story"
+            />
+          </div>
+        </div>
       </div>
+
       <!-- 傳入storyOwner data -->
       <storyModalComponent ref="storyModal" :storyOwnerId="storyOwner" />
       <!-- post -->
       <div class="d-flex flex-column justify-content-center align-items-center mb-5">
-        <postComponent />
+        <postComponent :postDataList="postData" />
       </div>
     </main>
   </div>
@@ -199,6 +217,18 @@ const callApi = function () {
 <style lang="scss">
 .row main {
   padding: 0;
+}
+.stories-btn {
+  z-index: 100;
+}
+.storyComponent {
+  transition: all 0.7s ease;
+}
+
+.stories {
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {

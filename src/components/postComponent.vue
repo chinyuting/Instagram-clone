@@ -1,30 +1,37 @@
 <script setup>
-import { ref, getCurrentInstance } from 'vue'
+import { ref, getCurrentInstance, onMounted, onBeforeUnmount } from 'vue'
 
-// 取得post資料
-const { proxy } = getCurrentInstance()
-const postData = ref([])
-proxy
-  .$axios(
-    {
-      url: '/getPost',
-      method: 'post'
-    },
-    { userId: '123' }
-  )
-  .then((res) => {
-    postData.value = res.data.dataList
-  })
+const props = defineProps({
+  postDataList: Array
+})
 
 // 字數過長隱藏
 const readMoreActivated = ref(false)
 const activateReadMore = function (id) {
   readMoreActivated.value = true
 }
+
+//判斷螢幕大小
+const isLargeScreen = ref(window.innerWidth >= 768)
+const updateScreenSize = () => {
+  isLargeScreen.value = window.innerWidth >= 768
+}
+onMounted(() => {
+  window.addEventListener('resize', updateScreenSize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateScreenSize)
+})
 </script>
 
 <template>
-  <div class="card mt-3 post-card w-100 border-0" v-for="post in postData" :key="post.postId">
+  <div
+    class="card mt-3 post-card w-100 border-0"
+    v-for="(post, index) in postDataList"
+    :key="post.postId"
+    :id="post.postId"
+  >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
         <img :src="post.postOwnerPic" alt="" />
@@ -108,6 +115,7 @@ const activateReadMore = function (id) {
         <div v-if="readMoreActivated" class="card-text ms-2 d-inline">{{ post.description }}</div>
       </div>
     </div>
+    <hr v-if="index != postDataList.length - 1 && isLargeScreen" />
   </div>
 </template>
 
@@ -117,7 +125,6 @@ const activateReadMore = function (id) {
   width: 100%;
   height: 100%;
   border-radius: 0;
-  border-bottom: 0;
 }
 .icon-size {
   font-size: 1.5rem;
