@@ -120,7 +120,7 @@ article {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: gray;
+    background-color: black;
     opacity: 0;
     z-index: 1;
     transition: opacity 0.2s ease-in-out;
