@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-
+import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -9,6 +9,7 @@ import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
+import FirebaseDataComponent from '../components/firebaseComponent.vue'
 
 // 取得story資料
 const { proxy } = getCurrentInstance()
@@ -78,27 +79,43 @@ const positionCount = function (n) {
 const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
-// 取得post資料
+// mock取得post資料
+// const postData = ref([])
+// proxy
+//   .$axios(
+//     {
+//       url: '/getPost',
+//       method: 'post'
+//     },
+//     { userId: '123' }
+//   )
+//   .then((res) => {
+//     postData.value = res.data.dataList
+//   })
+
+// 從firebase取得post資料
 const postData = ref([])
-proxy
-  .$axios(
-    {
-      url: '/getPost',
-      method: 'post'
-    },
-    { userId: '123' }
-  )
-  .then((res) => {
-    postData.value = res.data.dataList
+onMounted(() => {
+  const itemsRef = firebaseRef(db, 'postsData')
+
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      fetchedItems.push({ key, ...value })
+    })
+    postData.value = fetchedItems
   })
+})
 
 // 轉址 api
 const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
 } else {
-  window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  // window.location.href =
+  //   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -156,7 +173,7 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      getToken()
+      // getToken()
     }
   }
 }

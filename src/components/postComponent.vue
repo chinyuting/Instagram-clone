@@ -29,22 +29,23 @@ onBeforeUnmount(() => {
   <div
     class="card mt-3 post-card w-100 border-0"
     v-for="(post, index) in postDataList"
-    :key="post.postId"
-    :id="post.postId"
+    :key="post.Id"
+    :id="post.Id"
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
-        <img :src="post.postOwnerPic" alt="" />
+        <!-- <img :src="post.postOwnerPic" alt="" /> -->
       </div>
-      <div class="ms-2 fw-bold">{{ post.postOwnerName }}</div>
+
+      <div class="ms-2 fw-bold">{{ post.username }}</div>
     </div>
-    <div :id="'post' + post.postId" class="carousel slide post-pic-area position-relative">
-      <div class="carousel-indicators" v-if="post.imgs.length > 1">
-        <div v-for="(img, key) in post.imgs.length" :key="key">
+    <div :id="'post' + post.Id" class="carousel slide post-pic-area position-relative">
+      <div class="carousel-indicators" v-if="post.media_url.length > 1">
+        <div v-for="(img, key) in post.media_url.length" :key="key">
           <button
             :class="{ active: key === 0 }"
             type="button"
-            :data-bs-target="'#post' + post.postId"
+            :data-bs-target="'#post' + post.Id"
             :data-bs-slide-to="key"
             :aria-current="key === 1"
             :aria-label="'Slide' + key"
@@ -55,7 +56,7 @@ onBeforeUnmount(() => {
         <div
           class="carousel-item"
           :class="{ active: key === 0 }"
-          v-for="(img, key) in post.imgs"
+          v-for="(img, key) in post.media_url"
           :key="key"
         >
           <img :src="img" class="d-block w-100" alt="..." />
@@ -65,9 +66,9 @@ onBeforeUnmount(() => {
       <button
         class="carousel-control-prev"
         type="button"
-        :data-bs-target="'#post' + post.postId"
+        :data-bs-target="'#post' + post.Id"
         data-bs-slide="prev"
-        v-if="post.imgs.length > 1"
+        v-if="post.media_url.length > 1"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -75,9 +76,9 @@ onBeforeUnmount(() => {
       <button
         class="carousel-control-next"
         type="button"
-        :data-bs-target="'#post' + post.postId"
+        :data-bs-target="'#post' + post.Id"
         data-bs-slide="next"
-        v-if="post.imgs.length > 1"
+        v-if="post.media_url.length > 1"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
@@ -96,23 +97,23 @@ onBeforeUnmount(() => {
           @click.prevent="post.isThumb = false"
         ></i>
       </a>
-      <p class="card-text mb-2">{{ post.thumbNum }}個讚</p>
+      <!-- <p class="card-text mb-2">{{ post.thumbNum }}個讚</p> -->
       <div>
-        <span class="card-text d-inline fw-bold">{{ post.postOwnerName }}</span>
+        <span class="card-text d-inline fw-bold">{{ post.username }}</span>
         <!-- post description僅顯示20字 -->
         <!-- 用readMoreActivated值判斷是否顯示"更多" -->
         <div v-if="!readMoreActivated" class="card-text ms-2 d-inline">
-          {{ post.description.slice(0, 20) }}...
+          {{ post.caption.slice(0, 20) }}...
         </div>
         <a
           class="text-decoration-none text-secondary fs-6"
           v-if="!readMoreActivated"
-          @click.prevent="activateReadMore(post.postId)"
+          @click.prevent="activateReadMore(post.Id)"
           href="#"
         >
           更多
         </a>
-        <div v-if="readMoreActivated" class="card-text ms-2 d-inline">{{ post.description }}</div>
+        <div v-if="readMoreActivated" class="card-text ms-2 d-inline">{{ post.caption }}</div>
       </div>
     </div>
     <hr v-if="index != postDataList.length - 1 && isLargeScreen" />

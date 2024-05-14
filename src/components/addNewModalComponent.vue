@@ -1,6 +1,8 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref } from 'vue'
+import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'firebase/storage'
+import { firebaseApp } from '../firebaseSetUp'
 
 const modal = ref(null)
 const addNewModal = ref(null)
@@ -19,12 +21,15 @@ onMounted(() => {
 })
 
 const imgSrc = ref(null)
-/** 
+const selectedImg = ref(null)
+/**
    ＊ 新增照片並顯示預覽
-   ＊ ＠param {Object} e - input change event 
+   ＊ ＠param {Object} e - input change event
   */
 const addImage = function (e) {
   let input = e.target
+  selectedImg.value = e.target.files[0]
+  console.log(selectedImg.value)
   // 預覽照片
   if (input.files) {
     let reader = new FileReader()
@@ -41,6 +46,27 @@ const isModalSideShow = ref(false)
 const addNewImg = function () {
   modalDialog.value.style.maxWidth = '1000px'
   isModalSideShow.value = true
+  uploadImage()
+}
+
+const uploadImage = async () => {
+  const file = selectedImg.value
+  if (!file) {
+    console.error('No file selected.')
+    return
+  }
+  const storage = getStorage(firebaseApp)
+  const fileRef = storageRef(storage, 'images/' + file.name)
+  try {
+    //上傳照片至firebase storage
+    await uploadBytes(fileRef, file)
+    //取得上傳後的url
+    const imageUrl = await getDownloadURL(fileRef)
+    console.log('Image uploaded successfully!')
+    console.log('Image URL:', imageUrl)
+  } catch (error) {
+    console.error('Error uploading image:', error)
+  }
 }
 </script>
 
@@ -63,6 +89,9 @@ const addNewImg = function () {
     <div class="modal-dialog" ref="modalDialog">
       <div class="modal-content my-5">
         <div class="modal-header d-flex justify-content-center">
+          <button class="btn position-absolute start-0 mx-3 text-primary" v-if="imgSrc">
+            上一步
+          </button>
           <h5 class="modal-title" id="exampleModalLabel">建立新貼文</h5>
           <!-- 用imgSrc是否有值判斷按鈕是否顯示 -->
           <button
