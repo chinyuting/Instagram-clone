@@ -9,7 +9,6 @@ import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
-import FirebaseDataComponent from '../components/firebaseComponent.vue'
 
 // 取得story資料
 const { proxy } = getCurrentInstance()
@@ -114,8 +113,8 @@ const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
 } else {
-  // window.location.href =
-  //   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  window.location.href =
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -173,7 +172,7 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      // getToken()
+      getToken()
     }
   }
 }
