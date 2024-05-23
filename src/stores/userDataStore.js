@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+import { db, ref as firebaseRef, onValue, push, firebaseApp } from '../firebaseSetUp'
 
 export const useUserDataStore = defineStore('userDataList', () => {
   const userData = ref(null)
@@ -36,7 +36,7 @@ export const useUserDataStore = defineStore('userDataList', () => {
   async function getUserDataFromFirebase(userId) {
     const itemsRef = firebaseRef(db, 'userData')
   
-    onValue(itemsRef, (snapshot) => {
+    onValue(itemsRef, async (snapshot) => {
       const fetchedItems = []
       snapshot.forEach((childSnapshot) => {
         const key = childSnapshot.key
@@ -46,11 +46,28 @@ export const useUserDataStore = defineStore('userDataList', () => {
 
       const userDataFromFirebase = fetchedItems.find(item => item.id === userId)
       if (userDataFromFirebase) {
-        // 合并用户数据和来自 Firebase 的数据
         userData.value = { ...userData.value, ...userDataFromFirebase }
         console.log(userData.value)
       }
+      else {
+        await addNewUserData(userId)
+      }
     })
+  }
+
+  async function addNewUserData(userId) {
+    const itemsRef = firebaseRef(db, 'userData')
+    const newUserData = {
+      id: userId,
+      media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-imitation-180e8.appspot.com/o/user%2Fprofile.jpg?alt=media&token=a0c4cd44-c560-4a99-9a2a-c67a5b69df73',
+      username: userData.value.username,
+    }
+    try {
+      await push(itemsRef, newUserData)
+      console.log('Data successfully written to Firebase!')
+    } catch (error) {
+      console.error('Error writing data to Firebase:', error)
+    }
   }
   return { userData, getUserData }
 })
