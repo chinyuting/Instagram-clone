@@ -48,6 +48,7 @@ export const useUserDataStore = defineStore('userDataList', () => {
       if (userDataFromFirebase) {
         // 合并用户数据和来自 Firebase 的数据
         userData.value = { ...userData.value, ...userDataFromFirebase }
+        console.log(userData.value)
       }
     })
   }
