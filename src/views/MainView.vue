@@ -128,8 +128,8 @@ const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
 } else {
-  // window.location.href =
-  //   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  window.location.href =
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -187,7 +187,7 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      // getToken()
+      getToken()
     }
   }
 }
