@@ -39,7 +39,7 @@ const openModal = function () {
         class="bg-body d-flex flex-md-column position-fixed nav-selection bottom-0 start-0 justify-content-evenly justify-content-md-start"
       >
         <div class="nav-item rounded px-2 ms-md-3">
-          <RouterLink to="/" class="text-decoration-none text-secondary d-flex">
+          <RouterLink to="/" class="text-decoration-none text-secondary d-flex text-dark">
             <div><i class="bi bi-house-door icon-size"></i></div>
             <div><span class="d-none d-lg-inline p-2">首頁</span></div>
           </RouterLink>
@@ -47,7 +47,7 @@ const openModal = function () {
         <div class="nav-item rounded px-2 ms-md-3">
           <RouterLink
             to="/"
-            class="text-decoration-none text-secondary d-flex"
+            class="text-decoration-none text-secondary d-flex text-dark"
             @click.prevent="openModal"
           >
             <div><i class="bi bi-plus-square icon-size"></i></div>
@@ -55,7 +55,7 @@ const openModal = function () {
           </RouterLink>
         </div>
         <div class="nav-item rounded px-2 ms-md-3">
-          <RouterLink to="/profile" class="text-decoration-none text-secondary d-flex">
+          <RouterLink to="/profile" class="text-decoration-none text-secondary d-flex text-dark">
             <div><i class="bi bi-person-circle icon-size"></i></div>
             <div><span class="d-none d-lg-inline p-2">個人檔案</span></div>
           </RouterLink>
@@ -95,11 +95,19 @@ const openModal = function () {
     width: auto;
     // width: 14%;
   }
+  i {
+    transition: all 0.2s ease-in-out;
+    margin-right: 5px;
+  }
   .nav-item {
     line-height: 50px;
     height: 50px;
+    transition: all 0.2s ease-in-out;
     &:hover {
       background-color: rgb(220, 220, 220);
+    }
+    &:hover i {
+      font-size: 28px;
     }
   }
   .nav-all {
