@@ -43,15 +43,12 @@ export const useUserDataStore = defineStore('userDataList', () => {
         const value = childSnapshot.val()
         fetchedItems.push({ key, ...value })
       })
-
+      
       const userDataFromFirebase = fetchedItems.find(item => item.id === userId)
-      if (userDataFromFirebase) {
-        userData.value = { ...userData.value, ...userDataFromFirebase }
-        console.log(userData.value)
-      }
-      else {
+      if (!userDataFromFirebase) {
         await addNewUserData(userId)
       }
+      userData.value = { ...userData.value, ...userDataFromFirebase }
     })
   }
 
