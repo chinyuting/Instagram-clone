@@ -167,7 +167,7 @@ const callApi = function () {
           console.log(response.data)
           // 取得短期token
           let access_token = response.data.access_token
-          localStorage.setItem('user_id', res.data.user_id)
+          localStorage.setItem('user_id', response.data.user_id)
 
           // 取得長期token
           if (access_token) {
