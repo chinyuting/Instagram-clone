@@ -13,6 +13,7 @@ const showModal = function () {
   imgSrc.value = ''
   isModalSideShow.value = false
   modalDialog.value.style.maxWidth = '700px'
+  selectedImg.value = null
 }
 defineExpose({
   showModal
@@ -30,14 +31,14 @@ const selectedImg = ref(null)
 const addImage = function (e) {
   let input = e.target
   selectedImg.value = e.target.files[0]
-  console.log(selectedImg.value)
+
   // 預覽照片
   if (input.files) {
     let reader = new FileReader()
     reader.onload = (e) => {
       imgSrc.value = e.target.result
     }
-    this.image = input.files[0]
+    // this.image = input.files[0]
     reader.readAsDataURL(input.files[0])
   }
 }
