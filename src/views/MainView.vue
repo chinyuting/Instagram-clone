@@ -10,30 +10,45 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 
-// 取得story資料
-const { proxy } = getCurrentInstance()
-const storyOwnerData = ref([])
-proxy
-  .$axios(
-    {
-      url: '/getStoryOwner',
-      method: 'post'
-    },
-    { userId: '123' }
-  )
-  .then((res) => {
-    storyOwnerData.value = res.data.dataList
-  })
+// 取得story owner資料
+// const { proxy } = getCurrentInstance()
+// const storyOwnerData = ref([])
+// proxy
+//   .$axios(
+//     {
+//       url: '/getStoryOwner',
+//       method: 'post'
+//     },
+//     { userId: '123' }
+//   )
+//   .then((res) => {
+//     storyOwnerData.value = res.data.dataList
+//   })
 
 const storyModal = ref(null)
-let storyOwner = ref('')
 
+// 從firebase取得story owner資料
+const storyOwnerData = ref([])
+onMounted(() => {
+  const itemsRef = firebaseRef(db, 'storyOwner')
+
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      fetchedItems.push({ key, ...value })
+    })
+    storyOwnerData.value = fetchedItems
+  })
+})
 /**
   open story modal
   @param {Object} owner - story owner
 */
+let storyOwner = ref({})
 const openModal = function (owner) {
-  storyOwner.value = owner.storyOwnerId
+  storyOwner.value = owner
   storyModal.value.showModal()
 }
 
@@ -113,8 +128,8 @@ const route = useRoute()
 if (route.query.code) {
   console.log(route.query.code)
 } else {
-  window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  // window.location.href =
+  //   'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
 
 // 取得ig api code 且轉換為token
@@ -172,7 +187,7 @@ const callApi = function () {
           console.error('Error:', error)
         }
       }
-      getToken()
+      // getToken()
     }
   }
 }
@@ -212,7 +227,7 @@ const callApi = function () {
               @click.prevent="openModal(owner)"
               class="storyComponent"
               v-for="owner in storyOwnerData"
-              :key="owner.storyOwnerId"
+              :key="owner.id"
               :ownerItem="owner"
               :style="story"
             />
@@ -221,7 +236,7 @@ const callApi = function () {
       </div>
 
       <!-- 傳入storyOwner data -->
-      <storyModalComponent ref="storyModal" :storyOwnerId="storyOwner" />
+      <storyModalComponent ref="storyModal" :storyOwner="storyOwner" />
       <!-- post -->
       <div class="d-flex flex-column justify-content-center align-items-center mb-5">
         <postComponent :postDataList="postData" />

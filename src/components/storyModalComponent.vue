@@ -1,17 +1,22 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref, getCurrentInstance, computed } from 'vue'
+import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 
 const modal = ref(null)
 const storyModal = ref(null)
 const progress = ref(0)
-let countTime
+let countTime = ref(null)
+let start = null
 // 開啟modal ＆ 更新story計時
 const showModal = function () {
   progress.value = 0
   modal.value.show()
-  const start = new Date()
-  countTime = setInterval(() => {
+  start = new Date()
+  startTimer()
+}
+const startTimer = function () {
+  countTime.value = setInterval(() => {
     const newTime = new Date()
     const total = storyContent.value[0].duration
     // 時間到則關閉Modal
@@ -23,13 +28,14 @@ const showModal = function () {
     progress.value = percentage
   }, 100)
 }
+
 // 時間條長度
 const progressWidth = computed(() => {
   return { width: progress.value + '%' }
 })
 // 關閉Modal時重整限時時間
 const hideModal = function () {
-  if (countTime) {
+  if (countTime.value) {
     clearInterval(countTime)
   }
   modal.value.hide()
@@ -43,25 +49,42 @@ onMounted(() => {
 })
 
 const props = defineProps({
-  storyOwnerId: String
+  storyOwner: Object
 })
-const { proxy } = getCurrentInstance()
-const storyData = ref([])
+// const { proxy } = getCurrentInstance()
+// const storyData = ref([])
 // 取得story資料
-proxy
-  .$axios(
-    {
-      url: '/getStories',
-      method: 'post'
-    },
-    { storyOwnerId: props.storyOwnerId }
-  )
-  .then((res) => {
-    storyData.value = res.data.dataList
+// proxy
+//   .$axios(
+//     {
+//       url: '/getStories',
+//       method: 'post'
+//     },
+//     { storyOwnerId: props.storyOwnerId }
+//   )
+//   .then((res) => {
+//     storyData.value = res.data.dataList
+//   })
+
+// 從firebase取得story資料
+const storyData = ref([])
+onMounted(() => {
+  const itemsRef = firebaseRef(db, 'storyData')
+
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      fetchedItems.push({ key, ...value })
+    })
+    storyData.value = fetchedItems
   })
+})
+
 // 篩選出符合作者的story
 const storyContent = computed(() => {
-  return storyData.value.filter((story) => story.storyOwnerId === props.storyOwnerId)
+  return storyData.value.filter((story) => story.storyownerid === props.storyOwner.id)
 })
 </script>
 
@@ -80,7 +103,7 @@ const storyContent = computed(() => {
         <div
           class="modal-body text-end story-modal-body"
           v-for="story in storyContent"
-          :key="story.storyId"
+          :key="story.id"
         >
           <!-- 時間條 -->
           <div class="progress" style="height: 2px">
@@ -97,7 +120,7 @@ const storyContent = computed(() => {
             <div class="rounded-circle user-pic">
               <!-- <img src="../assets/images/test.jpg" alt="" />  -->
             </div>
-            <div class="text-light flex-grow-1 text-start ps-2">{{ story.storyOwnerName }}</div>
+            <div class="text-light flex-grow-1 text-start ps-2">{{ story.username }}</div>
             <button
               type="button"
               class="btn-close btn-close-white position-relative"
@@ -107,7 +130,7 @@ const storyContent = computed(() => {
             ></button>
           </div>
           <div class="rounded story-pic-area">
-            <img :src="story.img" class="story-content-pic" alt="" />
+            <img :src="story.media_url" class="story-content-pic" alt="" />
             <!-- <input type="text" /> -->
           </div>
         </div>

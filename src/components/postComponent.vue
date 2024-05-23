@@ -1,14 +1,51 @@
 <script setup>
-import { ref, getCurrentInstance, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import { db, ref as firebaseRef, update } from '../firebaseSetUp'
 
 const props = defineProps({
   postDataList: Array
 })
 
+const postDataList = ref(props.postDataList)
+const sortedPostList = computed(() => {
+  // 复制原始的帖子数组，以免修改原始数组
+  const sortedPosts = [...postDataList.value]
+  // 根据时间戳对帖子数组进行排序（假设时间戳是 ISO 8601 格式的字符串）
+  sortedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+
+  // 返回排序后的帖子数组
+  return sortedPosts
+})
+
+watch(
+  () => props.postDataList,
+  (newVal, oldVal) => {
+    postDataList.value = newVal
+  }
+)
+
 // 字數過長隱藏
-const readMoreActivated = ref(false)
-const activateReadMore = function (id) {
-  readMoreActivated.value = true
+// 存放caption顯示全文的post id
+const expandedCaptions = ref(new Set())
+
+// Method to toggle the full caption display
+const toggleFullCaption = (postId) => {
+  if (expandedCaptions.value.has(postId)) {
+    expandedCaptions.value.delete(postId)
+  } else {
+    expandedCaptions.value.add(postId)
+  }
+}
+
+// 確認caption是否顯示全文
+const isCaptionExpanded = (postId) => {
+  return expandedCaptions.value.has(postId)
+}
+
+// Method to truncate the caption
+const truncatedCaption = (caption, postId) => {
+  const maxLength = 20
+  return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
 //判斷螢幕大小
@@ -23,14 +60,27 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenSize)
 })
+
+const ThumbsUp = function (post) {
+  post.isThumb = !post.isThumb
+  const postRef = firebaseRef(db, `postsData/${post.key}`)
+
+  update(postRef, post)
+    .then(() => {
+      console.log('Data updated successfully!')
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error)
+    })
+}
 </script>
 
 <template>
   <div
     class="card mt-3 post-card w-100 border-0"
-    v-for="(post, index) in postDataList"
-    :key="post.Id"
-    :id="post.Id"
+    v-for="(post, index) in sortedPostList"
+    :key="post.id"
+    :id="post.id"
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
@@ -39,13 +89,17 @@ onBeforeUnmount(() => {
 
       <div class="ms-2 fw-bold">{{ post.username }}</div>
     </div>
-    <div :id="'post' + post.Id" class="carousel slide post-pic-area position-relative">
+    <div
+      :id="'post' + post.id"
+      class="carousel slide post-pic-area position-relative"
+      @dblclick="ThumbsUp(post)"
+    >
       <div class="carousel-indicators" v-if="post.media_url.length > 1">
         <div v-for="(img, key) in post.media_url.length" :key="key">
           <button
             :class="{ active: key === 0 }"
             type="button"
-            :data-bs-target="'#post' + post.Id"
+            :data-bs-target="'#post' + post.id"
             :data-bs-slide-to="key"
             :aria-current="key === 1"
             :aria-label="'Slide' + key"
@@ -66,7 +120,7 @@ onBeforeUnmount(() => {
       <button
         class="carousel-control-prev"
         type="button"
-        :data-bs-target="'#post' + post.Id"
+        :data-bs-target="'#post' + post.id"
         data-bs-slide="prev"
         v-if="post.media_url.length > 1"
       >
@@ -76,7 +130,7 @@ onBeforeUnmount(() => {
       <button
         class="carousel-control-next"
         type="button"
-        :data-bs-target="'#post' + post.Id"
+        :data-bs-target="'#post' + post.id"
         data-bs-slide="next"
         v-if="post.media_url.length > 1"
       >
@@ -85,35 +139,27 @@ onBeforeUnmount(() => {
       </button>
     </div>
     <div class="card-body px-md-0 py-1 mb-3">
-      <a href="">
-        <i
-          class="bi bi-heart icon-size text-danger"
-          v-if="!post.isThumb"
-          @click.prevent="post.isThumb = true"
-        ></i>
-        <i
-          class="bi bi-heart-fill icon-size text-danger"
-          v-if="post.isThumb"
-          @click.prevent="post.isThumb = false"
-        ></i>
+      <a href="" @click.prevent="ThumbsUp(post)">
+        <i class="bi bi-heart icon-size text-danger" v-if="!post.isThumb"></i>
+        <i class="bi bi-heart-fill icon-size text-danger" v-if="post.isThumb"></i>
       </a>
       <!-- <p class="card-text mb-2">{{ post.thumbNum }}個讚</p> -->
       <div>
         <span class="card-text d-inline fw-bold">{{ post.username }}</span>
-        <!-- post description僅顯示20字 -->
-        <!-- 用readMoreActivated值判斷是否顯示"更多" -->
-        <div v-if="!readMoreActivated" class="card-text ms-2 d-inline">
-          {{ post.caption.slice(0, 20) }}...
+        <!-- post caption僅顯示20字 -->
+        <!-- 將caption傳入truncatedCaption判斷是否文字過長 -->
+        <div class="card-text ms-2 d-inline">
+          {{ truncatedCaption(post.caption, post.id) }}
         </div>
+        <!-- 將caption傳入truncatedCaption判斷是否顯示'...更多' -->
         <a
           class="text-decoration-none text-secondary fs-6"
-          v-if="!readMoreActivated"
-          @click.prevent="activateReadMore(post.Id)"
+          v-if="!isCaptionExpanded(post.id) && post.caption.length > 20"
+          @click.prevent="toggleFullCaption(post.id)"
           href="#"
         >
-          更多
+          ...更多
         </a>
-        <div v-if="readMoreActivated" class="card-text ms-2 d-inline">{{ post.caption }}</div>
       </div>
     </div>
     <hr v-if="index != postDataList.length - 1 && isLargeScreen" />
