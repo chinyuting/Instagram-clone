@@ -9,8 +9,9 @@ export const useUserDataStore = defineStore('userDataList', () => {
   async function getUserData() {
     try {
       const access_token = localStorage.getItem('long-lived-access-token');
+      const user_id = localStorage.getItem('user_id');
       const response = await axios.get(
-        `https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
+        `https://graph.instagram.com/${user_id}?fields=account_type,id,media_count,username&access_token=${access_token}`
       )
       userData.value = response.data
       getUserDataFromFirebase(response.data.id)
@@ -43,7 +44,7 @@ export const useUserDataStore = defineStore('userDataList', () => {
         const value = childSnapshot.val()
         fetchedItems.push({ key, ...value })
       })
-      
+
       const userDataFromFirebase = fetchedItems.find(item => item.id === userId)
       if (!userDataFromFirebase) {
         await addNewUserData(userId)
@@ -56,7 +57,7 @@ export const useUserDataStore = defineStore('userDataList', () => {
     const itemsRef = firebaseRef(db, 'userData')
     const newUserData = {
       id: userId,
-      media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-imitation-180e8.appspot.com/o/user%2Fprofile.jpg?alt=media&token=a0c4cd44-c560-4a99-9a2a-c67a5b69df73',
+      media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-imitation-180e8.appspot.com/o/user%2Fkarsten-winegeart-NE0XGVKTmcA-unsplash.jpg?alt=media&token=9f250d7f-e2e5-46fa-bad9-bcae3001951f',
       username: userData.value.username,
     }
     try {
