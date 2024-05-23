@@ -178,6 +178,7 @@ const callApi = function () {
                 console.log(res)
                 // 儲存長期token (long-lived-access-token) 至localStorage
                 localStorage.setItem('long-lived-access-token', res.data.access_token)
+                localStorage.setItem('user_id', res.data.user_id)
               })
               .catch((err) => {
                 console.log(err)
