@@ -27,7 +27,7 @@ const getPost = function (id) {
     <main class="col m-0 border-start min-vh-100">
       <div class="profile mx-auto py-md-4 d-flex">
         <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
-          <img src="../assets/images/profile.jpg" alt="" />
+          <img :src="userData.userData.media_url" alt="" />
         </div>
         <div class="align-self-center ms-5">
           <div class="d-flex my-1 align-self-center">
