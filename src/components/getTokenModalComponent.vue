@@ -61,7 +61,7 @@ const getToken = () => {
               .then((res) => {
                 console.log(res)
                 const timeNow = Date.now()
-                expireTimestamp = res.data.expires_in + timeNow
+                const expireTimestamp = res.data.expires_in + timeNow
                 console.log(expireTimestamp, 'expireTimestamp ')
                 // 儲存長期token (long-lived-access-token) 至localStorage
                 localStorage.setItem('long-lived-access-token', res.data.access_token)
