@@ -133,15 +133,16 @@ const getTokenModal = ref(null)
 const route = useRoute()
 let code = location.search.slice(6)
 const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10) || !code) {
-  window.location.href =
-    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+if(code) {
   callApi()
 }
-
+else if(!tokenExpireTime && Date.now() >= parseInt(tokenExpireTime, 10)) {
+  window.location.href =
+    'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+}
 // 取得ig api code 且轉換為token
 // client_secret用輸入的
-const client_secret = ref('')
+// const client_secret = ref('')
 
 const callApi = function () {
   getTokenModal.value.showModal()
@@ -152,8 +153,8 @@ const callApi = function () {
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
-      <input type="text" v-model="client_secret" />
-      <button type="btn" @click="callApi">api</button>
+      <!-- <input type="text" v-model="client_secret" />
+      <button type="btn" @click="callApi">api</button> -->
 
       <!-- stories -->
       <div class="stories position-relative w-md-75 mx-auto">
