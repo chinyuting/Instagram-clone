@@ -66,7 +66,7 @@ const getToken = () => {
                 // 儲存長期token (long-lived-access-token) 至localStorage
                 localStorage.setItem('long-lived-access-token', res.data.access_token)
                 localStorage.setItem('access-token-expire-time', expireTimestamp.toString())
-                hideModal()
+                modal.value.hide()
               })
               .catch((err) => {
                 console.log(err)
