@@ -9,6 +9,7 @@ import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
+import getTokenModalComponent from '../components/getTokenModalComponent.vue'
 
 // 取得story owner資料
 // const { proxy } = getCurrentInstance()
@@ -128,10 +129,12 @@ onMounted(() => {
 
 // IG api
 // 轉址 api
+const getTokenModal = ref(null)
 const route = useRoute()
 const tokenExpireTime = localStorage.getItem('access-token-expire-time')
 console.log(tokenExpireTime)
-if (!expireTime && Date.now() > parseInt(tokenExpireTime, 10)) {
+console.log(parseInt(tokenExpireTime, 10))
+if (!tokenExpireTime || Date.now() > parseInt(tokenExpireTime, 10)) {
   window.location.href =
     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
@@ -142,6 +145,7 @@ let code = ''
 const client_secret = ref('')
 
 const callApi = function () {
+  storyModal.value.showModal()
   if (location.search) {
     // 取得code
     code = location.search.slice(6) // 取得網址參數並移除'#_''
@@ -251,6 +255,7 @@ const callApi = function () {
       </div>
     </main>
   </div>
+  <getTokenModalComponent ref="getTokenModal" />
 </template>
 
 <style lang="scss">
