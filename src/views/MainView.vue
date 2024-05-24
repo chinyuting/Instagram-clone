@@ -2,8 +2,8 @@
 import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
-import axios from 'axios'
-import qs from 'qs'
+// import axios from 'axios'
+// import qs from 'qs'
 
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
@@ -137,7 +137,6 @@ if (code) {
   onMounted(() => {
     openGetToken()
   })
-
 } else if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
   window.location.href =
     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'

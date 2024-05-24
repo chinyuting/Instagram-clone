@@ -1,6 +1,9 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import qs from 'qs'
+
 const modal = ref(null)
 const getTokenModal = ref(null)
 const showModal = function () {
@@ -59,7 +62,7 @@ const getToken = () => {
                 console.log(res)
                 const timeNow = Date.now()
                 expireTimestamp = res.data.expires_in + timeNow
-                console.log(expireTimestamp ,'expireTimestamp ');
+                console.log(expireTimestamp, 'expireTimestamp ')
                 // 儲存長期token (long-lived-access-token) 至localStorage
                 localStorage.setItem('long-lived-access-token', res.data.access_token)
                 localStorage.setItem('access-token-expire-time', expireTimestamp.toString())
