@@ -25,7 +25,16 @@ import storyModalComponent from '../components/storyModalComponent.vue'
 //     storyOwnerData.value = res.data.dataList
 //   })
 
+/**
+  open story modal
+  @param {Object} owner - story owner
+*/
 const storyModal = ref(null)
+let storyOwner = ref({})
+const openModal = function (owner) {
+  storyOwner.value = owner
+  storyModal.value.showModal()
+}
 
 // 從firebase取得story owner資料
 const storyOwnerData = ref([])
@@ -39,31 +48,23 @@ onMounted(() => {
       const value = childSnapshot.val()
       fetchedItems.push({ key, ...value })
     })
+    // 取得story owner存入storyOwnerData
     storyOwnerData.value = fetchedItems
   })
 })
-/**
-  open story modal
-  @param {Object} owner - story owner
-*/
-let storyOwner = ref({})
-const openModal = function (owner) {
-  storyOwner.value = owner
-  storyModal.value.showModal()
-}
 
-// 限時position預設值
+// story position預設值
 let position = ref(0)
-// 按鈕顯示
-let isShownToLeft = ref(false)
-let isShownToRight = ref(true)
-// 限時顯示的最左＆最右邊項目
+// story顯示的最左＆最右邊項目
 let leftStoryItem = 1
 let rightStoryItem = 7
-// 限時移動數量
+// story移動數量
 const moveNum = 3
-// 限時寬度
+// story寬度
 const storyWidth = 78
+// story左移 /右移按鈕顯示
+let isShownToLeft = ref(false)
+let isShownToRight = ref(true && storyOwnerData.value.length > rightStoryItem)
 
 /**
  * 計算限時position 及往右往左按鈕顯示邏輯
@@ -89,10 +90,11 @@ const positionCount = function (n) {
   isShownToLeft = ref(leftStoryItem !== 1)
   isShownToRight = ref(rightStoryItem < storyLen)
 }
-// 附加移位css到story(限時)
+// 附加移位css到story
 const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
+
 // mock取得post資料
 // const postData = ref([])
 // proxy
@@ -119,15 +121,17 @@ onMounted(() => {
       const value = childSnapshot.val()
       fetchedItems.push({ key, ...value })
     })
+    // 取得post存入postData
     postData.value = fetchedItems
   })
 })
 
+// IG api
 // 轉址 api
 const route = useRoute()
-if (route.query.code) {
-  console.log(route.query.code)
-} else {
+const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+console.log(tokenExpireTime)
+if (!expireTime && Date.now() > parseInt(tokenExpireTime, 10)) {
   window.location.href =
     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
@@ -177,8 +181,11 @@ const callApi = function () {
               )
               .then((res) => {
                 console.log(res)
+                const timeNow = Date.now()
+                expireTimestamp = res.data.expires_in + timeNow
                 // 儲存長期token (long-lived-access-token) 至localStorage
                 localStorage.setItem('long-lived-access-token', res.data.access_token)
+                localStorage.setItem('access-token-expire-time', expireTimestamp.toString())
               })
               .catch((err) => {
                 console.log(err)
