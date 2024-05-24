@@ -133,18 +133,24 @@ const getTokenModal = ref(null)
 const route = useRoute()
 let code = location.search.slice(6)
 const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-if (code) {
+// if (code && Date.now() >= parseInt(tokenExpireTime, 10)) {
+//   onMounted(() => {
+//     openGetToken()
+//   })
+// } else if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+//   window.location.href =
+//     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+// }
+if (code && !tokenExpireTime) {
   onMounted(() => {
     openGetToken()
   })
-} else if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+}
+if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
   window.location.href =
     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
 }
-// 取得ig api code 且轉換為token
-// client_secret用輸入的
-// const client_secret = ref('')
-
+// 開啟getTokenModal取得token
 const openGetToken = function () {
   getTokenModal.value.showModal()
 }
