@@ -185,7 +185,7 @@ const pushPostToFirebase = function () {
               <div class="rounded-circle user-pic">
                 <!-- <img src="../assets/images/test.jpg" alt="" /> -->
               </div>
-              <p class="align-middle my-auto ms-2 fw-bold">shelly</p>
+              <p class="align-middle my-auto ms-2 fw-bold">{{userData.userData.username}}</p>
             </div>
             <textarea
               type="text"
