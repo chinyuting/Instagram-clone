@@ -8,6 +8,7 @@ import { useUserDataStore } from '../stores/userDataStore.js'
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
 const userData = useUserDataStore()
+console.log(userData)
 
 const modal = ref(null)
 const addNewModal = ref(null)
@@ -94,7 +95,6 @@ const postCaption = ref('')
 
 // post push firebase
 const pushPostToFirebase = function () {
-  console.log(userData.value)
   //  post資料
   const postId = Date.now()
   const itemsRef = firebaseRef(db, 'postsData')
@@ -108,15 +108,15 @@ const pushPostToFirebase = function () {
     timestamp: new Date().toISOString()
     // username: userData.value.userData.username
   }
-  // push(itemsRef, newPostData)
-  //   .then(() => {
-  //     console.log('Data successfully written to Firebase!')
-  //     modal.value.hide()
-  //     postCaption.value = ''
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error writing data to Firebase:', error)
-  //   })
+  push(itemsRef, newPostData)
+    .then(() => {
+      console.log('Data successfully written to Firebase!')
+      modal.value.hide()
+      postCaption.value = ''
+    })
+    .catch((error) => {
+      console.error('Error writing data to Firebase:', error)
+    })
 }
 </script>
 
