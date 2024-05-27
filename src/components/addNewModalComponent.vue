@@ -91,9 +91,10 @@ const uploadImage = async () => {
 }
 
 const postCaption = ref('')
-console.log(userData.value)
+
 // post push firebase
 const pushPostToFirebase = function () {
+  console.log(userData.value)
   //  post資料
   const postId = Date.now()
   const itemsRef = firebaseRef(db, 'postsData')
@@ -107,15 +108,15 @@ const pushPostToFirebase = function () {
     timestamp: new Date().toISOString()
     // username: userData.value.userData.username
   }
-  push(itemsRef, newPostData)
-    .then(() => {
-      console.log('Data successfully written to Firebase!')
-      modal.value.hide()
-      postCaption.value = ''
-    })
-    .catch((error) => {
-      console.error('Error writing data to Firebase:', error)
-    })
+  // push(itemsRef, newPostData)
+  //   .then(() => {
+  //     console.log('Data successfully written to Firebase!')
+  //     modal.value.hide()
+  //     postCaption.value = ''
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error writing data to Firebase:', error)
+  //   })
 }
 </script>
 
