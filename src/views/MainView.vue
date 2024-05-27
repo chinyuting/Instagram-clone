@@ -10,8 +10,9 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
+import { useUserDataStore } from '../stores/userDataStore.js'
 
-// 取得story owner資料
+// mock取得story owner資料
 // const { proxy } = getCurrentInstance()
 // const storyOwnerData = ref([])
 // proxy
@@ -133,14 +134,7 @@ const getTokenModal = ref(null)
 const route = useRoute()
 let code = location.search.slice(6)
 const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// if (code && Date.now() >= parseInt(tokenExpireTime, 10)) {
-//   onMounted(() => {
-//     openGetToken()
-//   })
-// } else if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-//   window.location.href =
-//     'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-// }
+// token過期判斷
 if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
   if (code) {
     onMounted(() => {
@@ -151,72 +145,17 @@ if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
   }
 }
+
 // 開啟getTokenModal取得token
 const openGetToken = function () {
   getTokenModal.value.showModal()
 }
 
-// let code = ''
-// const getToken = function () {
-
-//   if (location.search) {
-//     // 取得code
-//     code = location.search.slice(6) // 取得網址參數並移除'#_''
-
-//     // 成功取得code則轉換為token
-//     if (code) {
-//       const instance = axios.create({
-//         headers: {
-//           'Content-Type': 'application/x-www-form-urlencoded' // Body型態
-//         },
-//         transformRequest: [(data) => qs.stringify(data)] // 將data(body內容)轉型
-//       })
-
-//       // code則轉換為token
-//       async function getToken() {
-//         try {
-//           const response = await instance.post(
-//             'https://cors-anywhere.herokuapp.com/https://api.instagram.com/oauth/access_token',
-//             {
-//               client_id: '461541476203224',
-//               client_secret: `${client_secret.value}`,
-//               grant_type: 'authorization_code',
-//               redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
-//               code: `${code}`
-//             }
-//           )
-//           console.log(response.data)
-//           // 取得短期token
-//           let access_token = response.data.access_token
-//           localStorage.setItem('user_id', response.data.user_id)
-
-//           // 取得長期token
-//           if (access_token) {
-//             axios
-//               .get(
-//                 `https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${client_secret.value}&access_token=${access_token}`
-//               )
-//               .then((res) => {
-//                 console.log(res)
-//                 const timeNow = Date.now()
-//                 expireTimestamp = res.data.expires_in + timeNow
-//                 // 儲存長期token (long-lived-access-token) 至localStorage
-//                 localStorage.setItem('long-lived-access-token', res.data.access_token)
-//                 localStorage.setItem('access-token-expire-time', expireTimestamp.toString())
-//                 hideModal()
-//               })
-//               .catch((err) => {
-//                 console.log(err)
-//               })
-//           }
-//         } catch (error) {
-//           console.error('Error:', error)
-//         }
-//       }
-//       getToken()
-//     }
-//   }
-// }
+/**
+ * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
+ */
+const userData = useUserDataStore()
+userData.getUserData()
 </script>
 
 <template>

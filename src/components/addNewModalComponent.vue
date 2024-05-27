@@ -3,7 +3,11 @@ import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref } from 'vue'
 import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { db, ref as firebaseRef, push, firebaseApp } from '../firebaseSetUp'
-// import { firebaseApp } from '../firebaseSetUp'
+import { useUserDataStore } from '../stores/userDataStore.js'
+/**
+ * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
+ */
+const userData = useUserDataStore()
 
 const modal = ref(null)
 const addNewModal = ref(null)
@@ -45,7 +49,6 @@ const addImage = function (e) {
 
 const modalDialog = ref(null)
 const isModalSideShow = ref(false)
-
 const showSideModal = function () {
   if (isModalSideShow.value === true) {
     uploadImage()
@@ -53,6 +56,14 @@ const showSideModal = function () {
     modalDialog.value.style.maxWidth = '1000px'
     isModalSideShow.value = true
   }
+}
+
+const backToPreviousStep = () => {
+  if (isModalSideShow.value === true) {
+    modalDialog.value.style.maxWidth = '700px'
+    isModalSideShow.value = false
+  }
+  imgSrc.value = null
 }
 
 // 上傳圖片至firebase storage
@@ -72,7 +83,7 @@ const uploadImage = async () => {
     imageUrl = await getDownloadURL(fileRef)
     console.log(imageUrl)
     if (imageUrl) {
-      setPostToFirebase()
+      pushPostToFirebase()
     }
   } catch (error) {
     console.error('Error uploading image:', error)
@@ -80,9 +91,9 @@ const uploadImage = async () => {
 }
 
 const postCaption = ref('')
-
-// post set firebase
-const setPostToFirebase = function () {
+console.log(userData.value)
+// post push firebase
+const pushPostToFirebase = function () {
   //  post資料
   const postId = Date.now()
   const itemsRef = firebaseRef(db, 'postsData')
@@ -93,8 +104,8 @@ const setPostToFirebase = function () {
     media_type: 'IMAGE',
     media_url: [imageUrl],
     permalink: '',
-    timestamp: new Date().toISOString(),
-    username: 'shelly'
+    timestamp: new Date().toISOString()
+    // username: userData.value.userData.username
   }
   push(itemsRef, newPostData)
     .then(() => {
@@ -127,7 +138,11 @@ const setPostToFirebase = function () {
     <div class="modal-dialog" ref="modalDialog">
       <div class="modal-content my-5">
         <div class="modal-header d-flex justify-content-center">
-          <button class="btn position-absolute start-0 mx-3 text-primary" v-if="imgSrc">
+          <button
+            class="btn position-absolute start-0 mx-3 text-primary"
+            v-if="imgSrc"
+            @click="backToPreviousStep"
+          >
             上一步
           </button>
           <h5 class="modal-title" id="exampleModalLabel">建立新貼文</h5>
