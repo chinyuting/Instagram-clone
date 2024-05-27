@@ -154,13 +154,15 @@ const openGetToken = function () {
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
-if (tokenExpireTime && Date.now() <= parseInt(tokenExpireTime, 10)) {
-  getUserData()
-}
-const getUserData = () => {
+ const initUserData = () => {
   const userData = useUserDataStore()
   userData.getUserData()
 }
+
+if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+  initUserData()
+}
+
 </script>
 
 <template>
