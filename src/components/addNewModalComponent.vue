@@ -7,9 +7,6 @@ import { useUserDataStore } from '../stores/userDataStore.js'
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
-const userData = useUserDataStore()
-console.log(userData)
-
 const modal = ref(null)
 const addNewModal = ref(null)
 // 開啟Modal時清空imgSrc欄位
@@ -91,8 +88,9 @@ const uploadImage = async () => {
   }
 }
 
+// get user data
+const userData = useUserDataStore()
 const postCaption = ref('')
-
 // post push firebase
 const pushPostToFirebase = function () {
   //  post資料
@@ -105,8 +103,8 @@ const pushPostToFirebase = function () {
     media_type: 'IMAGE',
     media_url: [imageUrl],
     permalink: '',
-    timestamp: new Date().toISOString()
-    // username: userData.value.userData.username
+    timestamp: new Date().toISOString(),
+    username: userData.userData.username
   }
   push(itemsRef, newPostData)
     .then(() => {
