@@ -4,9 +4,7 @@ import { onMounted, ref } from 'vue'
 import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { db, ref as firebaseRef, push, firebaseApp } from '../firebaseSetUp'
 import { useUserDataStore } from '../stores/userDataStore.js'
-/**
- * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
- */
+
 const modal = ref(null)
 const addNewModal = ref(null)
 // 開啟Modal時清空imgSrc欄位
@@ -88,7 +86,7 @@ const uploadImage = async () => {
   }
 }
 
-// get user data
+// 引入 useUserDataStore 取得userData
 const userData = useUserDataStore()
 const postCaption = ref('')
 // post push firebase
@@ -185,7 +183,7 @@ const pushPostToFirebase = function () {
               <div class="rounded-circle user-pic">
                 <!-- <img src="../assets/images/test.jpg" alt="" /> -->
               </div>
-              <p class="align-middle my-auto ms-2 fw-bold">{{userData.userData.username}}</p>
+              <p class="align-middle my-auto ms-2 fw-bold">{{ userData.userData.username }}</p>
             </div>
             <textarea
               type="text"

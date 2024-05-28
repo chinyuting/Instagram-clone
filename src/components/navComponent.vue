@@ -44,6 +44,7 @@ const openModal = function () {
             <div><span class="d-none d-lg-inline p-2">首頁</span></div>
           </RouterLink>
         </div>
+
         <div class="nav-item rounded px-2 ms-md-3">
           <RouterLink
             to="/"
@@ -54,6 +55,7 @@ const openModal = function () {
             <div><span class="d-none d-lg-inline p-2">建立</span></div>
           </RouterLink>
         </div>
+
         <div class="nav-item rounded px-2 ms-md-3">
           <RouterLink to="/profile" class="text-decoration-none text-secondary d-flex text-dark">
             <div><i class="bi bi-person-circle icon-size"></i></div>

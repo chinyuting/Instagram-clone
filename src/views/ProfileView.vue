@@ -64,7 +64,11 @@ const getPost = function (id) {
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in postData.postData" :key="index">
           <div class="profile-post" @click="getPost(post.id)">
             <div class="post-pic position-absolute w-100 h-100">
-              <img :src="post.media_url" alt="" v-if="post.media_type === 'IMAGE'" />
+              <img
+                :src="post.media_url"
+                alt=""
+                v-if="post.media_type === 'IMAGE' || post.media_type === 'CAROUSEL_ALBUM'"
+              />
               <img :src="post.thumbnail_url" alt="" v-if="post.media_type === 'VIDEO'" />
             </div>
           </div>
