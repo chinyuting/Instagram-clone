@@ -13,7 +13,7 @@ const openModal = function () {
     <div class="w-100 position-relative">
       <div class="navbar navbar-light header-nav">
         <img
-          src="../assets/images/Instagram_logo_light.png"
+          src="@/assets/images/Instagram_logo_light.png"
           alt=""
           class="logo d-md-none d-lg-block d-sm-block"
         />
