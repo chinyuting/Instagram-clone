@@ -1,4 +1,4 @@
-<script setup>
+<script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/css/index.css'
 
@@ -6,17 +6,16 @@ const isLoading = ref(false)
 const fullPage = ref(true)
 
 const doAjax = () => {
-  isLoading.value = true
+  sLoading.value = true
   // simulate AJAX
   setTimeout(() => {
-    isLoading.value = false
+    this.isLoading = false
   }, 5000)
 }
 const onCancel = () => {
   console.log('User cancelled the loader.')
 }
 </script>
-
 <template>
   <div class="vl-parent">
     <loading
@@ -30,5 +29,3 @@ const onCancel = () => {
     <button @click.prevent="doAjax">fetch Data</button>
   </div>
 </template>
-
-<style scoped lang="scss"></style>

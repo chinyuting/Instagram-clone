@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 
+// modal
 const modal = ref(null)
 const getTokenModal = ref(null)
 const showModal = function () {
@@ -18,6 +19,8 @@ onMounted(() => {
     keyboard: false
   })
 })
+
+// 取得token
 const client_secret = ref('')
 let code = ''
 const getToken = () => {

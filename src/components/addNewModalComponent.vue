@@ -5,6 +5,7 @@ import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'fire
 import { db, ref as firebaseRef, push, firebaseApp } from '../firebaseSetUp'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
+const isLoading = ref(false)
 const modal = ref(null)
 const addNewModal = ref(null)
 // 開啟Modal時清空imgSrc欄位
@@ -29,6 +30,7 @@ const selectedImg = ref(null)
    ＊ ＠param {Object} e - input change event
   */
 const addImage = function (e) {
+  isLoading.value = true
   let input = e.target
   selectedImg.value = e.target.files[0]
 
@@ -40,6 +42,7 @@ const addImage = function (e) {
     }
     // this.image = input.files[0]
     reader.readAsDataURL(input.files[0])
+    isLoading.value = false
   }
 }
 
@@ -65,6 +68,7 @@ const backToPreviousStep = () => {
 // 上傳圖片至firebase storage
 let imageUrl = ''
 const uploadImage = async () => {
+  isLoading.value = true
   const file = selectedImg.value
   if (!file) {
     console.error('No file selected.')
@@ -109,6 +113,7 @@ const pushPostToFirebase = function () {
       console.log('Data successfully written to Firebase!')
       modal.value.hide()
       postCaption.value = ''
+      isLoading.value = false
     })
     .catch((error) => {
       console.error('Error writing data to Firebase:', error)
@@ -196,6 +201,7 @@ const pushPostToFirebase = function () {
       </div>
     </div>
   </div>
+  <loading-overlay :active="isLoading" :is-full-page="true"></loading-overlay>
 </template>
 
 <style scoped lang="scss">

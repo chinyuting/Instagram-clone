@@ -2,16 +2,14 @@
 import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
-// import axios from 'axios'
-// import qs from 'qs'
 
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
-import { useUserDataStore } from '../stores/userDataStore.js'
 
+const isLoading = ref(false)
 // mock取得story owner資料
 // const { proxy } = getCurrentInstance()
 // const storyOwnerData = ref([])
@@ -130,48 +128,46 @@ onMounted(() => {
 
 // IG api
 // 轉址 api
-const getTokenModal = ref(null)
-const route = useRoute()
-let code = location.search.slice(6)
-const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// token過期判斷
-if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-  if (code) {
-    onMounted(() => {
-      openGetToken()
-    })
-  } else {
-    window.location.href =
-      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-  }
-}
+// const getTokenModal = ref(null)
+// const route = useRoute()
+// let code = location.search.slice(6)
+// const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+// // token過期判斷
+// if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+//   if (code) {
+//     onMounted(() => {
+//       openGetToken()
+//     })
+//   } else {
+//     window.location.href =
+//       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+//   }
+// }
 
 // 開啟getTokenModal取得token
-const openGetToken = function () {
-  getTokenModal.value.showModal()
-}
+// const openGetToken = function () {
+//   getTokenModal.value.showModal()
+// }
 
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
- const initUserData = () => {
-  const userData = useUserDataStore()
-  userData.getUserData()
-}
+// const initUserData = () => {
+//   isLoading.value = true
+//   const userData = useUserDataStore()
+//   userData.getUserData()
+//   isLoading.value = false
+// }
 
-if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-  initUserData()
-}
-
+// if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+//   initUserData()
+// }
 </script>
 
 <template>
   <div class="row mx-0">
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
-      <!-- <input type="text" v-model="client_secret" />
-      <button type="btn" @click="callApi">api</button> -->
-
       <!-- stories -->
       <div class="stories position-relative w-md-75 mx-auto">
         <!-- 向左按鈕 傳入1 -->
@@ -216,6 +212,7 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
     </main>
   </div>
   <getTokenModalComponent ref="getTokenModal" />
+  <loading-overlay :active="isLoading" :is-full-page="true"></loading-overlay>
 </template>
 
 <style lang="scss">
