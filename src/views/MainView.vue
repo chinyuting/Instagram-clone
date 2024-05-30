@@ -8,6 +8,7 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
+import { useUserDataStore } from '../stores/userDataStore.js'
 
 const isLoading = ref(false)
 // mock取得story owner資料
