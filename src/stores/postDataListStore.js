@@ -5,7 +5,9 @@ import axios from 'axios'
 export const usePostDataStore = defineStore('postDataList', () => {
   const postData = ref([])
 
+
   function getPostData() {
+    const isLoading = ref(true)
     const access_token = localStorage.getItem('long-lived-access-token');
     axios
     .get(
@@ -15,6 +17,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
       console.log(res)
       postData.value = res.data.data
       console.log('post', postData.value)
+      isLoading.value = false
     })
     .catch((err) => {
       console.log(err)

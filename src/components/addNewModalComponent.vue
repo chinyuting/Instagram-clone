@@ -46,6 +46,8 @@ const addImage = function (e) {
   }
 }
 
+// 下一步
+// 用isModalSideShow判斷 true->已開啟SideModal 執行uploadImage/ false-> 尚未開啟SideModal 則開啟SideModal
 const modalDialog = ref(null)
 const isModalSideShow = ref(false)
 const showSideModal = function () {
@@ -56,7 +58,7 @@ const showSideModal = function () {
     isModalSideShow.value = true
   }
 }
-
+// 上一步 回到第一步上傳圖片
 const backToPreviousStep = () => {
   if (isModalSideShow.value === true) {
     modalDialog.value.style.maxWidth = '700px'
@@ -86,6 +88,7 @@ const uploadImage = async () => {
       pushPostToFirebase()
     }
   } catch (error) {
+    isLoading.value = false
     console.error('Error uploading image:', error)
   }
 }
@@ -96,6 +99,7 @@ const postCaption = ref('')
 // post push firebase
 const pushPostToFirebase = function () {
   //  post資料
+  isLoading.value = true
   const postId = Date.now()
   const itemsRef = firebaseRef(db, 'postsData')
   const newPostData = {
