@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, getCurrentInstance, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 
@@ -128,40 +128,40 @@ onMounted(() => {
 
 // IG api
 // 轉址 api
-// const getTokenModal = ref(null)
-// const route = useRoute()
-// let code = location.search.slice(6)
-// const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// // token過期判斷
-// if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-//   if (code) {
-//     onMounted(() => {
-//       openGetToken()
-//     })
-//   } else {
-//     window.location.href =
-//       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-//   }
-// }
+const getTokenModal = ref(null)
+const route = useRoute()
+let code = location.search.slice(6)
+const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+// token過期判斷
+if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+  if (code) {
+    onMounted(() => {
+      openGetToken()
+    })
+  } else {
+    window.location.href =
+      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  }
+}
 
 // 開啟getTokenModal取得token
-// const openGetToken = function () {
-//   getTokenModal.value.showModal()
-// }
+const openGetToken = function () {
+  getTokenModal.value.showModal()
+}
 
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
-// const initUserData = () => {
-//   isLoading.value = true
-//   const userData = useUserDataStore()
-//   userData.getUserData()
-//   isLoading.value = false
-// }
+const initUserData = () => {
+  isLoading.value = true
+  const userData = useUserDataStore()
+  userData.getUserData()
+  isLoading.value = false
+}
 
-// if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-//   initUserData()
-// }
+if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+  initUserData()
+}
 </script>
 
 <template>

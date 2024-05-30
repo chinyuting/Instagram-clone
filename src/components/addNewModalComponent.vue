@@ -5,7 +5,10 @@ import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'fire
 import { db, ref as firebaseRef, push, firebaseApp } from '../firebaseSetUp'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
+// isLoading ini
 const isLoading = ref(false)
+
+// modal
 const modal = ref(null)
 const addNewModal = ref(null)
 // 開啟Modal時清空imgSrc欄位
@@ -39,10 +42,10 @@ const addImage = function (e) {
     let reader = new FileReader()
     reader.onload = (e) => {
       imgSrc.value = e.target.result
+      isLoading.value = false
     }
     // this.image = input.files[0]
     reader.readAsDataURL(input.files[0])
-    isLoading.value = false
   }
 }
 
@@ -68,7 +71,6 @@ const backToPreviousStep = () => {
 }
 
 // 上傳圖片至firebase storage
-let imageUrl = ''
 const uploadImage = async () => {
   isLoading.value = true
   const file = selectedImg.value
@@ -82,10 +84,10 @@ const uploadImage = async () => {
     //上傳照片至firebase storage
     await uploadBytes(fileRef, file)
     //取得上傳後的url
-    imageUrl = await getDownloadURL(fileRef)
+    const imageUrl = await getDownloadURL(fileRef)
     console.log(imageUrl)
     if (imageUrl) {
-      pushPostToFirebase()
+      pushPostToFirebase(imageUrl)
     }
   } catch (error) {
     isLoading.value = false
@@ -95,11 +97,11 @@ const uploadImage = async () => {
 
 // 引入 useUserDataStore 取得userData
 const userData = useUserDataStore()
+
 const postCaption = ref('')
 // post push firebase
-const pushPostToFirebase = function () {
+const pushPostToFirebase = function (imageUrl) {
   //  post資料
-  isLoading.value = true
   const postId = Date.now()
   const itemsRef = firebaseRef(db, 'postsData')
   const newPostData = {
@@ -120,6 +122,7 @@ const pushPostToFirebase = function () {
       isLoading.value = false
     })
     .catch((error) => {
+      isLoading.value = false
       console.error('Error writing data to Firebase:', error)
     })
 }
@@ -190,7 +193,7 @@ const pushPostToFirebase = function () {
           <div class="border-start p-2 w-100" v-if="isModalSideShow">
             <div class="d-flex align-self-center align-middle">
               <div class="rounded-circle user-pic">
-                <!-- <img src="../assets/images/test.jpg" alt="" /> -->
+                <img :src="userData.userData.media_url" alt="" />
               </div>
               <p class="align-middle my-auto ms-2 fw-bold">{{ userData.userData.username }}</p>
             </div>
