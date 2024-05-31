@@ -10,6 +10,10 @@ export const useUserDataStore = defineStore('userDataList', () => {
     try {
       const access_token = localStorage.getItem('long-lived-access-token');
       const user_id = localStorage.getItem('user_id');
+      if (!access_token || !user_id) {
+        throw new Error('Access token or user ID is missing.')
+      }
+
       const response = await axios.get(
         `https://graph.instagram.com/${user_id}?fields=account_type,id,media_count,username&access_token=${access_token}`
       )
@@ -55,6 +59,10 @@ export const useUserDataStore = defineStore('userDataList', () => {
 
   async function addNewUserData(userId) {
     const itemsRef = firebaseRef(db, 'userData')
+    if (!userData.value) {
+      console.error('User data is null.')
+      return
+    }
     const newUserData = {
       id: userId,
       media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-imitation-180e8.appspot.com/o/user%2Fkarsten-winegeart-NE0XGVKTmcA-unsplash.jpg?alt=media&token=9f250d7f-e2e5-46fa-bad9-bcae3001951f',

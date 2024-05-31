@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { db, ref as firebaseRef, update } from '../firebaseSetUp'
+import { useUserDataStore } from '../stores/userDataStore.js'
 
+// 取得userData
+const userData = useUserDataStore()
+// prop引入postDataList
 const props = defineProps({
   postDataList: Array
 })
@@ -10,10 +14,10 @@ const postDataList = ref(props.postDataList)
 const sortedPostList = computed(() => {
   // 复制原始的帖子数组，以免修改原始数组
   const sortedPosts = [...postDataList.value]
-  // 根据时间戳对帖子数组进行排序（假设时间戳是 ISO 8601 格式的字符串）
+  // 根据timestamp進行post排序（假设时间戳是 ISO 8601 格式的字符串）
   sortedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 
-  // 返回排序后的帖子数组
+  // 返回排序后的post
   return sortedPosts
 })
 
@@ -73,6 +77,14 @@ const ThumbsUp = function (post) {
       console.error('Error updating data:', error)
     })
 }
+const postOwnerPic = computed(() => {
+  return (post) => {
+    if (userData.value && post.postownerId === userData.value.id) {
+      return userData.value.media_url
+    }
+    return ''
+  }
+})
 </script>
 
 <template>
@@ -84,7 +96,7 @@ const ThumbsUp = function (post) {
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
-        <!-- <img :src="post.postOwnerPic" alt="" /> -->
+        <img :src="postOwnerPic(post)" alt="" />
       </div>
 
       <div class="ms-2 fw-bold">{{ post.username }}</div>
