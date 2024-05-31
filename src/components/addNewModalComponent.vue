@@ -111,6 +111,7 @@ const pushPostToFirebase = function (imageUrl) {
     media_type: 'IMAGE',
     media_url: [imageUrl],
     permalink: '',
+    postownerid: userData.userData.id,
     timestamp: new Date().toISOString(),
     username: userData.userData.username
   }
