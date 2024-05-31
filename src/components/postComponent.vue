@@ -79,7 +79,9 @@ const ThumbsUp = function (post) {
 }
 // 取得post owner pic
 const getPostOwnerPic = (post) => {
-  if (userData.value && post.postownerId === userData.forEach((user) => user.id)) {
+  console.log(post);
+  console.log(userData.value);
+  if (userData.value && post.postownerid === userData.value.forEach((user) => user.id)) {
     return userData.value.media_url
   }
   return ''
