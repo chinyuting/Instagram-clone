@@ -7,23 +7,6 @@ const props = defineProps({
   postDataList: Array
 })
 
-// 從firebase取得user資料
-const userData = ref([])
-onMounted(() => {
-  const itemsRef = firebaseRef(db, 'userData')
-
-  onValue(itemsRef, (snapshot) => {
-    const fetchedItems = []
-    snapshot.forEach((childSnapshot) => {
-      const key = childSnapshot.key
-      const value = childSnapshot.val()
-      fetchedItems.push({ key, ...value })
-    })
-    // 取得story owner存入storyOwnerData
-    userData.value = fetchedItems
-  })
-})
-
 const postDataList = ref(props.postDataList)
 const sortedPostList = computed(() => {
   // 复制原始的帖子数组，以免修改原始数组
@@ -91,11 +74,30 @@ const ThumbsUp = function (post) {
       console.error('Error updating data:', error)
     })
 }
+
+// 從firebase取得user資料
+const userDataList = ref([])
+onMounted(() => {
+  const itemsRef = firebaseRef(db, 'userData')
+
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      fetchedItems.push({ key, ...value })
+    })
+    // 取得userData存入userData
+    userDataList.value = fetchedItems
+  })
+})
+
 // 取得post owner pic
 const getPostOwnerPic = (post) => {
-  console.log(userData);
-  if (Array.isArray(userData.value)) {
-    const matchedUser = userData.value.find(user => user.id === post.postownerId)
+  console.log('user', userDataList.value)
+  if (Array.isArray(userDataList.value)) {
+    const matchedUser = userDataList.value.find((user) => user.id === post.postownerId)
+    console.log(matchedUser)
     if (matchedUser) {
       return matchedUser.media_url
     }
