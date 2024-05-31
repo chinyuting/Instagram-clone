@@ -77,14 +77,14 @@ const ThumbsUp = function (post) {
       console.error('Error updating data:', error)
     })
 }
-const postOwnerPic = computed(() => {
-  return (post) => {
-    if (userData.value && post.postownerId === userData.value.id) {
-      return userData.value.media_url
-    }
-    return ''
+// 取得post owner pic
+const getPostOwnerPic = (post) => {
+  if (userData.value && post.postownerId === userData.value.id) {
+    return userData.value.media_url
   }
-})
+  return ''
+}
+
 </script>
 
 <template>
@@ -96,7 +96,7 @@ const postOwnerPic = computed(() => {
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
-        <img :src="postOwnerPic(post)" alt="" />
+        <img :src="getPostOwnerPic(post)" alt="" />
       </div>
 
       <div class="ms-2 fw-bold">{{ post.username }}</div>
