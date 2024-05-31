@@ -95,14 +95,11 @@ onMounted(() => {
 // 取得post owner pic
 const getPostOwnerPic = (post) => {
   console.log('user', userDataList.value)
-  if (Array.isArray(userDataList.value)) {
     const matchedUser = userDataList.value.find((user) => user.id === post.postownerId)
-    console.log(matchedUser)
-    if (matchedUser) {
-      return matchedUser.media_url
-    }
-  }
-  return ''
+    // if (matchedUser) {
+    //   return matchedUser.media_url
+    // }
+    return matchedUser ? matchedUser.media_url : ''
 }
 </script>
 
