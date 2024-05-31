@@ -1,13 +1,27 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { db, ref as firebaseRef, update } from '../firebaseSetUp'
-import { useUserDataStore } from '../stores/userDataStore.js'
 
-// 取得userData
-const userData = useUserDataStore()
 // prop引入postDataList
 const props = defineProps({
   postDataList: Array
+})
+
+// 從firebase取得user資料
+const userData = ref([])
+onMounted(() => {
+  const itemsRef = firebaseRef(db, 'userData')
+
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      fetchedItems.push({ key, ...value })
+    })
+    // 取得story owner存入storyOwnerData
+    userData.value = fetchedItems
+  })
 })
 
 const postDataList = ref(props.postDataList)
@@ -80,7 +94,6 @@ const ThumbsUp = function (post) {
 // 取得post owner pic
 const getPostOwnerPic = (post) => {
   console.log(post);
-  console.log(userData.userData);
   if (userData.value && post.postownerid === userData.value.forEach((user) => user.id)) {
     return userData.value.media_url
   }
