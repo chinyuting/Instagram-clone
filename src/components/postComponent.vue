@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
-import { db, ref as firebaseRef, update } from '../firebaseSetUp'
+import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 
 // prop引入postDataList
 const props = defineProps({
@@ -93,7 +93,7 @@ const ThumbsUp = function (post) {
 }
 // 取得post owner pic
 const getPostOwnerPic = (post) => {
-  console.log(post);
+  console.log(post)
   if (userData.value && post.postownerid === userData.value.forEach((user) => user.id)) {
     return userData.value.media_url
   }
