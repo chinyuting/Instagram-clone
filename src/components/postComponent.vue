@@ -98,7 +98,6 @@ const getPostOwnerPic = (post) => {
   console.log(post)
   for (const i in userDataList.value) {
     matchedUser = userDataList.value[i].id === post.postownerid
-    console.log(matchedUser, post.postownerid, userDataList.value[i].id)
     if (matchedUser) {
       return userDataList.value[i].media_url
     }
