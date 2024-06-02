@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import navComponent from '../components/navComponent.vue'
+
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
@@ -24,6 +25,7 @@ const getPost = function (id) {
 
 // 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
 const postOwnerDataFromFirebase = ref([])
+
 const itemsRef = firebaseRef(db, 'postsData')
 onMounted(() => {
   onValue(itemsRef, (snapshot) => {
@@ -34,8 +36,8 @@ onMounted(() => {
       console.log(value, 'value')
       console.log(userData.value, 'userData.value')
       if (value.postownerid === userData.value.id) {
+        fetchedItems.push({ key, ...value })
       }
-      fetchedItems.push({ key, ...value })
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
