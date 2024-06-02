@@ -41,6 +41,7 @@ onMounted(() => {
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
+    console.log(postOwnerDataFromFirebase.value);
   })
 })
 
