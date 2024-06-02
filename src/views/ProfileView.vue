@@ -11,13 +11,11 @@ import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
  * 引入 usePostDataStore 呼叫getPostData方法取得PostDataList並儲存
  */
 const postData = usePostDataStore()
-postData.getPostData()
 
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
 const userData = useUserDataStore()
-userData.getUserData()
 
 // 異步取得postData和userData
 const fetchData = async () => {
@@ -39,6 +37,9 @@ onMounted(async () => {
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
+      console.log(userData.value, 'user')
+      console.log(value)
+
       if (userData.value.id === value.postownerid) {
         fetchedItems.push({ key, ...value })
       }
@@ -49,7 +50,7 @@ onMounted(async () => {
 })
 
 const mergedPostData = computed(() => {
-  const combinedData = [...postData.postDataList, ...postOwnerDataFromFirebase.value]
+  const combinedData = [...postData.postData, ...postOwnerDataFromFirebase.value]
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 })
 </script>
