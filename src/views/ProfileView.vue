@@ -39,7 +39,6 @@ onMounted(async () => {
       const value = childSnapshot.val()
       console.log(userData.value, 'user')
       console.log(value)
-
       if (userData.value.id === value.postownerid) {
         fetchedItems.push({ key, ...value })
       }
@@ -50,6 +49,8 @@ onMounted(async () => {
 })
 
 const mergedPostData = computed(() => {
+  console.log(ostData.postData)
+  console.log(postOwnerDataFromFirebase)
   const combinedData = [...postData.postData, ...postOwnerDataFromFirebase.value]
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 })
