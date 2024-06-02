@@ -17,6 +17,8 @@ const postData = usePostDataStore()
  */
 const userData = useUserDataStore()
 
+let iter = 1;
+
 // 異步取得postData和userData
 const fetchData = async () => {
   console.log('fetchData start')
@@ -54,10 +56,11 @@ onMounted(async () => {
 })
 
 const mergedPostData = computed(() => {
-  console.log(postData.postData, 'postData')
-  console.log(postOwnerDataFromFirebase.value, 'postOwnerDataFromFirebase')
-  const combinedData = [...postOwnerDataFromFirebase.value]
+  console.log(postData.postData, 'postData', iter)
+  console.log(postOwnerDataFromFirebase.value, 'postOwnerDataFromFirebase', iter)
+  const combinedData = [...postData.postData,...postOwnerDataFromFirebase.value]
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+  iter+=1;
 })
 </script>
 
