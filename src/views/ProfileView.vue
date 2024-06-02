@@ -4,6 +4,8 @@ import navComponent from '../components/navComponent.vue'
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
+import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+
 /**
  * 引入 usePostDataStore 呼叫getPostData方法取得PostDataList並儲存
  */

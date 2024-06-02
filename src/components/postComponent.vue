@@ -95,7 +95,6 @@ onMounted(() => {
 // 取得post owner pic
 let matchedUser = false
 const getPostOwnerPic = (post) => {
-  console.log(post)
   for (const i in userDataList.value) {
     matchedUser = userDataList.value[i].id === post.postownerid
     if (matchedUser) {
