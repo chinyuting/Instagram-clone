@@ -12,12 +12,13 @@ import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
  */
 const postData = usePostDataStore()
 postData.getPostData()
-
+console.log(postData.value, 'post')
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
 const userData = useUserDataStore()
 userData.getUserData()
+console.log(userData.value, 'user')
 
 const getPost = function (id) {
   console.log(id)
@@ -33,24 +34,19 @@ onMounted(() => {
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      console.log(value, 'value')
-      console.log(userData.value, 'userData.value')
-      if (value.postownerid === userData.value.id) {
-        fetchedItems.push({ key, ...value })
-      }
+      fetchedItems.push({ key, ...value })
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
-    console.log(postOwnerDataFromFirebase.value);
   })
 })
-
-const mergedPostData = computed(() => {
-  const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
-  console.log(mergedData)
-  mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-  return mergedData
-})
+console.log(postOwnerDataFromFirebase)
+// const mergedPostData = computed(() => {
+//   const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
+//   console.log(mergedData)
+//   mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+//   return mergedData
+// })
 </script>
 
 <template>
