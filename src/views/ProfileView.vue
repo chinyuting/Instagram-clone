@@ -41,14 +41,14 @@ onMounted(async () => {
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      console.log(userData.userData, 'user')
-      console.log(value)
-      if (userData.userData.id === value.postownerid) {
-        fetchedItems.push({ key, ...value })
-      }
+      console.log(userData.userData.id === value.postownerid)
+      // if (userData.userData.id === value.postownerid) {
+      fetchedItems.push({ key, ...value })
+      // }
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
+    console.log(postOwnerDataFromFirebase)
     console.log('onValue end')
   })
 })
