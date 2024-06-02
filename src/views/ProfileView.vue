@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import navComponent from '../components/navComponent.vue'
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
@@ -12,32 +12,6 @@ import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 const postData = usePostDataStore()
 postData.getPostData()
 
-// 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
-const postOwnerDataFromFirebase = ref([])
-const itemsRef = firebaseRef(db, 'postsData')
-
-onValue(itemsRef, (snapshot) => {
-  const fetchedItems = []
-  snapshot.forEach((childSnapshot) => {
-    const key = childSnapshot.key
-    const value = childSnapshot.val()
-    console.log(value, 'value')
-    console.log(userData.value, 'userData.value')
-    if (value.postownerid === userData.value.id) {
-    }
-    fetchedItems.push({ key, ...value })
-  })
-  // 取得post存入postData
-  postOwnerDataFromFirebase.value = fetchedItems
-})
-
-const mergedPostData = computed(() => {
-  const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
-  console.log(mergedData)
-  mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-  return mergedData
-})
-
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
@@ -47,6 +21,33 @@ userData.getUserData()
 const getPost = function (id) {
   console.log(id)
 }
+
+// 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
+const postOwnerDataFromFirebase = ref([])
+const itemsRef = firebaseRef(db, 'postsData')
+onMounted(() => {
+  onValue(itemsRef, (snapshot) => {
+    const fetchedItems = []
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key
+      const value = childSnapshot.val()
+      console.log(value, 'value')
+      console.log(userData.value, 'userData.value')
+      if (value.postownerid === userData.value.id) {
+      }
+      fetchedItems.push({ key, ...value })
+    })
+    // 取得post存入postData
+    postOwnerDataFromFirebase.value = fetchedItems
+  })
+})
+
+const mergedPostData = computed(() => {
+  const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
+  console.log(mergedData)
+  mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+  return mergedData
+})
 </script>
 
 <template>
