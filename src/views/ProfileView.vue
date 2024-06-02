@@ -12,14 +12,18 @@ import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
  */
 const postData = usePostDataStore()
 postData.getPostData()
-console.log(postData.value, 'post')
+
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
 const userData = useUserDataStore()
 userData.getUserData()
-console.log(userData.value, 'user')
 
+// 異步取得postData和userData
+const fetchData = async () => {
+  await userData.getUserData()
+  await postData.getPostData()
+}
 const getPost = function (id) {
   console.log(id)
 }
@@ -28,19 +32,21 @@ const getPost = function (id) {
 const postOwnerDataFromFirebase = ref([])
 
 const itemsRef = firebaseRef(db, 'postsData')
-onMounted(() => {
+onMounted(async () => {
+  await fetchData()
   onValue(itemsRef, (snapshot) => {
     const fetchedItems = []
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      fetchedItems.push({ key, ...value })
+      if (userData.value.id === value.postownerid) {
+        fetchedItems.push({ key, ...value })
+      }
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
   })
 })
-console.log(postOwnerDataFromFirebase)
 
 const mergedPostData = computed(() => {
   const combinedData = [...postData.postDataList, ...postOwnerDataFromFirebase.value]
