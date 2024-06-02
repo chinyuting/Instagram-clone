@@ -41,12 +41,11 @@ onMounted(() => {
   })
 })
 console.log(postOwnerDataFromFirebase)
-// const mergedPostData = computed(() => {
-//   const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
-//   console.log(mergedData)
-//   mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-//   return mergedData
-// })
+
+const mergedPostData = computed(() => {
+  const combinedData = [...postData.postDataList, ...postOwnerDataFromFirebase.value]
+  return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+})
 </script>
 
 <template>
