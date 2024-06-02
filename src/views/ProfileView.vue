@@ -19,10 +19,10 @@ const userData = useUserDataStore()
 
 // 異步取得postData和userData
 const fetchData = async () => {
-  console.log('fetchData start');
+  console.log('fetchData start')
   await userData.getUserData()
   await postData.getPostData()
-  console.log('fetchData end');
+  console.log('fetchData end')
 }
 const getPost = function (id) {
   console.log(id)
@@ -33,28 +33,28 @@ const postOwnerDataFromFirebase = ref([])
 
 const itemsRef = firebaseRef(db, 'postsData')
 onMounted(async () => {
-  console.log('onMounted start');
+  console.log('onMounted start')
   await fetchData()
   onValue(itemsRef, (snapshot) => {
-    console.log('onValue start');
+    console.log('onValue start')
     const fetchedItems = []
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      console.log(userData.value, 'user')
+      console.log(userData.userData, 'user')
       console.log(value)
-      if (userData.value.id === value.postownerid) {
+      if (userData.userData.id === value.postownerid) {
         fetchedItems.push({ key, ...value })
       }
     })
     // 取得post存入postData
     postOwnerDataFromFirebase.value = fetchedItems
-    console.log('onValue end');
+    console.log('onValue end')
   })
 })
 
 const mergedPostData = computed(() => {
-  console.log(postData.value.postData, 'postData')
+  console.log(postData.postData, 'postData')
   console.log(postOwnerDataFromFirebase.value, 'postOwnerDataFromFirebase')
   const combinedData = [...postOwnerDataFromFirebase.value]
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
