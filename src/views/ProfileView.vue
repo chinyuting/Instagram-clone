@@ -10,6 +10,31 @@ import { useUserDataStore } from '../stores/userDataStore.js'
 const postData = usePostDataStore()
 postData.getPostData()
 
+// 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
+const postOwnerDataFromFirebase = ref([])
+const itemsRef = firebaseRef(db, 'postsData')
+
+onValue(itemsRef, (snapshot) => {
+  const fetchedItems = []
+  snapshot.forEach((childSnapshot) => {
+    const key = childSnapshot.key
+    const value = childSnapshot.val()
+    console.log(value, 'value');
+    console.log(userData.value, 'userData.value');
+    if (value.postownerid === userData.value.id) {}
+    fetchedItems.push({ key, ...value })
+  })
+  // 取得post存入postData
+  postOwnerDataFromFirebase.value = fetchedItems
+})
+
+const mergedPostData = computed(()=> {
+  const mergedData = [...postOwnerDataFromFirebase, ...postData.value]
+  console.log(mergedData);
+  mergedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+  return mergedData
+})
+
 /**
  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
  */
@@ -61,7 +86,7 @@ const getPost = function (id) {
       </div>
 
       <article class="row mx-auto border-top">
-        <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in postData.postData" :key="index">
+        <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in mergedPostData" :key="index">
           <div class="profile-post" @click="getPost(post.id)">
             <div class="post-pic position-absolute w-100 h-100">
               <img
