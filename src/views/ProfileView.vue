@@ -4,6 +4,7 @@ import navComponent from '../components/navComponent.vue'
 
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
+import profilePostModal from '../components/profilePostModalComponent.vue'
 
 import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 
@@ -22,16 +23,12 @@ const fetchData = async () => {
   await userData.getUserData()
   await postData.getPostData()
 }
-const getPost = function (id) {
-  console.log(id)
-}
 
 // 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
 const postOwnerDataFromFirebase = ref([])
 
 const itemsRef = firebaseRef(db, 'postsData')
 onMounted(async () => {
-
   await fetchData()
   onValue(itemsRef, (snapshot) => {
     const fetchedItems = []
@@ -50,8 +47,16 @@ onMounted(async () => {
 const mergedPostData = computed(() => {
   const combinedData = [...postData.postData, ...postOwnerDataFromFirebase.value]
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-  iter += 1
 })
+
+/**
+ * 開啟modal 並導向指定post
+ */
+let openPostId = ''
+const openModal = function (id) {
+  openPostId = id
+  profilePostModal.value.showModal()
+}
 </script>
 
 <template>
@@ -95,7 +100,7 @@ const mergedPostData = computed(() => {
 
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in mergedPostData" :key="index">
-          <div class="profile-post" @click="getPost(post.id)">
+          <div class="profile-post" @click="openModal(post.id)">
             <div class="post-pic position-absolute w-100 h-100">
               <img
                 :src="post.media_url"
@@ -110,6 +115,7 @@ const mergedPostData = computed(() => {
       <button class="btn"></button>
     </main>
   </div>
+  <profilePostModal :postId="openPostId" :mergedPostData="mergedPostData" />
 </template>
 <style lang="scss">
 .profile-pic {
