@@ -38,8 +38,7 @@ const props = defineProps({
     aria-hidden="true"
     ref="profilePostModal"
   >
-    
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -51,8 +50,7 @@ const props = defineProps({
           ></button>
         </div>
         <div class="modal-body">
-          {{ mergedPostData }}
-          <postComponent :postDataList="mergedPostData"/>
+          <postComponent :postDataList="mergedPostData" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

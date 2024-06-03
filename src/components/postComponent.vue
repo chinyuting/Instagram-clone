@@ -161,6 +161,16 @@ const getPostOwnerPic = (post) => {
           <img :src="img" class="d-block w-100" alt="..." />
         </div>
       </div>
+      <!-- media_type === 'VIDEO' -->
+      <div
+        class="carousel-inner position-relative"
+        ref="postImg"
+        v-if="post.media_type === 'VIDEO'"
+      >
+        <video controls class="d-block w-100">
+          <source :src="post.media_url" type="video/webm" />
+        </video>
+      </div>
       <!-- 僅多張照片時顯示左右按鈕 -->
       <button
         class="carousel-control-prev"
@@ -169,7 +179,6 @@ const getPostOwnerPic = (post) => {
         data-bs-slide="prev"
         v-if="post.media_type === 'CAROUSEL_ALBUM'"
       >
-        <!-- v-if="post.media_url.length > 1" -->
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
@@ -180,7 +189,6 @@ const getPostOwnerPic = (post) => {
         data-bs-slide="next"
         v-if="post.media_type === 'CAROUSEL_ALBUM'"
       >
-        <!-- post.media_url.length > 1 -->
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
