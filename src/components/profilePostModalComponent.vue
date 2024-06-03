@@ -38,22 +38,16 @@ const props = defineProps({
     aria-hidden="true"
     ref="profilePostModal"
   >
+    <button
+      type="button"
+      class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+    ></button>
     <div class="modal-dialog">
       <div class="modal-content">
-        <!-- <div class="modal-header"> -->
-        <button
-          type="button"
-          class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-        <!-- </div> -->
         <div class="modal-body">
           <postComponent :postDataList="mergedPostData" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

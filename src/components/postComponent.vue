@@ -47,6 +47,9 @@ const isCaptionExpanded = (postId) => {
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
   const maxLength = 20
+  if(caption.length === 0) {
+    return 
+  }
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
