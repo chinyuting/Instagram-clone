@@ -2,6 +2,8 @@
 import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref, computed } from 'vue'
 
+import postComponent from '../components/postComponent.vue'
+
 const modal = ref(null)
 const profilePostModal = ref(null)
 
@@ -14,7 +16,10 @@ defineExpose({
   showModal
 })
 onMounted(() => {
-  modal.value = new Modal(profilePostModal.value)
+  modal.value = new Modal(getTokenModal.value, {
+    backdrop: 'static', // modal點擊backdrop不會自動關閉
+    keyboard: false
+  })
 })
 
 const props = defineProps({
@@ -33,8 +38,7 @@ const props = defineProps({
     aria-hidden="true"
     ref="profilePostModal"
   >
-    {{ postId }}
-    {{ mergedPostData }}
+    
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -46,7 +50,10 @@ const props = defineProps({
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">...</div>
+        <div class="modal-body">
+          {{ postId }}
+          <postComponent :postDataList="mergedPostData"/>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
