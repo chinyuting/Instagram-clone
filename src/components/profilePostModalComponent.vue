@@ -51,7 +51,7 @@ const props = defineProps({
           ></button>
         </div>
         <div class="modal-body">
-          {{ postId }}
+          {{ mergedPostData }}
           <postComponent :postDataList="mergedPostData"/>
         </div>
         <div class="modal-footer">
