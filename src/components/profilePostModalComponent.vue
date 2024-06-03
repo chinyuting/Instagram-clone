@@ -14,7 +14,7 @@ defineExpose({
   showModal
 })
 onMounted(() => {
-  modal.value = new Modal(storyModal.value)
+  modal.value = new Modal(profilePostModal.value)
 })
 
 const props = defineProps({

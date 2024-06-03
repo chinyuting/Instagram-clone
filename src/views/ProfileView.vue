@@ -4,7 +4,7 @@ import navComponent from '../components/navComponent.vue'
 
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
-import profilePostModal from '../components/profilePostModalComponent.vue'
+import profilePostModalComponent from '../components/profilePostModalComponent.vue'
 
 import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
 
@@ -52,6 +52,7 @@ const mergedPostData = computed(() => {
 /**
  * 開啟modal 並導向指定post
  */
+const profilePostModal = ref(null);
 let openPostId = ''
 const openModal = function (id) {
   openPostId = id
@@ -115,7 +116,7 @@ const openModal = function (id) {
       <button class="btn"></button>
     </main>
   </div>
-  <profilePostModal :postId="openPostId" :mergedPostData="mergedPostData" />
+  <profilePostModalComponent :postId="openPostId" :mergedPostData="mergedPostData" ref="profilePostModal"/>
 </template>
 <style lang="scss">
 .profile-pic {
