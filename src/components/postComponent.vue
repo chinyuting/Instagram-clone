@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
-import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+import { db, ref as firebaseRef, onValue, update } from '../firebaseSetUp'
 
 // prop引入postDataList
 const props = defineProps({
@@ -9,9 +9,9 @@ const props = defineProps({
 
 const postDataList = ref(props.postDataList)
 const sortedPostList = computed(() => {
-  // 复制原始的帖子数组，以免修改原始数组
+  // 複製原post data，以免修改
   const sortedPosts = [...postDataList.value]
-  // 根据timestamp進行post排序（假设时间戳是 ISO 8601 格式的字符串）
+  // 根据timestamp進行post排序（ISO 8601 格式）
   sortedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 
   // 返回排序后的post
@@ -45,6 +45,7 @@ const isCaptionExpanded = (postId) => {
 
 // Method to truncate the caption
 const truncatedCaption = (caption, postId) => {
+  // 最長字數限制
   const maxLength = 20
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
@@ -61,7 +62,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenSize)
 })
-
+//按讚
 const ThumbsUp = function (post) {
   post.isThumb = !post.isThumb
   const postRef = firebaseRef(db, `postsData/${post.key}`)
@@ -124,7 +125,7 @@ const getPostOwnerPic = (post) => {
       class="carousel slide post-pic-area position-relative"
       @dblclick="ThumbsUp(post)"
     >
-      <div class="carousel-indicators" v-if="post.media_url.length > 1">
+      <div class="carousel-indicators" v-if="post.media_type === 'CAROUSEL_ALBUM'">
         <div v-for="(img, key) in post.media_url.length" :key="key">
           <button
             :class="{ active: key === 0 }"
@@ -136,7 +137,21 @@ const getPostOwnerPic = (post) => {
           ></button>
         </div>
       </div>
-      <div class="carousel-inner position-relative" ref="postImg">
+      <!-- media_type判斷是否顯示多個圖片 -->
+      <!-- media_type === 'IMAGE' -->
+      <div
+        class="carousel-inner position-relative"
+        ref="postImg"
+        v-if="post.media_type === 'IMAGE'"
+      >
+        <img :src="post.media_url" class="d-block w-100" alt="..." />
+      </div>
+      <!-- media_type === 'CAROUSEL_ALBUM' -->
+      <div
+        class="carousel-inner position-relative"
+        ref="postImg"
+        v-if="post.media_type === 'CAROUSEL_ALBUM'"
+      >
         <div
           class="carousel-item"
           :class="{ active: key === 0 }"
@@ -152,8 +167,9 @@ const getPostOwnerPic = (post) => {
         type="button"
         :data-bs-target="'#post' + post.id"
         data-bs-slide="prev"
-        v-if="post.media_url.length > 1"
+        v-if="post.media_type === 'CAROUSEL_ALBUM'"
       >
+        <!-- v-if="post.media_url.length > 1" -->
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
@@ -162,8 +178,9 @@ const getPostOwnerPic = (post) => {
         type="button"
         :data-bs-target="'#post' + post.id"
         data-bs-slide="next"
-        v-if="post.media_url.length > 1"
+        v-if="post.media_type === 'CAROUSEL_ALBUM'"
       >
+        <!-- post.media_url.length > 1 -->
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
