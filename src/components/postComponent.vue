@@ -26,12 +26,17 @@ watch(
     postDataList.value = newVal
   }
 )
-if(postIdDirection) {
-  const element = document.getElementById(postIdDirection)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+watch(
+  () => props.postIdDirection,
+  (newVal) => {
+    if (newVal) {
+      const element = document.getElementById(newVal)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
-}
+  }
+)
 
 // 字數過長隱藏
 // 存放caption顯示全文的post id

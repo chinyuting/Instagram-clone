@@ -16,10 +16,7 @@ defineExpose({
   showModal
 })
 onMounted(() => {
-  modal.value = new Modal(profilePostModal.value, {
-    backdrop: 'static', // modal點擊backdrop不會自動關閉
-    keyboard: false
-  })
+  modal.value = new Modal(profilePostModal.value)
 })
 
 const props = defineProps({
