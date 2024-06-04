@@ -4,7 +4,8 @@ import { db, ref as firebaseRef, onValue, update } from '../firebaseSetUp'
 
 // prop引入postDataList
 const props = defineProps({
-  postDataList: Array
+  postDataList: Array,
+  postIdDirection: String
 })
 
 const postDataList = ref(props.postDataList)
@@ -17,6 +18,7 @@ const sortedPostList = computed(() => {
   // 返回排序后的post
   return sortedPosts
 })
+const postIdDirection = ref(null)
 
 watch(
   () => props.postDataList,
@@ -24,6 +26,12 @@ watch(
     postDataList.value = newVal
   }
 )
+if(postIdDirection) {
+  const element = document.getElementById(postIdDirection)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+}
 
 // 字數過長隱藏
 // 存放caption顯示全文的post id

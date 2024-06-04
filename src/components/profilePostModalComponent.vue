@@ -27,13 +27,13 @@ const props = defineProps({
   mergedPostData: Array
 })
 
-const postId = ref(null);
+const postId = ref(null)
 // 監聽prop資料變化
 watch(
   () => props.postId,
   (newVal) => {
     postId.value = newVal
-    console.log(postId.value);
+    console.log(postId.value)
   }
 )
 </script>
@@ -54,10 +54,10 @@ watch(
       data-bs-dismiss="modal"
       aria-label="Close"
     ></button>
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-body">
-          <postComponent :postDataList="mergedPostData" />
+          <postComponent :postDataList="mergedPostData" :postIdDirection="postId" />
         </div>
       </div>
     </div>
