@@ -260,11 +260,11 @@ const ThumbsUp = function (post) {
         <i class="bi bi-heart-fill icon-size text-danger" v-if="post.isThumb"></i>
       </a>
       <!-- <p class="card-text mb-2">{{ post.thumbNum }}個讚</p> -->
-      <div>
+      <div v-if="post.caption">
         <span class="card-text d-inline fw-bold">{{ post.username }}</span>
         <!-- post caption僅顯示20字 -->
         <!-- 將caption傳入truncatedCaption判斷是否文字過長 -->
-        <div class="card-text ms-2 d-inline" v-if="post.caption">
+        <div class="card-text ms-2 d-inline">
           {{ truncatedCaption(post.caption, post.id) }}
         </div>
         <!-- 將caption傳入isCaptionExpanded判斷是否顯示'...更多' -->
