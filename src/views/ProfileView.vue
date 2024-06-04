@@ -52,10 +52,13 @@ const mergedPostData = computed(() => {
 /**
  * 開啟modal 並導向指定post
  */
-const profilePostModal = ref(null);
+const profilePostModal = ref(null)
 let openPostId = ''
+
 const openModal = function (id) {
+  console.log(openPostId)
   openPostId = id
+  console.log(openPostId)
   profilePostModal.value.showModal()
 }
 </script>
@@ -116,7 +119,11 @@ const openModal = function (id) {
       <button class="btn"></button>
     </main>
   </div>
-  <profilePostModalComponent :postId="openPostId" :mergedPostData="mergedPostData" ref="profilePostModal"/>
+  <profilePostModalComponent
+    :postId="openPostId"
+    :mergedPostData="mergedPostData"
+    ref="profilePostModal"
+  />
 </template>
 <style lang="scss">
 .profile-pic {

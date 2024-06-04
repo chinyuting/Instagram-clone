@@ -47,8 +47,8 @@ const isCaptionExpanded = (postId) => {
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
   const maxLength = 20
-  if(caption.length === 0) {
-    return 
+  if (caption.length === 0) {
+    return
   }
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
@@ -106,6 +106,13 @@ const getPostOwnerPic = (post) => {
     }
   }
   return ''
+}
+// 留言
+const messageInput = ref({})
+
+const postMessage = (id) => {
+  console.log(id)
+  console.log(messageInput.value[id])
 }
 </script>
 
@@ -196,7 +203,7 @@ const getPostOwnerPic = (post) => {
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <div class="card-body px-md-0 py-1 mb-3">
+    <div class="card-body px-sm-0 py-1 mb-1">
       <a href="" @click.prevent="ThumbsUp(post)">
         <i class="bi bi-heart icon-size text-danger" v-if="!post.isThumb"></i>
         <i class="bi bi-heart-fill icon-size text-danger" v-if="post.isThumb"></i>
@@ -209,7 +216,7 @@ const getPostOwnerPic = (post) => {
         <div class="card-text ms-2 d-inline">
           {{ truncatedCaption(post.caption, post.id) }}
         </div>
-        <!-- 將caption傳入truncatedCaption判斷是否顯示'...更多' -->
+        <!-- 將caption傳入isCaptionExpanded判斷是否顯示'...更多' -->
         <a
           class="text-decoration-none text-secondary fs-6"
           v-if="!isCaptionExpanded(post.id) && post.caption.length > 20"
@@ -219,12 +226,30 @@ const getPostOwnerPic = (post) => {
           ...更多
         </a>
       </div>
+      <!-- 留言 -->
+      <div class="position-relative">
+        <input
+          type="text"
+          placeholder="留言..."
+          class="w-100 border-0 my-1 py-1 postMessage"
+          :id="'#message' + post.id"
+          v-model="messageInput[post.id]"
+        />
+        <a
+          type="button"
+          class="position-absolute top-50 end-0 translate-middle-y text-decoration-none"
+          v-if="messageInput[post.id]"
+          @click.prevent="postMessage(post.id)"
+          >發布</a
+        >
+      </div>
     </div>
-    <hr v-if="index != postDataList.length - 1 && isLargeScreen" />
+    <!-- 最後一篇文後不需要分界線 -->
+    <hr v-if="index != postDataList.length - 1 && isLargeScreen" class="m-0" />
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
 .post-card {
   max-width: 30rem;
   width: 100%;
@@ -265,7 +290,11 @@ const getPostOwnerPic = (post) => {
     object-fit: cover;
   }
 }
-
+.postMessage {
+  &:focus {
+    outline: none;
+  }
+}
 @media (min-width: 768px) {
   .post-card {
     border-radius: 0.375rem;
