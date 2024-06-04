@@ -106,7 +106,7 @@ const pushPostToFirebase = function (imageUrl) {
   const itemsRef = firebaseRef(db, 'postsData')
   const newPostData = {
     caption: postCaption.value,
-    id: postId,
+    id: postId + userData.userData.id,
     isThumb: false,
     media_type: 'IMAGE',
     media_url: [imageUrl],

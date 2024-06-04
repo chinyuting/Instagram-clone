@@ -32,13 +32,13 @@ watch(
   () => props.postId,
   (newVal) => {
     postId.value = newVal
-    console.log(postId.value);
   }
 )
 </script>
 
 <template>
   <!-- Modal -->
+  {{postId  }}
   <div
     class="modal fade custom-modal"
     id="exampleModal"
