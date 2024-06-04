@@ -26,6 +26,15 @@ const props = defineProps({
   postId: String,
   mergedPostData: Array
 })
+// 監聽prop資料變化
+
+watch(
+  () => props.postId,
+  (newVal) => {
+    postId.value = newVal
+    console.log(postId.value);
+  }
+)
 </script>
 
 <template>

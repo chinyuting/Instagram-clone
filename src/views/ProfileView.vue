@@ -56,7 +56,6 @@ const profilePostModal = ref(null)
 let openPostId = ''
 
 const openModal = function (id) {
-  console.log(openPostId)
   openPostId = id
   console.log(openPostId)
   profilePostModal.value.showModal()
