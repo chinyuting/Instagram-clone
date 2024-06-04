@@ -30,7 +30,6 @@ watch(
   () => props.postId,
   (newVal) => {
     postId.value = newVal
-    console.log(postId.value)
   }
 )
 </script>

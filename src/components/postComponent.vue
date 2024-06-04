@@ -18,7 +18,6 @@ const sortedPostList = computed(() => {
   // 返回排序后的post
   return sortedPosts
 })
-const postIdDirection = ref(null)
 
 watch(
   () => props.postDataList,
@@ -26,12 +25,15 @@ watch(
     postDataList.value = newVal
   }
 )
+
 watch(
   () => props.postIdDirection,
   (newVal) => {
     if (newVal) {
       const element = document.getElementById(newVal)
       if (element) {
+        console.log(element)
+        console.log(newVal)
         element.scrollIntoView({ behavior: 'smooth' })
       }
     }
@@ -148,11 +150,22 @@ const postMessage = (id) => {
       class="carousel slide post-pic-area position-relative"
       @dblclick="ThumbsUp(post)"
     >
-    <span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill text-danger" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-      </svg>
-    </span>
+      <!-- 動畫愛心 -->
+      <div class="position-absolute top-50 start-50 translate-middle w-25">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-heart-fill text-danger"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
+          />
+        </svg>
+      </div>
       <div class="carousel-indicators" v-if="post.media_type === 'CAROUSEL_ALBUM'">
         <div v-for="(img, key) in post.media_url.length" :key="key">
           <button
