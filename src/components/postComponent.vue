@@ -62,9 +62,6 @@ const isCaptionExpanded = (postId) => {
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
   const maxLength = 20
-  if (caption.length === 0) {
-    return
-  }
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
@@ -81,18 +78,18 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenSize)
 })
 //按讚
-const ThumbsUp = function (post) {
-  post.isThumb = !post.isThumb
-  const postRef = firebaseRef(db, `postsData/${post.key}`)
+// const ThumbsUp = function (post) {
+//   post.isThumb = !post.isThumb
+//   const postRef = firebaseRef(db, `postsData/${post.key}`)
 
-  update(postRef, post)
-    .then(() => {
-      console.log('Data updated successfully!')
-    })
-    .catch((error) => {
-      console.error('Error updating data:', error)
-    })
-}
+//   update(postRef, post)
+//     .then(() => {
+//       console.log('Data updated successfully!')
+//     })
+//     .catch((error) => {
+//       console.error('Error updating data:', error)
+//     })
+// }
 
 // 從firebase取得user資料
 const userDataList = ref([])
@@ -129,6 +126,28 @@ const postMessage = (id) => {
   console.log(id)
   console.log(messageInput.value[id])
 }
+
+// 心形動畫顯示控制
+const showHeartAnimation = ref({})
+
+const ThumbsUp = function (post) {
+  post.isThumb = !post.isThumb
+  const postRef = firebaseRef(db, `postsData/${post.key}`)
+
+  update(postRef, post)
+    .then(() => {
+      console.log('Data updated successfully!')
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error)
+    })
+
+  // 顯示心形動畫
+  showHeartAnimation.value[post.id] = true
+  setTimeout(() => {
+    showHeartAnimation.value[post.id] = false
+  }, 1000)
+}
 </script>
 
 <template>
@@ -151,7 +170,7 @@ const postMessage = (id) => {
       @dblclick="ThumbsUp(post)"
     >
       <!-- 動畫愛心 -->
-      <div class="position-absolute top-50 start-50 translate-middle w-25">
+      <div class="position-absolute top-50 start-50 translate-middle w-25" v-if="showHeartAnimation[post.id]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -244,7 +263,7 @@ const postMessage = (id) => {
         <span class="card-text d-inline fw-bold">{{ post.username }}</span>
         <!-- post caption僅顯示20字 -->
         <!-- 將caption傳入truncatedCaption判斷是否文字過長 -->
-        <div class="card-text ms-2 d-inline">
+        <div class="card-text ms-2 d-inline" v-if="post.caption">
           {{ truncatedCaption(post.caption, post.id) }}
         </div>
         <!-- 將caption傳入isCaptionExpanded判斷是否顯示'...更多' -->
