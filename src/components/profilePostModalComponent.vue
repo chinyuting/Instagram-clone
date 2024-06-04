@@ -26,8 +26,8 @@ const props = defineProps({
   postId: String,
   mergedPostData: Array
 })
-// 監聽prop資料變化
 
+// 監聽prop資料變化
 watch(
   () => props.postId,
   (newVal) => {
@@ -38,7 +38,6 @@ watch(
 
 <template>
   <!-- Modal -->
-  {{postId  }}
   <div
     class="modal fade custom-modal"
     id="exampleModal"

@@ -53,10 +53,10 @@ const mergedPostData = computed(() => {
  * 開啟modal 並導向指定post
  */
 const profilePostModal = ref(null)
-let openPostId = ''
+const openPostId = ref('')
 
 const openModal = function (id) {
-  openPostId = id
+  openPostId.value = id
   console.log(openPostId)
   profilePostModal.value.showModal()
 }
