@@ -55,7 +55,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
         if (post.media_type === 'CAROUSEL_ALBUM') {
           const mediaChildren = await getMoreImg(post.id)
           post.media_children = mediaChildren
-          console.log(post.media_children);
+          console.log(post);
         }
       }))
     } catch (err) {

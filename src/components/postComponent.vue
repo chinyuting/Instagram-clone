@@ -220,7 +220,7 @@ const ThumbsUp = function (post) {
         <div
           class="carousel-item"
           :class="{ active: key === 0 }"
-          v-for="(img, key) in post.media_url"
+          v-for="(img, key) in post.media_children"
           :key="key"
         >
           <img :src="img" class="d-block w-100" alt="..." />
