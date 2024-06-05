@@ -29,28 +29,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
   //     console.log(err)
   //   })
   // }
-  async function getPostData() {
-    const access_token = localStorage.getItem('long-lived-access-token')
-    try {
-      const res = await axios.get(
-        `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
-      )
-      postData.value = res.data.data
-      console.log('post', postData.value)
-      await Promise.all(postData.value.map(async (post) => {
-        if (post.media_type === 'CAROUSEL_ALBUM') {
-          const mediaChildren = await getMoreImg(post.id)
-          console.log(mediaChildren);
-          // post.media_children = mediaChildren
-        }
-      }))
-    } catch (err) {
-      console.error(err)
-      error.value = err
-    } finally {
-      isLoading.value = false
-    }
-  }
+  
   // function getMoreImg(id) {
   //   const access_token = localStorage.getItem('long-lived-access-token');
   //   axios
@@ -64,6 +43,29 @@ export const usePostDataStore = defineStore('postDataList', () => {
   //     console.log(err)
   //   })
   // }
+  async function getPostData() {
+    const access_token = localStorage.getItem('long-lived-access-token')
+    try {
+      const res = await axios.get(
+        `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/me/media?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
+      )
+      postData.value = res.data.data
+      console.log('post', postData.value)
+      await Promise.all(postData.value.map(async (post) => {
+        if (post.media_type === 'CAROUSEL_ALBUM') {
+          const mediaChildren = await getMoreImg(post.id)
+          console.log(mediaChildren, 'mediaChildren');
+          // post.media_children = mediaChildren
+        }
+      }))
+    } catch (err) {
+      console.error(err)
+      error.value = err
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function getMoreImg(id) {
     const access_token = localStorage.getItem('long-lived-access-token');
     try {
@@ -85,11 +87,13 @@ export const usePostDataStore = defineStore('postDataList', () => {
   }
 
   async function getEachDetail(id) {
+    console.log(id, 'getEachDetail(id)');
     const access_token = localStorage.getItem('long-lived-access-token')
     try {
       const res = await axios.get(
         `https://graph.instagram.com/${id}?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
       )
+      console.log(res.data,'getEachDetail');
       return res.data.data
     } catch (err) {
       console.error(err)
