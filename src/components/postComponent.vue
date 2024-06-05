@@ -191,7 +191,7 @@ const ThumbsUp = function (post) {
         </svg>
       </div>
       <div class="carousel-indicators" v-if="post.media_type === 'CAROUSEL_ALBUM'">
-        <div v-for="(img, key) in post.media_url.length" :key="key">
+        <div v-for="(img, key) in post.media_children.length" :key="key">
           <button
             :class="{ active: key === 0 }"
             type="button"
