@@ -93,8 +93,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
       const res = await axios.get(
         `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/${id}?fields=id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
       )
-      console.log(res.data.media_url);
-      return res.data.data
+      return res.data.media_url
     } catch (err) {
       console.error(err)
       error.value = err
