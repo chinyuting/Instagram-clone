@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { db, ref as firebaseRef, onValue, update } from '../firebaseSetUp'
+import axios from 'axios'
 
 // prop引入postDataList
 const props = defineProps({
@@ -62,7 +63,7 @@ const isCaptionExpanded = (postId) => {
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
   const maxLength = 20
-  if(!caption) return
+  if (!caption) return
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
@@ -171,7 +172,10 @@ const ThumbsUp = function (post) {
       @dblclick="ThumbsUp(post)"
     >
       <!-- 動畫愛心 -->
-      <div class="position-absolute top-50 start-50 translate-middle w-25" v-if="showHeartAnimation[post.id]">
+      <div
+        class="position-absolute top-50 start-50 translate-middle w-25"
+        v-if="showHeartAnimation[post.id]"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

@@ -59,6 +59,9 @@ const openModal = function (id) {
   openPostId.value = id
   profilePostModal.value.showModal()
 }
+
+// 取得多張圖片
+
 </script>
 
 <template>
