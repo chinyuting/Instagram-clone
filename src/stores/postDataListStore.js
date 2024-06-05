@@ -54,8 +54,8 @@ export const usePostDataStore = defineStore('postDataList', () => {
       await Promise.all(postData.value.map(async (post) => {
         if (post.media_type === 'CAROUSEL_ALBUM') {
           const mediaChildren = await getMoreImg(post.id)
-          console.log(mediaChildren, 'mediaChildren');
-          // post.media_children = mediaChildren
+          post.media_children = mediaChildren
+          console.log(post.media_children);
         }
       }))
     } catch (err) {
@@ -74,7 +74,6 @@ export const usePostDataStore = defineStore('postDataList', () => {
       );
       const mediaChildren = await Promise.all(
         res.data.data.map(async (child) => {
-          console.log(child , 'child');
           return await getEachDetail(child.id);
         })
       );
