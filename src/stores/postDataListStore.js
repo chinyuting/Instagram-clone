@@ -17,7 +17,13 @@ export const usePostDataStore = defineStore('postDataList', () => {
       console.log(res)
       postData.value = res.data.data
       console.log('post', postData.value)
-      postData.value.forEach((post) => console.log(post))
+      postData.value.forEach((post) => {
+        console.log(post.media_type)
+        if(post.media_type === 'CAROUSEL_ALBUM') {
+          getMoreImg(post.id)
+          // post.media_children = getMoreImg(post.id)
+        }
+      })
       isLoading.value = false
     })
     .catch((err) => {
