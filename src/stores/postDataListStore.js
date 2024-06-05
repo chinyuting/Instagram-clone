@@ -70,7 +70,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
     const access_token = localStorage.getItem('long-lived-access-token');
     try {
       const res = await axios.get(
-        `https://graph.instagram.com/${id}/children?access_token=${access_token}`
+        `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/${id}/children?access_token=${access_token}`
       );
       const mediaChildren = await Promise.all(
         res.data.data.map(async (child) => {
@@ -91,7 +91,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
     const access_token = localStorage.getItem('long-lived-access-token')
     try {
       const res = await axios.get(
-        `https://graph.instagram.com/${id}?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
+        `https://cors-anywhere.herokuapp.com/https://graph.instagram.com/${id}?fields=id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
       )
       console.log(res.data,'getEachDetail');
       return res.data.data
