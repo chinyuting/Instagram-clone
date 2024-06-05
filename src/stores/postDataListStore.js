@@ -41,7 +41,7 @@ export const usePostDataStore = defineStore('postDataList', () => {
         if (post.media_type === 'CAROUSEL_ALBUM') {
           const mediaChildren = await getMoreImg(post.id)
           console.log(mediaChildren);
-          post.media_children = mediaChildren
+          // post.media_children = mediaChildren
         }
       }))
     } catch (err) {
@@ -65,12 +65,31 @@ export const usePostDataStore = defineStore('postDataList', () => {
   //   })
   // }
   async function getMoreImg(id) {
-    const access_token = localStorage.getItem('long-lived-access-token')
+    const access_token = localStorage.getItem('long-lived-access-token');
     try {
       const res = await axios.get(
         `https://graph.instagram.com/${id}/children?access_token=${access_token}`
+      );
+      const mediaChildren = await Promise.all(
+        res.data.data.map(async (child) => {
+          console.log(child , 'child');
+          return await getEachDetail(child.id);
+        })
+      );
+      return mediaChildren;
+    } catch (err) {
+      console.error(err);
+      error.value = err;
+      return [];
+    }
+  }
+
+  async function getEachDetail(id) {
+    const access_token = localStorage.getItem('long-lived-access-token')
+    try {
+      const res = await axios.get(
+        `https://graph.instagram.com/${id}?fields=caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
       )
-      console.log(res.data);
       return res.data.data
     } catch (err) {
       console.error(err)
