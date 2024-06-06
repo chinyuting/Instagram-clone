@@ -29,18 +29,18 @@ watch(
 )
 
 // watch監聽postIdDirection scroll到指定element
-// watch(
-//   () => props.postIdDirection,
-//   async (newVal) => {
-//     if (newVal) {
-//       await nextTick() // Wait for the DOM to update
-//       const newVal = ref()
-//       if (newVal.value) {
-//         newVal.value.scrollIntoView({ behavior: 'smooth' })
-//       }
-//     }
-//   }
-// )
+watch(
+  () => props.postIdDirection,
+  async (newVal) => {
+    if (newVal) {
+      await nextTick() // Wait for the DOM to update
+      const element = document.getElementById(newVal)
+      if (element) {
+        element.scrollIntoView()
+      }
+    }
+  }
+)
 
 // 字數過長隱藏
 // 存放caption顯示全文的post id
