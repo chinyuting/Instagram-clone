@@ -55,7 +55,6 @@ export const usePostDataStore = defineStore('postDataList', () => {
         if (post.media_type === 'CAROUSEL_ALBUM') {
           const mediaChildren = await getMoreImg(post.id)
           post.media_children = mediaChildren
-          console.log(post);
         }
       }))
     } catch (err) {
@@ -86,7 +85,6 @@ export const usePostDataStore = defineStore('postDataList', () => {
   }
 
   async function getEachDetail(id) {
-    console.log(id, 'getEachDetail(id)');
     const access_token = localStorage.getItem('long-lived-access-token')
     try {
       const res = await axios.get(

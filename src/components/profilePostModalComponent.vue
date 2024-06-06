@@ -28,8 +28,11 @@ const postId = ref(null)
 // 監聽prop資料變化
 watch(
   () => props.postId,
-  (newVal) => {
-    postId.value = newVal
+  async (newVal) => {
+    if (newVal) {
+      myModal.show()
+      const element = document.getElementById(newVal)
+    }
   }
 )
 </script>

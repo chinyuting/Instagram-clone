@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { db, ref as firebaseRef, onValue, update } from '../firebaseSetUp'
 import axios from 'axios'
 
@@ -29,12 +29,11 @@ watch(
 
 watch(
   () => props.postIdDirection,
-  (newVal) => {
+  async (newVal) => {
     if (newVal) {
+      await nextTick() // Wait for the DOM to update
       const element = document.getElementById(newVal)
       if (element) {
-        console.log(element)
-        console.log(newVal)
         element.scrollIntoView({ behavior: 'smooth' })
       }
     }
