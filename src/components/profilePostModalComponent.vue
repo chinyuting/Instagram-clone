@@ -26,24 +26,10 @@ const props = defineProps({
 
 const postId = ref(null)
 // 監聽prop資料變化
-// watch(
-//   () => props.postId,
-//   (newVal) => {
-//     postId.value = newVal
-//   }
-// )
 watch(
   () => props.postId,
-  async (newVal) => {
-    if (newVal) {
-      postId.value = newVal
-      modal.value.show()
-      await nextTick() // Wait for the DOM to update
-      const element = document.getElementById(newVal)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
-      }
-    }
+  (newVal) => {
+    postId.value = newVal
   }
 )
 

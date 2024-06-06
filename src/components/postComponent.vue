@@ -29,18 +29,18 @@ watch(
 )
 
 // watch監聽postIdDirection scroll到指定element
-watch(
-  () => props.postIdDirection,
-  async (newVal) => {
-    if (newVal) {
-      await nextTick() // Wait for the DOM to update
-      const newVal = ref()
-      if (newVal.value) {
-        newVal.value.scrollIntoView({ behavior: 'smooth' })
-      }
-    }
-  }
-)
+// watch(
+//   () => props.postIdDirection,
+//   async (newVal) => {
+//     if (newVal) {
+//       await nextTick() // Wait for the DOM to update
+//       const newVal = ref()
+//       if (newVal.value) {
+//         newVal.value.scrollIntoView({ behavior: 'smooth' })
+//       }
+//     }
+//   }
+// )
 
 // 字數過長隱藏
 // 存放caption顯示全文的post id
@@ -136,8 +136,8 @@ const showHeartAnimation = ref({})
 
 const ThumbsUp = function (post) {
   post.isThumb = !post.isThumb
+  // 更新firebase資料
   const postRef = firebaseRef(db, `postsData/${post.key}`)
-
   update(postRef, post)
     .then(() => {
       console.log('Data updated successfully!')
@@ -159,7 +159,7 @@ const ThumbsUp = function (post) {
     class="card mt-3 post-card w-100 border-0"
     v-for="(post, index) in sortedPostList"
     :key="post.id"
-    :ref="post.id"
+    :id="post.id"
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
@@ -276,7 +276,7 @@ const ThumbsUp = function (post) {
         <!-- 將caption傳入isCaptionExpanded判斷是否顯示'...更多' -->
         <a
           class="text-decoration-none text-secondary fs-6"
-          v-if="!isCaptionExpanded(post.id) && post.caption.length > 20"
+          v-if="!isCaptionExpanded(post.id) && post.caption && post.caption.length > 20"
           @click.prevent="toggleFullCaption(post.id)"
           href="#"
         >
