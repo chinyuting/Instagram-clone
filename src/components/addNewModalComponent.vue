@@ -236,6 +236,21 @@ input[type='file'] {
     object-fit: cover;
   }
 }
+.user-pic {
+  width: 2.5rem;
+  height: 2.5rem;
+  overflow: hidden;
+  object-fit: contain;
+  position: relative;
+  img {
+    /* 圖片置中 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 150%;
+  }
+}
 .postDescriptionInput {
   height: calc(100% - 40px);
   border: 0;
