@@ -20,12 +20,14 @@ const sortedPostList = computed(() => {
   return sortedPosts
 })
 
+// watch監聽postDataList
 watch(
   () => props.postDataList,
   (newVal, oldVal) => {
     postDataList.value = newVal
   }
 )
+// watch監聽postIdDirection
 
 watch(
   () => props.postIdDirection,
@@ -120,6 +122,7 @@ const getPostOwnerPic = (post) => {
   }
   return ''
 }
+
 // 留言
 const messageInput = ref({})
 
