@@ -34,7 +34,9 @@ watch(
   async (newVal) => {
     if (newVal) {
       await nextTick() // Wait for the DOM to update
+      console.log(newVal)
       const element = document.getElementById(newVal)
+      console.log(element)
       if (element) {
         element.scrollIntoView()
       }
