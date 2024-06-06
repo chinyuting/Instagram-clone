@@ -27,16 +27,16 @@ watch(
     postDataList.value = newVal
   }
 )
-// watch監聽postIdDirection
 
+// watch監聽postIdDirection scroll到指定element
 watch(
   () => props.postIdDirection,
   async (newVal) => {
     if (newVal) {
       await nextTick() // Wait for the DOM to update
-      const element = document.getElementById(newVal)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+      const newVal = ref()
+      if (newVal.value) {
+        newVal.value.scrollIntoView({ behavior: 'smooth' })
       }
     }
   }
@@ -159,7 +159,7 @@ const ThumbsUp = function (post) {
     class="card mt-3 post-card w-100 border-0"
     v-for="(post, index) in sortedPostList"
     :key="post.id"
-    :id="post.id"
+    :ref="post.id"
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
