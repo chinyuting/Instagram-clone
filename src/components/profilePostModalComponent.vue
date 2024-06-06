@@ -1,6 +1,6 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, nextTick } from 'vue'
 
 import postComponent from '../components/postComponent.vue'
 
