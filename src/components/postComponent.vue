@@ -28,21 +28,21 @@ watch(
   }
 )
 
-// watch監聽postIdDirection scroll到指定element
-watch(
-  () => props.postIdDirection,
-  async (newVal) => {
-    if (newVal) {
-      await nextTick() // Wait for the DOM to update
-      console.log(newVal)
-      const element = document.getElementById(newVal)
-      console.log(element)
-      if (element) {
-        element.scrollIntoView()
-      }
-    }
-  }
-)
+// // watch監聽postIdDirection scroll到指定element
+// watch(
+//   () => props.postIdDirection,
+//   async (newVal) => {
+//     if (newVal) {
+//       await nextTick() // Wait for the DOM to update
+//       console.log(newVal)
+//       const element = document.getElementById(newVal)
+//       console.log(element)
+//       if (element) {
+//         element.scrollIntoView()
+//       }
+//     }
+//   }
+// )
 
 // 字數過長隱藏
 // 存放caption顯示全文的post id
