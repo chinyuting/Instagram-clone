@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import navComponent from '../components/navComponent.vue'
 
 import { usePostDataStore } from '../stores/postDataListStore.js'
