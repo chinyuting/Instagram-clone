@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
-import { db, ref as firebaseRef, onValue, update } from '../firebaseSetUp'
+import { db, firebaseRef, onValue, update } from '../firebaseSetUp'
 import axios from 'axios'
 
 // prop引入postDataList

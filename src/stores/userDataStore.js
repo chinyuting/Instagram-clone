@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { db, ref as firebaseRef, onValue, push, firebaseApp } from '../firebaseSetUp'
+import { db, firebaseRef, onValue, push, firebaseApp } from '../firebaseSetUp'
 
 export const useUserDataStore = defineStore('userDataList', () => {
   const userData = ref(null)

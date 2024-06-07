@@ -1,7 +1,8 @@
 import * as firebase from 'firebase/app'
-import { getDatabase, ref, onValue, push, update } from 'firebase/database'
+import { ref, onMounted } from 'vue'
+import { getDatabase, ref as firebaseRef, onValue, push, update } from 'firebase/database'
 import { getStorage } from 'firebase/storage'
-import { getAuth } from 'firebase/auth'
+import { getAuth, signInAnonymously } from 'firebase/auth'
 
 
 
@@ -20,5 +21,19 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp)
 const db = getDatabase(firebaseApp)
+
+const isAuthenticated = ref(false)
+
+onMounted(() => {
+  signInAnonymously(auth)
+    .then(() => {
+      console.log('User signed in anonymously')
+      isAuthenticated.value = true
+    })
+    .catch((error) => {
+      console.error('Error signing in anonymously:', error)
+    })
+})
+
 const storage = getStorage(firebaseApp)
-export { firebaseApp, db, storage, ref, onValue, push, update, auth }
+export { firebaseApp, db, storage, firebaseRef, onValue, push, update, auth }

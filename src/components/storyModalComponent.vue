@@ -1,7 +1,7 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref, getCurrentInstance, computed } from 'vue'
-import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+import { db, firebaseRef, onValue } from '../firebaseSetUp'
 
 const modal = ref(null)
 const storyModal = ref(null)

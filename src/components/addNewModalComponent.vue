@@ -2,7 +2,7 @@
 import Modal from 'bootstrap/js/dist/modal'
 import { onMounted, ref } from 'vue'
 import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'firebase/storage'
-import { db, ref as firebaseRef, push, firebaseApp } from '../firebaseSetUp'
+import { db, firebaseRef, push, firebaseApp } from '../firebaseSetUp'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
 // isLoading ini

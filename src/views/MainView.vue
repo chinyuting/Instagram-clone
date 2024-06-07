@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+import { db, firebaseRef, onValue } from '../firebaseSetUp'
 
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'

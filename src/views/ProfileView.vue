@@ -6,7 +6,7 @@ import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
 import profilePostModalComponent from '../components/profilePostModalComponent.vue'
 
-import { db, ref as firebaseRef, onValue } from '../firebaseSetUp'
+import { db, firebaseRef, onValue } from '../firebaseSetUp'
 
 /**
  * 引入 usePostDataStore 呼叫getPostData方法取得PostDataList並儲存
@@ -61,7 +61,6 @@ const openModal = function (id) {
 }
 
 // 取得多張圖片
-
 </script>
 
 <template>
