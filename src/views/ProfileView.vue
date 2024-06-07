@@ -59,7 +59,20 @@ const openModal = function (id) {
   openPostId.value = id
   profilePostModal.value.showModal()
 }
-
+watch(
+  () => openPostId,
+  async (newVal) => {
+    if (newVal) {
+      await nextTick() // Wait for the DOM to update
+      console.log(newVal)
+      const element = document.getElementById(newVal)
+      console.log(element)
+      if (element) {
+        element.scrollIntoView()
+      }
+    }
+  }
+)
 // 取得多張圖片
 </script>
 

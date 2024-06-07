@@ -34,20 +34,20 @@ watch(
 )
 
 // watch監聽postIdDirection scroll到指定element
-watch(
-  () => props.postId,
-  async (newVal) => {
-    if (newVal) {
-      await nextTick() // Wait for the DOM to update
-      console.log(newVal)
-      const element = document.getElementById(newVal)
-      console.log(element)
-      if (element) {
-        element.scrollIntoView()
-      }
-    }
-  }
-)
+// watch(
+//   () => props.postId,
+//   async (newVal) => {
+//     if (newVal) {
+//       await nextTick() // Wait for the DOM to update
+//       console.log(newVal)
+//       const element = document.getElementById(newVal)
+//       console.log(element)
+//       if (element) {
+//         element.scrollIntoView()
+//       }
+//     }
+//   }
+// )
 </script>
 
 <template>
