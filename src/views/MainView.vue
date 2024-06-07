@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { db, firebaseRef, onValue } from '../firebaseSetUp'
+import { db, firebaseRef, onValue,auth, signInAnonymously } from '../firebaseSetUp'
 
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
@@ -9,6 +9,21 @@ import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
 import { useUserDataStore } from '../stores/userDataStore.js'
+
+// 状态变量
+const isAuthenticated = ref(false)
+
+// 组件挂载时执行匿名登录
+onMounted(() => {
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("匿名登录成功");
+      isAuthenticated.value = true;
+    })
+    .catch((error) => {
+      console.error("匿名登录失败", error);
+    });
+});
 
 const isLoading = ref(false)
 // mock取得story owner資料
