@@ -82,19 +82,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenSize)
 })
-//按讚
-// const ThumbsUp = function (post) {
-//   post.isThumb = !post.isThumb
-//   const postRef = firebaseRef(db, `postsData/${post.key}`)
-
-//   update(postRef, post)
-//     .then(() => {
-//       console.log('Data updated successfully!')
-//     })
-//     .catch((error) => {
-//       console.error('Error updating data:', error)
-//     })
-// }
 
 // 從firebase取得user資料
 const userDataList = ref([])
@@ -135,7 +122,7 @@ const postMessage = (id) => {
 
 // 心形動畫顯示控制
 const showHeartAnimation = ref({})
-
+// 按讚
 const ThumbsUp = function (post) {
   post.isThumb = !post.isThumb
   // 更新firebase資料
@@ -177,7 +164,7 @@ const ThumbsUp = function (post) {
     >
       <!-- 動畫愛心 -->
       <div
-        class="position-absolute top-50 start-50 translate-middle w-25"
+        class="position-absolute top-50 start-50 translate-middle heart-animation"
         v-if="showHeartAnimation[post.id]"
       >
         <svg
@@ -352,6 +339,27 @@ const ThumbsUp = function (post) {
 .postMessage {
   &:focus {
     outline: none;
+  }
+}
+.heart-animation {
+  animation: heart-beat 1s;
+}
+
+@keyframes heart-beat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.5);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 @media (min-width: 768px) {
