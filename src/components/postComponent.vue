@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { db, firebaseRef, onValue, update } from '../firebaseSetUp'
-import axios from 'axios'
+import { debounce } from 'lodash'
 
 // prop引入postDataList
 const props = defineProps({
@@ -122,10 +122,10 @@ const postMessage = (id) => {
 
 // 心形動畫顯示控制
 const showHeartAnimation = ref({})
+const animationTimers = ref({})
 // 按讚
-const ThumbsUp = function (post) {
+const ThumbsUp = debounce(function (post) {
   post.isThumb = !post.isThumb
-  // 更新firebase資料
   const postRef = firebaseRef(db, `postsData/${post.key}`)
   update(postRef, post)
     .then(() => {
@@ -135,12 +135,39 @@ const ThumbsUp = function (post) {
       console.error('Error updating data:', error)
     })
 
-  // 顯示心形動畫
-  showHeartAnimation.value[post.id] = true
-  setTimeout(() => {
+  showHeartAnimation.value[post.id] = post.isThumb
+
+  if (animationTimers.value[post.id]) {
+    clearTimeout(animationTimers.value[post.id])
+  }
+
+  animationTimers.value[post.id] = setTimeout(() => {
     showHeartAnimation.value[post.id] = false
-  }, 1000)
-}
+  }, 2000)
+}, 300)
+
+// const ThumbsUp = function (post) {
+//   post.isThumb = !post.isThumb
+//   // 更新firebase資料
+//   const postRef = firebaseRef(db, `postsData/${post.key}`)
+//   update(postRef, post)
+//     .then(() => {
+//       console.log('Data updated successfully!')
+//     })
+//     .catch((error) => {
+//       console.error('Error updating data:', error)
+//     })
+
+//   // 顯示心形動畫
+
+//   showHeartAnimation.value[post.id] = post.isThumb
+//   console.log('setTimeout')
+
+//   setTimeout(() => {
+//     showHeartAnimation.value[post.id] = false
+//     console.log('setTimeout')
+//   }, 2000)
+// }
 </script>
 
 <template>
@@ -164,13 +191,13 @@ const ThumbsUp = function (post) {
     >
       <!-- 動畫愛心 -->
       <div
-        class="position-absolute top-50 start-50 translate-middle heart-animation"
-        v-if="showHeartAnimation[post.id]"
+        class="position-absolute heartAnimationDefault"
+        :class="showHeartAnimation[post.id] ? 'heartAnimation' : ''"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="50"
+          height="50"
           fill="currentColor"
           class="bi bi-heart-fill text-danger"
           viewBox="0 0 16 16"
@@ -341,27 +368,40 @@ const ThumbsUp = function (post) {
     outline: none;
   }
 }
-.heart-animation {
-  animation: heart-beat 1s;
+
+.heartAnimationDefault {
+  opacity: 0;
+  left: calc(50% - 25px);
+  top: calc(50% - 25px);
+  transform: scale(1) translate(-50%, -50%);
+}
+.heartAnimation {
+  z-index: 100;
+  animation: heart-beat 1.5s ease-in-out;
+  transform-origin: center;
 }
 
 @keyframes heart-beat {
   0% {
     transform: scale(1);
+    opacity: 0;
   }
   25% {
-    transform: scale(1.5);
+    opacity: 1;
   }
   50% {
-    transform: scale(1);
+    transform: scale(1.3);
+    opacity: 1;
   }
   75% {
-    transform: scale(1.5);
+    opacity: 1;
   }
   100% {
     transform: scale(1);
+    opacity: 0;
   }
 }
+
 @media (min-width: 768px) {
   .post-card {
     border-radius: 0.375rem;
