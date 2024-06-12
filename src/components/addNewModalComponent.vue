@@ -32,10 +32,10 @@ const selectedImg = ref(null)
    ＊ 新增照片並顯示預覽
    ＊ ＠param {Object} e - input change event
   */
-const addImage = function (e) {
+const addImage = function (target) {
   isLoading.value = true
-  let input = e.target
-  selectedImg.value = e.target.files[0]
+  let input = target
+  selectedImg.value = target.files[0]
 
   // 預覽照片
   if (input.files) {
@@ -47,6 +47,24 @@ const addImage = function (e) {
     // this.image = input.files[0]
     reader.readAsDataURL(input.files[0])
   }
+}
+
+// drag
+const handleDragOver = (event) => {
+  // event.dataTransfer.dropEffect = 'copy'
+  event.preventDefault()
+}
+
+const handleDragLeave = (event) => {
+  event.preventDefault()
+  // Optional logic when the file is dragged out of the drop zone
+  console.log('DragLeave')
+}
+
+const handleDrop = (event) => {
+  event.preventDefault()
+  console.log('drag', event.dataTransfer)
+  addImage(event.dataTransfer)
 }
 
 // 下一步
@@ -168,10 +186,16 @@ const pushPostToFirebase = function (imageUrl) {
         <div class="d-flex flex-sm-column flex-md-row">
           <!-- 尚未上傳圖片 -->
           <!-- 用imgSrc是否有值判斷圖片上傳區是否顯示 -->
-          <div class="modal-body align-items-center p-5" v-if="!imgSrc">
+          <div
+            class="modal-body align-items-center p-5"
+            v-if="!imgSrc"
+            @dragover.prevent="handleDragOver"
+            @dragleave.prevent="handleDragLeave"
+            @drop.prevent="handleDrop"
+          >
             <div class="d-flex flex-column align-items-center justify-content-center">
               <i class="bi bi-image pic-icon"></i>
-              <div>將相片和影片拖曳到這裡</div>
+              <span>將相片和影片拖曳到這裡</span>
               <label for="file-input" class="file-input-button btn btn-primary m-3"
                 >從電腦選擇</label
               >
@@ -180,7 +204,7 @@ const pushPostToFirebase = function (imageUrl) {
                 type="file"
                 id="file-input"
                 accept="audio/*,video/*,image/*"
-                @change="addImage($event)"
+                @change="addImage($event.target)"
               />
             </div>
           </div>
