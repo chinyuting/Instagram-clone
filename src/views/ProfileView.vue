@@ -107,7 +107,8 @@ watch(
           </div>
           <ul class="my-1 d-flex list-unstyled align-self-center">
             <li class="media_count profileData p-2">
-              {{ userData.userData.media_count }}<span>則貼文</span>
+              <!-- userData.userData.media_count -->
+              {{ mergedPostData.length }}<span>則貼文</span>
             </li>
             <li class="media_count profileData p-2">0<span>位粉絲</span></li>
             <li class="media_count profileData p-2">0<span>人追蹤中</span></li>
