@@ -50,20 +50,21 @@ const addImage = function (target) {
 }
 
 // drag
+const isDragged = ref(false)
 const handleDragOver = (event) => {
   // event.dataTransfer.dropEffect = 'copy'
+  isDragged.value = true
   event.preventDefault()
 }
 
 const handleDragLeave = (event) => {
+  isDragged.value = false
   event.preventDefault()
-  // Optional logic when the file is dragged out of the drop zone
   console.log('DragLeave')
 }
-
+//  drop
 const handleDrop = (event) => {
   event.preventDefault()
-  console.log('drag', event.dataTransfer)
   addImage(event.dataTransfer)
 }
 
@@ -193,7 +194,10 @@ const pushPostToFirebase = function (imageUrl) {
             @dragleave.prevent="handleDragLeave"
             @drop.prevent="handleDrop"
           >
-            <div class="d-flex flex-column align-items-center justify-content-center">
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+              :class="isDragged ? 'text-primary' : ''"
+            >
               <i class="bi bi-image pic-icon"></i>
               <span>將相片和影片拖曳到這裡</span>
               <label for="file-input" class="file-input-button btn btn-primary m-3"
