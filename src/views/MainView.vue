@@ -249,6 +249,9 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
     display: none;
   }
 }
+.icon-size {
+  font-size: 1.3rem;
+}
 
 @media (min-width: 768px) {
   .stories {
