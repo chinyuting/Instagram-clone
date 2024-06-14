@@ -49,10 +49,10 @@ const addImage = function (target) {
   }
 }
 
-// drag
+// drag file
 const isDragged = ref(false)
 const handleDragOver = (event) => {
-  // event.dataTransfer.dropEffect = 'copy'
+  event.dataTransfer.dropEffect = 'copy'
   isDragged.value = true
   event.preventDefault()
 }
