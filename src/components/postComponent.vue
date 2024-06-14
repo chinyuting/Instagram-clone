@@ -61,7 +61,6 @@ const toggleFullCaption = (postId) => {
 const isCaptionExpanded = (postId) => {
   return expandedCaptions.value.has(postId)
 }
-
 // Method to truncate the caption
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
@@ -70,7 +69,7 @@ const truncatedCaption = (caption, postId) => {
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
-//判斷螢幕大小
+//判斷螢幕大小 判斷需不需要post之間的分界線
 const isLargeScreen = ref(window.innerWidth >= 768)
 const updateScreenSize = () => {
   isLargeScreen.value = window.innerWidth >= 768
@@ -145,29 +144,6 @@ const ThumbsUp = debounce(function (post) {
     showHeartAnimation.value[post.id] = false
   }, 2000)
 }, 300)
-
-// const ThumbsUp = function (post) {
-//   post.isThumb = !post.isThumb
-//   // 更新firebase資料
-//   const postRef = firebaseRef(db, `postsData/${post.key}`)
-//   update(postRef, post)
-//     .then(() => {
-//       console.log('Data updated successfully!')
-//     })
-//     .catch((error) => {
-//       console.error('Error updating data:', error)
-//     })
-
-//   // 顯示心形動畫
-
-//   showHeartAnimation.value[post.id] = post.isThumb
-//   console.log('setTimeout')
-
-//   setTimeout(() => {
-//     showHeartAnimation.value[post.id] = false
-//     console.log('setTimeout')
-//   }, 2000)
-// }
 </script>
 
 <template>
@@ -208,8 +184,9 @@ const ThumbsUp = debounce(function (post) {
           />
         </svg>
       </div>
+      <!-- post 圖片下方圓圈 -->
       <div class="carousel-indicators" v-if="post.media_type === 'CAROUSEL_ALBUM'">
-        <div v-for="(img, key) in post.media_children.length" :key="key">
+        <div v-for="(img, key) in post.media_children" :key="key">
           <button
             :class="{ active: key === 0 }"
             type="button"
