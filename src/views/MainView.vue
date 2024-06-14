@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { db, firebaseRef, onValue, auth, signInAnonymously } from '../firebaseSetUp'
-
+import { useRoute } from 'vue-router'
 import navComponent from '../components/navComponent.vue'
 import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
