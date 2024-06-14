@@ -1,12 +1,13 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import navComponent from '../components/navComponent.vue'
-
 import { usePostDataStore } from '../stores/postDataListStore.js'
 import { useUserDataStore } from '../stores/userDataStore.js'
+import { db, firebaseRef, onValue } from '../firebaseSetUp'
+
+import navComponent from '../components/navComponent.vue'
 import profilePostModalComponent from '../components/profilePostModalComponent.vue'
 
-import { db, firebaseRef, onValue } from '../firebaseSetUp'
+
 
 /**
  * 引入 usePostDataStore 呼叫getPostData方法取得PostDataList並儲存
@@ -107,7 +108,6 @@ watch(
           </div>
           <ul class="my-1 d-flex list-unstyled align-self-center">
             <li class="media_count profileData p-2">
-              <!-- userData.userData.media_count -->
               {{ mergedPostData.length }}<span>則貼文</span>
             </li>
             <li class="media_count profileData p-2">0<span>位粉絲</span></li>
