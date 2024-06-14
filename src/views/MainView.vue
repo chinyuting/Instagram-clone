@@ -7,6 +7,7 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
+import { useUserDataStore } from '../stores/userDataStore.js'
 
 // 定義是否登錄
 const isAuthenticated = ref(false)
