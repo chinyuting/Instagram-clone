@@ -10,7 +10,7 @@ const props = defineProps({
 })
 
 const postDataList = ref(props.postDataList)
-const sortedPostList = computed(() => {
+const sortedPostDataList = computed(() => {
   // 複製原post data，以免修改
   const sortedPosts = [...postDataList.value]
   // 根据timestamp進行post排序（ISO 8601 格式）
@@ -23,7 +23,7 @@ const sortedPostList = computed(() => {
 // watch監聽postDataList
 watch(
   () => props.postDataList,
-  (newVal, oldVal) => {
+  (newVal) => {
     postDataList.value = newVal
   }
 )
@@ -45,7 +45,7 @@ watch(
 // )
 
 // 字數過長隱藏
-// 存放caption顯示全文的post id
+// 存放caption顯示全文的post的post id
 const expandedCaptions = ref(new Set())
 
 // Method to toggle the full caption display
@@ -61,7 +61,7 @@ const toggleFullCaption = (postId) => {
 const isCaptionExpanded = (postId) => {
   return expandedCaptions.value.has(postId)
 }
-// Method to truncate the caption
+// truncate the caption
 const truncatedCaption = (caption, postId) => {
   // 最長字數限制
   const maxLength = 20
@@ -149,7 +149,7 @@ const ThumbsUp = debounce(function (post) {
 <template>
   <div
     class="card mt-3 post-card w-100 border-0"
-    v-for="(post, index) in sortedPostList"
+    v-for="(post, index) in sortedPostDataList"
     :key="post.id"
     :id="post.id"
   >
@@ -167,8 +167,8 @@ const ThumbsUp = debounce(function (post) {
     >
       <!-- 動畫愛心 -->
       <div
-        class="position-absolute heartAnimationDefault"
-        :class="showHeartAnimation[post.id] ? 'heartAnimation' : ''"
+        class="position-absolute heart-animation-default"
+        :class="showHeartAnimation[post.id] ? 'heart-animation' : ''"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -346,13 +346,13 @@ const ThumbsUp = debounce(function (post) {
   }
 }
 
-.heartAnimationDefault {
+.heart-animation-default {
   opacity: 0;
   left: calc(50% - 25px);
   top: calc(50% - 25px);
   transform: scale(1) translate(-50%, -50%);
 }
-.heartAnimation {
+.heart-animation {
   z-index: 100;
   animation: heart-beat 1.5s ease-in-out;
   transform-origin: center;

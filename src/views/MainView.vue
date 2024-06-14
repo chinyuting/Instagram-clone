@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 import { db, firebaseRef, onValue, auth, signInAnonymously } from '../firebaseSetUp'
 
 import navComponent from '../components/navComponent.vue'
@@ -8,38 +7,24 @@ import storyComponent from '../components/storyComponent.vue'
 import postComponent from '../components/postComponent.vue'
 import storyModalComponent from '../components/storyModalComponent.vue'
 import getTokenModalComponent from '../components/getTokenModalComponent.vue'
-import { useUserDataStore } from '../stores/userDataStore.js'
 
-// 状态变量
+// 定義是否登錄
 const isAuthenticated = ref(false)
 
-// 组件挂载时执行匿名登录
+// 匿名登錄
 onMounted(() => {
   signInAnonymously(auth)
     .then(() => {
-      console.log('匿名登录成功')
+      console.log('匿名登錄成功')
       isAuthenticated.value = true
     })
     .catch((error) => {
-      console.error('匿名登录失败', error)
+      console.error('匿名登錄失敗', error)
     })
 })
 
+// isLoading init
 const isLoading = ref(false)
-// mock取得story owner資料
-// const { proxy } = getCurrentInstance()
-// const storyOwnerData = ref([])
-// proxy
-//   .$axios(
-//     {
-//       url: '/getStoryOwner',
-//       method: 'post'
-//     },
-//     { userId: '123' }
-//   )
-//   .then((res) => {
-//     storyOwnerData.value = res.data.dataList
-//   })
 
 /**
   open story modal
@@ -111,20 +96,6 @@ const story = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
 
-// mock取得post資料
-// const postData = ref([])
-// proxy
-//   .$axios(
-//     {
-//       url: '/getPost',
-//       method: 'post'
-//     },
-//     { userId: '123' }
-//   )
-//   .then((res) => {
-//     postData.value = res.data.dataList
-//   })
-
 // 從firebase取得post資料
 const postData = ref([])
 onMounted(() => {
@@ -144,42 +115,42 @@ onMounted(() => {
 
 // IG api
 // 轉址 api
-const getTokenModal = ref(null)
-const route = useRoute()
-let code = location.search.slice(6)
-const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// token過期判斷
-if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-  if (code) {
-    onMounted(() => {
-      openGetToken()
-    })
-  } else {
-    window.location.href =
-      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-  }
-}
+// const getTokenModal = ref(null)
+// const route = useRoute()
+// let code = location.search.slice(6)
+// const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+// // token過期判斷
+// if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+//   if (code) {
+//     onMounted(() => {
+//       openGetToken()
+//     })
+//   } else {
+//     window.location.href =
+//       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+//   }
+// }
 
-/**
- * 開啟getTokenModal取得token
- */
-const openGetToken = function () {
-  getTokenModal.value.showModal()
-}
+// /**
+//  * 開啟getTokenModal取得token
+//  */
+// const openGetToken = function () {
+//   getTokenModal.value.showModal()
+// }
 
-/**
- * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
- */
-const initUserData = () => {
-  isLoading.value = true
-  const userData = useUserDataStore()
-  userData.getUserData()
-  isLoading.value = false
-}
+// /**
+//  * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
+//  */
+// const initUserData = () => {
+//   isLoading.value = true
+//   const userData = useUserDataStore()
+//   userData.getUserData()
+//   isLoading.value = false
+// }
 
-if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-  initUserData()
-}
+// if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+//   initUserData()
+// }
 </script>
 
 <template>
@@ -211,7 +182,7 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
           <div class="d-flex justify-content-start align-items-center">
             <storyComponent
               @click.prevent="openModal(owner)"
-              class="storyComponent"
+              class="story-component"
               v-for="owner in storyOwnerData"
               :key="owner.id"
               :ownerItem="owner"
@@ -240,7 +211,7 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
 .stories-btn {
   z-index: 100;
 }
-.storyComponent {
+.story-component {
   transition: all 0.7s ease;
 }
 

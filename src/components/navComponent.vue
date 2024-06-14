@@ -1,26 +1,29 @@
 <script setup>
 import { ref } from 'vue'
-import addNewModalComponent from '../components/addNewModalComponent.vue'
+import addPostModalComponent from '../components/addPostModalComponent.vue'
 
-const addNewModal = ref(null)
+// 定義addPostModal
+const addPostModal = ref(null)
+/**
+   ＊ 由addPostModal開放的showModal開啟addPostModal
+  */
 const openModal = function () {
-  addNewModal.value.showModal()
+  addPostModal.value.showModal()
 }
 </script>
 
 <template>
   <nav class="col-md-1 col-lg-2 nav-all p-md-3 overflow-hidden position-relative">
-    <!-- <div class="position-relative width-inherit"> -->
-    <div class="navbar navbar-light header-nav width-inherit start-0">
-      <img
-        src="@/assets/images/Instagram_logo_light.png"
-        alt=""
-        class="header-logo d-md-none d-lg-block d-sm-block ms-md-3"
-      />
-      <div class="header-logo-icon-wrapper">
+    <div class="position-relative width-inherit">
+      <div class="navbar navbar-light header-nav width-inherit start-0">
+        <img
+          src="@/assets/images/Instagram_logo_light.png"
+          alt=""
+          class="header-logo d-md-none d-lg-block d-sm-block ms-md-3"
+        />
         <svg
           aria-label="Instagram"
-          class="d-none d-lg-none d-md-block header-logo headerLogoIcon"
+          class="d-none d-lg-none d-md-block header-logo header-logo-icon"
           fill="currentColor"
           height="24"
           role="img"
@@ -34,7 +37,6 @@ const openModal = function () {
         </svg>
       </div>
     </div>
-    <!-- </div> -->
 
     <div
       class="bg-body d-flex flex-md-column position-fixed nav-selection bottom-0 start-0 justify-content-evenly justify-content-md-start width-inherit"
@@ -73,7 +75,7 @@ const openModal = function () {
       </div>
     </div>
   </nav>
-  <addNewModalComponent ref="addNewModal" />
+  <addPostModalComponent ref="addPostModal" />
 </template>
 
 <style lang="scss">
@@ -86,26 +88,15 @@ const openModal = function () {
 .header-nav {
   position: relative;
 }
+.header-logo {
+  height: 35px;
+}
+
 .nav-selection {
   bottom: 0;
   display: flex;
   justify-content: center;
   padding: 0.5rem;
-}
-
-.header-logo {
-  height: 35px;
-}
-
-// .headerLogoIcon {
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, 0%);
-// }
-
-.header-logo-icon-wrapper {
-  display: none;
 }
 
 .nav-icon-size {
@@ -125,7 +116,7 @@ const openModal = function () {
     margin-right: 5px;
     font-size: 20px;
   }
-  .headerLogoIcon {
+  .header-logo-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -146,13 +137,6 @@ const openModal = function () {
   }
   .nav-all {
     z-index: 0;
-  }
-  .header-logo-icon-wrapper {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 </style>
