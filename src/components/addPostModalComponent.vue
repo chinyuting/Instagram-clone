@@ -13,7 +13,7 @@ const modal = ref(null)
 const addPostModal = ref(null)
 const showModal = function () {
   modal.value.show()
-  modalInit()
+  initModal()
 }
 
 /**
@@ -22,7 +22,7 @@ const showModal = function () {
  * isSideModalShow 側邊modal關閉
  * modalDialog modal寬度定義
  */
-const modalInit = () => {
+const initModal = () => {
   imgSrc.value = ''
   isSideModalShow.value = false
   modalDialog.value.style.maxWidth = '700px'
@@ -101,7 +101,7 @@ const isSideModalShow = ref(false)
  * false-> 尚未開啟SideModal 則開啟SideModal
  */
 const toNextStep = function () {
-  if (isSideModalShow.value === true) {
+  if (isSideModalShow.value) {
     uploadImage()
   } else {
     modalDialog.value.style.maxWidth = '1000px'
@@ -115,7 +115,7 @@ const toNextStep = function () {
  * true-> 重新定義modalDialog寬度 並關閉side modal
  */
 const backToPreviousStep = () => {
-  if (isSideModalShow.value === true) {
+  if (isSideModalShow.value) {
     modalDialog.value.style.maxWidth = '700px'
     isSideModalShow.value = false
   }
@@ -133,6 +133,7 @@ const uploadImage = async () => {
   const file = selectedImage.value
   if (!file) {
     console.error('No file selected.')
+    isLoading.value = false
     return
   }
   const storage = getStorage(firebaseApp)
@@ -167,10 +168,10 @@ const pushPostToFirebase = function (imageUrl) {
   // 設定上傳路徑
   const itemsRef = firebaseRef(db, 'postsData')
   //  建立post資料
-  const currentTime = Date.now()
+  const currentTime = new Date()
   const newPostData = {
     caption: postCaption.value,
-    id: currentTime + userData.userData.id,
+    id: currentTime.getTime() + userData.userData.id,
     isThumb: false,
     media_type: 'IMAGE',
     media_url: imageUrl,

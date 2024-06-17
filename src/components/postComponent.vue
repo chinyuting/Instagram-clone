@@ -5,17 +5,23 @@ import { debounce } from 'lodash'
 
 // 從父層(MainView/profilePostModalComponent)prop引入postDataList
 const props = defineProps({
-  postDataList: Array,
-  postIdDirection: String
+  postDataList: {
+    type: Array,
+    default: [],
+  },
+  postIdDirection: {
+    type: String,
+    default: '',
+  },
 })
 
 const postDataList = ref(props.postDataList)
 const sortedPostsDataList = computed(() => {
+  if(!Array.isArray(postDataList.value)) return []
   // 複製原post data，以免修改
   const sortedPosts = [...postDataList.value]
   // 根据timestamp進行post排序（ISO 8601 格式）
   sortedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-
   // 返回排序后的post
   return sortedPosts
 })
@@ -119,14 +125,16 @@ let matchedUser = false
  * @param {Object} postOwnerId - 此post owner的id
  */
 const getPostOwnerPic = (postOwnerId) => {
-  for (const i in userDataList.value) {
-    matchedUser = userDataList.value[i].id === postOwnerId
-    // 用id判斷是否為同一使用者 並回傳post owner 頭像圖片
-    if (matchedUser) {
-      return userDataList.value[i].media_url
-    }
-  }
-  return ''
+  const user = userDataList.value.find((user) => user.id === postOwnerId)
+  return user ? user.media_url : ''
+  // for (const i in userDataList.value) {
+  //   matchedUser = userDataList.value[i].id === postOwnerId
+  //   // 用id判斷是否為同一使用者 並回傳post owner 頭像圖片
+  //   if (matchedUser) {
+  //     return userDataList.value[i].media_url
+  //   }
+  // }
+  // return ''
 }
 
 const messageInput = ref({})

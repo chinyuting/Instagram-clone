@@ -42,7 +42,7 @@ const startTimer = function () {
       hideModal()
     }
     // 計算story時長比例
-    const percentage = Math.round(((newTime - start) / durationTime) * 100)
+    const percentage = Math.round(((newTime - storyStartTime) / durationTime) * 100)
     storyProgress.value = percentage
   }, 100)
 }
