@@ -134,45 +134,45 @@ onMounted(() => {
 
 // 確認IG api連結
 // const getTokenModal = ref(null)
-// const route = useRoute()
-// // 取得網址參數並移除'#_''
-// let code = location.search.slice(6)
-// // 從localStorage取得token過期時間
-// const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// // token未取得或過期判斷
-// if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-//   // 已有code則執行openGetTokenModal 取得token
-//   if (code) {
-//     onMounted(() => {
-//       openGetTokenModal()
-//     })
-//   } else {
-//     // 未有code則ig api轉址
-//     window.location.href =
-//       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-//   }
-// }
+const route = useRoute()
+// 取得網址參數並移除'#_''
+let code = location.search.slice(6)
+// 從localStorage取得token過期時間
+const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+// token未取得或過期判斷
+if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+  // 已有code則執行openGetTokenModal 取得token
+  if (code) {
+    onMounted(() => {
+      openGetTokenModal()
+    })
+  } else {
+    // 未有code則ig api轉址
+    window.location.href =
+      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+  }
+}
 
-// /**
-//  * 開啟getTokenModal取得token
-//  */
-// const openGetTokenModal = function () {
-//   getTokenModal.value.showModal()
-// }
+/**
+ * 開啟getTokenModal取得token
+ */
+const openGetTokenModal = function () {
+  getTokenModal.value.showModal()
+}
 
-// // token已取得且未過期 初始user資料
-// if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-//   initUserData()
-// }
-// /**
-//  * 初始user資料
-//  */
-// const initUserData = () => {
-//   isLoading.value = true
-//   const userData = useUserDataStore()
-//   userData.getUserData()
-//   isLoading.value = false
-// }
+// token已取得且未過期 初始user資料
+if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+  initUserData()
+}
+/**
+ * 初始user資料
+ */
+const initUserData = () => {
+  isLoading.value = true
+  const userData = useUserDataStore()
+  userData.getUserData()
+  isLoading.value = false
+}
 </script>
 
 <template>

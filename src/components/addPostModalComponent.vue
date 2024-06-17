@@ -173,7 +173,7 @@ const pushPostToFirebase = function (imageUrl) {
     id: currentTime + userData.userData.id,
     isThumb: false,
     media_type: 'IMAGE',
-    media_url: [imageUrl],
+    media_url: imageUrl,
     permalink: '',
     postownerid: userData.userData.id,
     timestamp: currentTime.toISOString(),
