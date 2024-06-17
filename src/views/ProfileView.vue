@@ -142,7 +142,7 @@ const openModal = function (id) {
   </div>
   <profilePostModalComponent
     :postId="openPostId"
-    :mergedPostData="mergedPostData"
+    :postsData="mergedPostData"
     ref="profilePostModal"
   />
 </template>
