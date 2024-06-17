@@ -161,8 +161,10 @@ const openGetTokenModal = function () {
 }
 
 // token已取得且未過期 初始user資料
-if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-  initUserData()
+if (tokenExpireTime &&  Date.now() < parseInt(tokenExpireTime, 10)) {
+  onMounted(()=> {
+    initUserData()
+  })
 }
 /**
  * 初始user資料
