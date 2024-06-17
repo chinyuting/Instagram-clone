@@ -5,8 +5,6 @@ import { getStorage, uploadBytes, ref as storageRef, getDownloadURL } from 'fire
 import { db, firebaseRef, push, firebaseApp } from '../firebaseSetUp'
 import { useUserDataStore } from '../stores/userDataStore.js'
 
-// 修改註記 todo
-
 // isLoading init
 const isLoading = ref(false)
 
@@ -97,7 +95,7 @@ const handleDrop = (event) => {
 const modalDialog = ref(null)
 const isSideModalShow = ref(false)
 /**
- * 下一步
+ * 進入下一步
  * 用isSideModalShow判斷
  * true-> 已開啟SideModal 執行uploadImage
  * false-> 尚未開啟SideModal 則開啟SideModal
@@ -149,7 +147,7 @@ const uploadImage = async () => {
     if (imageUrl) {
       pushPostToFirebase(imageUrl)
     } else {
-      uploadImage()
+      throw new Error('Fail to get imageUrl from storage')
     }
   } catch (error) {
     isLoading.value = false
@@ -159,7 +157,6 @@ const uploadImage = async () => {
 
 // 引入 useUserDataStore 取得userData
 const userData = useUserDataStore()
-
 const postCaption = ref('')
 
 /**

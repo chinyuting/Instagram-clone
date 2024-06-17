@@ -7,11 +7,13 @@ import postComponent from '../components/postComponent.vue'
 const modal = ref(null)
 const profilePostModal = ref(null)
 
-// 開啟modal
+/**
+ * 開啟modal
+ */
 const showModal = function () {
   modal.value.show()
 }
-// expose showModal
+// showModal開放父層使用
 defineExpose({
   showModal
 })
@@ -19,9 +21,10 @@ onMounted(() => {
   modal.value = new Modal(profilePostModal.value)
 })
 
+// 從ProfileView prop 取得postId 和post資料
 const props = defineProps({
   postId: String,
-  mergedPostData: Array
+  postsData: Array
 })
 
 const postId = ref(null)
@@ -60,6 +63,7 @@ watch(
     aria-hidden="true"
     ref="profilePostModal"
   >
+    <!-- 關閉按鈕放在modal-dialog外 -->
     <button
       type="button"
       class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
@@ -69,7 +73,8 @@ watch(
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-body">
-          <postComponent :postDataList="mergedPostData" :postIdDirection="postId" />
+          <!-- 引入postComponent -->
+          <postComponent :postDataList="postsData" :postIdDirection="postId" />
         </div>
       </div>
     </div>
@@ -77,9 +82,6 @@ watch(
 </template>
 
 <style>
-.progress {
-  background-color: rgb(169, 169, 169);
-}
 .story-pic-area {
   width: 100%;
   height: 80vh;

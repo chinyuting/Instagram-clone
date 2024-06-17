@@ -16,42 +16,47 @@ const isAuthenticated = ref(false)
 onMounted(() => {
   signInAnonymously(auth)
     .then(() => {
-      console.log('匿名登錄成功')
       isAuthenticated.value = true
     })
     .catch((error) => {
-      console.error('匿名登錄失敗', error)
+      console.error('登錄失敗', error)
     })
 })
 
 // isLoading init
 const isLoading = ref(false)
 
-/**
-  open story modal
-  @param {Object} owner - story owner
-*/
+// stories
 const storyModal = ref(null)
+// 資料變動時prop到storyModalComponent
 let storyOwner = ref({})
-const openModal = function (owner) {
+/**
+  開啟story modal
+  @param {Object} owner - 選擇story的story owner
+*/
+const openStoryModal = function (owner) {
+  // 將owner資料存入storyOwner
   storyOwner.value = owner
+  // 開啟storyModal
   storyModal.value.showModal()
 }
 
-// 從firebase取得story owner資料
 const storyOwnerData = ref([])
+/**
+ * 從firebase取得story owner資料 存入storyOwnerData
+ */
 onMounted(() => {
-  const itemsRef = firebaseRef(db, 'storyOwner')
+  const storyOwnerRef = firebaseRef(db, 'storyOwner')
 
-  onValue(itemsRef, (snapshot) => {
-    const fetchedItems = []
+  onValue(storyOwnerRef, (snapshot) => {
+    const fetchedStoryOwners = []
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      fetchedItems.push({ key, ...value })
+      fetchedStoryOwners.push({ key, ...value })
     })
     // 取得story owner存入storyOwnerData
-    storyOwnerData.value = fetchedItems
+    storyOwnerData.value = fetchedStoryOwners
   })
 })
 
@@ -64,7 +69,7 @@ let rightStoryItem = 7
 const moveNum = 3
 // story寬度
 const storyWidth = 78
-// story左移 /右移按鈕顯示
+// story左移 /右移按鈕顯示判斷
 let isShownToLeft = ref(false)
 let isShownToRight = ref(true && storyOwnerData.value.length > rightStoryItem)
 
@@ -72,86 +77,102 @@ let isShownToRight = ref(true && storyOwnerData.value.length > rightStoryItem)
  * 計算限時position 及往右往左按鈕顯示邏輯
  * @param {Num} n - 判斷往左(n = 1) 往右(n = -1)
  */
-const positionCount = function (n) {
+const countStoryPosition = function (n) {
+  // 一共需要顯示幾個stroy頭像
   const storyLen = storyOwnerData.value.length
-  // 點擊往右按鈕 但到底
+  // 點擊往右按鈕 但可移動數小於moveNum 或已到底
   if (storyLen - rightStoryItem < moveNum && n === -1) {
+    // 計算story position 向右移動storyLen - rightStoryItem個story
     position.value += n * (storyLen - rightStoryItem) * storyWidth
+    // 計算最左及最右story項目
     leftStoryItem += storyLen - rightStoryItem
     rightStoryItem += storyLen - rightStoryItem
-  } // 點擊往左按鈕 但到底
+  } // 點擊往左按鈕 但可移動數小於moveNum 或已到底
   else if (leftStoryItem - moveNum < 0 && n === 1) {
+    // 計算story position 向左移動moveNum - leftStoryItem個story
     position.value += n * (moveNum - leftStoryItem) * storyWidth
+    // 計算最左及最右story項目
     rightStoryItem += leftStoryItem - moveNum
     leftStoryItem += leftStoryItem - moveNum
   } else {
+    // 計算story position 向左/右移動moveNum個story
     position.value += n * moveNum * storyWidth
+    // 重新計算最左及最右story項目
     leftStoryItem += n * -moveNum
     rightStoryItem += n * -moveNum
   }
+  // 向右想左按鈕是否顯示 若已到底則不顯示
   isShownToLeft = ref(leftStoryItem !== 1)
   isShownToRight = ref(rightStoryItem < storyLen)
 }
 // 附加移位css到story
-const story = computed(() => {
+const storyComponentStyle = computed(() => {
   return { transform: `translate(${position.value}px)` }
 })
 
-// 從firebase取得post資料
 const postData = ref([])
+/**
+ * 從firebase取得post資料 存入postData
+ */
 onMounted(() => {
-  const itemsRef = firebaseRef(db, 'postsData')
-
-  onValue(itemsRef, (snapshot) => {
-    const fetchedItems = []
+  // postsData讀取路徑
+  const postsDataRef = firebaseRef(db, 'postsData')
+  /**
+   * 讀取並監聽firebase post資料
+   */
+  onValue(postsDataRef, (snapshot) => {
+    const fetchedPosts = []
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
-      fetchedItems.push({ key, ...value })
+      fetchedPosts.push({ key, ...value })
     })
     // 取得post存入postData
-    postData.value = fetchedItems
+    postData.value = fetchedPosts
   })
 })
 
-// IG api
-// 轉址 api
-const getTokenModal = ref(null)
-const route = useRoute()
-let code = location.search.slice(6)
-const tokenExpireTime = localStorage.getItem('access-token-expire-time')
-// token過期判斷
-if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
-  if (code) {
-    onMounted(() => {
-      openGetToken()
-    })
-  } else {
-    window.location.href =
-      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
-  }
-}
+// 確認IG api連結
+// const getTokenModal = ref(null)
+// const route = useRoute()
+// // 取得網址參數並移除'#_''
+// let code = location.search.slice(6)
+// // 從localStorage取得token過期時間
+// const tokenExpireTime = localStorage.getItem('access-token-expire-time')
+// // token未取得或過期判斷
+// if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
+//   // 已有code則執行openGetTokenModal 取得token
+//   if (code) {
+//     onMounted(() => {
+//       openGetTokenModal()
+//     })
+//   } else {
+//     // 未有code則ig api轉址
+//     window.location.href =
+//       'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+//   }
+// }
 
-/**
- * 開啟getTokenModal取得token
- */
-const openGetToken = function () {
-  getTokenModal.value.showModal()
-}
+// /**
+//  * 開啟getTokenModal取得token
+//  */
+// const openGetTokenModal = function () {
+//   getTokenModal.value.showModal()
+// }
 
-/**
- * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
- */
-const initUserData = () => {
-  isLoading.value = true
-  const userData = useUserDataStore()
-  userData.getUserData()
-  isLoading.value = false
-}
-
-if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
-  initUserData()
-}
+// // token已取得且未過期 初始user資料
+// if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+//   initUserData()
+// }
+// /**
+//  * 初始user資料
+//  */
+// const initUserData = () => {
+//   isLoading.value = true
+//   const userData = useUserDataStore()
+//   userData.getUserData()
+//   isLoading.value = false
+// }
 </script>
 
 <template>
@@ -160,21 +181,21 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
     <main class="col m-0 border-start min-vh-100">
       <!-- stories -->
       <div class="stories position-relative w-md-75 mx-auto">
-        <!-- 向左按鈕 傳入1 -->
+        <!-- story列表向左按鈕 點擊後story列表向左移 傳入1 -->
         <button
           type="button"
           class="position-absolute top-50 start-0 translate-middle-y btn stories-btn"
-          @click.prevent="positionCount(1)"
+          @click.prevent="countStoryPosition(1)"
           v-if="isShownToLeft"
         >
           <i class="bi bi-arrow-left-circle-fill icon-size text-light"></i>
         </button>
 
-        <!-- 向右按鈕 傳入-1 -->
+        <!-- story列表向右按鈕 點擊後story列表向右移 傳入-1 -->
         <button
           type="button"
           class="position-absolute top-50 end-0 translate-middle-y btn stories-btn"
-          @click.prevent="positionCount(-1)"
+          @click.prevent="countStoryPosition(-1)"
           v-if="isShownToRight"
         >
           <i class="bi bi-arrow-right-circle-fill icon-size text-light"></i>
@@ -182,12 +203,12 @@ if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
         <div class="stories overflow-scroll flex-nowrap mt-md-2 position-relative">
           <div class="d-flex justify-content-start align-items-center">
             <storyComponent
-              @click.prevent="openModal(owner)"
+              @click.prevent="openStoryModal(owner)"
               class="story-component"
               v-for="owner in storyOwnerData"
               :key="owner.id"
               :ownerItem="owner"
-              :style="story"
+              :style="storyComponentStyle"
             />
           </div>
         </div>

@@ -7,51 +7,58 @@ import { db, firebaseRef, onValue } from '../firebaseSetUp'
 import navComponent from '../components/navComponent.vue'
 import profilePostModalComponent from '../components/profilePostModalComponent.vue'
 
-
-
 /**
- * 引入 usePostDataStore 呼叫getPostData方法取得PostDataList並儲存
+ * 引入 usePostDataStore 寫入postData
  */
 const postData = usePostDataStore()
 
 /**
- * 引入 useUserDataStore 呼叫getUserData方法取得userData並儲存
+ * 引入 useUserDataStore 寫入userData
  */
 const userData = useUserDataStore()
 
-// 異步取得postData和userData
+/**
+ * 異步執行userData中的getUserData 和 postData的getPostData
+ */
 const fetchData = async () => {
   await userData.getUserData()
   await postData.getPostData()
 }
 
-// 合併firebase取得的postDataFromFirebase 和 ig api取得的postData
-const postOwnerDataFromFirebase = ref([])
-
-const itemsRef = firebaseRef(db, 'postsData')
+// 相同user的posts
+const userPostsDataFromFirebase = ref([])
+// 設定資料取得路徑
+const postsDataRef = firebaseRef(db, 'postsData')
+/**
+ * 從firebase取得的userPostsDataFromFirebase
+ */
 onMounted(async () => {
   await fetchData()
-  onValue(itemsRef, (snapshot) => {
-    const fetchedItems = []
+  onValue(postsDataRef, (snapshot) => {
+    const fetchedPosts = []
     snapshot.forEach((childSnapshot) => {
       const key = childSnapshot.key
       const value = childSnapshot.val()
+      // 判斷username是否相同 篩選出當前使用者(userData.userData.username)的posts
       if (userData.userData.username === value.username) {
-        fetchedItems.push({ key, ...value })
+        fetchedPosts.push({ key, ...value })
       }
     })
     // 取得post存入postData
-    postOwnerDataFromFirebase.value = fetchedItems
+    userPostsDataFromFirebase.value = fetchedPosts
   })
 })
 
+// 合併firebase取得的userPostsDataFromFirebase 和 ig api取得的postsData
 const mergedPostData = computed(() => {
-  const combinedData = [...postData.postData, ...postOwnerDataFromFirebase.value]
+  const combinedData = [...postData.postData, ...userPostsDataFromFirebase.value]
+  // 以timestamp進行排序
   return combinedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 })
 
 /**
- * 開啟modal 並導向指定post
+ * 開啟modal
+ * @param {String} id - 滑動至指定post的post id
  */
 const profilePostModal = ref(null)
 const openPostId = ref('')
@@ -60,21 +67,21 @@ const openModal = function (id) {
   openPostId.value = id
   profilePostModal.value.showModal()
 }
-watch(
-  () => openPostId,
-  async (newVal) => {
-    if (newVal) {
-      await nextTick() // Wait for the DOM to update
-      console.log(newVal)
-      const element = document.getElementById(newVal)
-      console.log(element)
-      if (element) {
-        element.scrollIntoView()
-      }
-    }
-  }
-)
-// 取得多張圖片
+// 滑動至指定post
+// watch(
+//   () => openPostId,
+//   async (newVal) => {
+//     if (newVal) {
+//       await nextTick()
+//       console.log(newVal)
+//       const element = document.getElementById(newVal)
+//       console.log(element)
+//       if (element) {
+//         element.scrollIntoView()
+//       }
+//     }
+//   }
+// )
 </script>
 
 <template>
@@ -107,11 +114,11 @@ watch(
             </div>
           </div>
           <ul class="my-1 d-flex list-unstyled align-self-center">
-            <li class="media_count profileData p-2">
+            <li class="media_count profile-data p-2">
               {{ mergedPostData.length }}<span>則貼文</span>
             </li>
-            <li class="media_count profileData p-2">0<span>位粉絲</span></li>
-            <li class="media_count profileData p-2">0<span>人追蹤中</span></li>
+            <li class="media_count profile-data p-2">0<span>位粉絲</span></li>
+            <li class="media_count profile-data p-2">0<span>人追蹤中</span></li>
           </ul>
         </div>
       </div>
@@ -195,7 +202,7 @@ article {
   }
 }
 
-.profileData {
+.profile-data {
   font-size: 17px;
 }
 

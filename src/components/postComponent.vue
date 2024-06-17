@@ -3,14 +3,14 @@ import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { db, firebaseRef, onValue, update } from '../firebaseSetUp'
 import { debounce } from 'lodash'
 
-// prop引入postDataList
+// 從父層(MainView/profilePostModalComponent)prop引入postDataList
 const props = defineProps({
   postDataList: Array,
   postIdDirection: String
 })
 
 const postDataList = ref(props.postDataList)
-const sortedPostDataList = computed(() => {
+const sortedPostsDataList = computed(() => {
   // 複製原post data，以免修改
   const sortedPosts = [...postDataList.value]
   // 根据timestamp進行post排序（ISO 8601 格式）
@@ -45,10 +45,13 @@ watch(
 // )
 
 // 字數過長隱藏
-// 存放caption顯示全文的post的post id
+// 存放caption已顯示全文的post的post id
 const expandedCaptions = ref(new Set())
 
-// Method to toggle the full caption display
+/**
+ * toggle 顯示全部caption
+ * @param {String} postId - 要全部caption的postId
+ */
 const toggleFullCaption = (postId) => {
   if (expandedCaptions.value.has(postId)) {
     expandedCaptions.value.delete(postId)
@@ -57,20 +60,31 @@ const toggleFullCaption = (postId) => {
   }
 }
 
-// 確認caption是否顯示全文
+/**
+ * 判斷caption是否顯示 caption全文 以及 '...更多'按鈕
+ * @param {String} postId - 要全部'...更多'按鈕的postId
+ */
 const isCaptionExpanded = (postId) => {
   return expandedCaptions.value.has(postId)
 }
-// truncate the caption
+
+/**
+ * 截短caption
+ * @param {String} caption - caption全文
+ * @param {String} postId - 傳入isCaptionExpanded判斷caption是否顯示全文
+ */
 const truncatedCaption = (caption, postId) => {
+  if (!caption) return
   // 最長字數限制
   const maxLength = 20
-  if (!caption) return
+  //isCaptionExpanded(postId)判斷caption是否顯示全文
   return isCaptionExpanded(postId) ? caption : caption.slice(0, maxLength)
 }
 
-//判斷螢幕大小 判斷需不需要post之間的分界線
 const isLargeScreen = ref(window.innerWidth >= 768)
+/**
+ * 判斷螢幕大小 判斷需不需要post之間的分界線 當螢幕大小>= 768不顯示
+ */
 const updateScreenSize = () => {
   isLargeScreen.value = window.innerWidth >= 768
 }
@@ -99,11 +113,15 @@ onMounted(() => {
   })
 })
 
-// 取得post owner pic
 let matchedUser = false
-const getPostOwnerPic = (post) => {
+/**
+ * 取得post owner 頭像圖片
+ * @param {Object} postOwnerId - 此post owner的id
+ */
+const getPostOwnerPic = (postOwnerId) => {
   for (const i in userDataList.value) {
-    matchedUser = userDataList.value[i].id === post.postownerid
+    matchedUser = userDataList.value[i].id === postOwnerId
+    // 用id判斷是否為同一使用者 並回傳post owner 頭像圖片
     if (matchedUser) {
       return userDataList.value[i].media_url
     }
@@ -111,9 +129,11 @@ const getPostOwnerPic = (post) => {
   return ''
 }
 
-// 留言
 const messageInput = ref({})
-
+/**
+ * 留言
+ * @param {String} id - 留言的post的id
+ */
 const postMessage = (id) => {
   console.log(id)
   console.log(messageInput.value[id])
@@ -122,9 +142,14 @@ const postMessage = (id) => {
 // 心形動畫顯示控制
 const showHeartAnimation = ref({})
 const animationTimers = ref({})
-// 按讚
+
+/**
+ * 按讚 debounce按讚動畫防抖
+ * @param {String} post - 按讚的post
+ */
 const ThumbsUp = debounce(function (post) {
   post.isThumb = !post.isThumb
+  // 按讚後更新firebase postsData
   const postRef = firebaseRef(db, `postsData/${post.key}`)
   update(postRef, post)
     .then(() => {
@@ -133,13 +158,11 @@ const ThumbsUp = debounce(function (post) {
     .catch((error) => {
       console.error('Error updating data:', error)
     })
-
+  // 按讚動畫
   showHeartAnimation.value[post.id] = post.isThumb
-
   if (animationTimers.value[post.id]) {
     clearTimeout(animationTimers.value[post.id])
   }
-
   animationTimers.value[post.id] = setTimeout(() => {
     showHeartAnimation.value[post.id] = false
   }, 2000)
@@ -149,13 +172,13 @@ const ThumbsUp = debounce(function (post) {
 <template>
   <div
     class="card mt-3 post-card w-100 border-0"
-    v-for="(post, index) in sortedPostDataList"
+    v-for="(post, index) in sortedPostsDataList"
     :key="post.id"
     :id="post.id"
   >
     <div class="card-header bg-body px-1 d-flex align-items-center px-2 px-md-0">
       <div class="rounded-circle user-pic">
-        <img :src="getPostOwnerPic(post)" alt="" />
+        <img :src="getPostOwnerPic(post.postownerid)" alt="" />
       </div>
 
       <div class="ms-2 fw-bold">{{ post.username }}</div>
@@ -281,7 +304,7 @@ const ThumbsUp = debounce(function (post) {
         <input
           type="text"
           placeholder="留言..."
-          class="w-100 border-0 my-1 py-1 postMessage"
+          class="w-100 border-0 my-1 py-1 post-message"
           :id="'#message' + post.id"
           v-model="messageInput[post.id]"
         />
@@ -340,7 +363,7 @@ const ThumbsUp = debounce(function (post) {
     object-fit: cover;
   }
 }
-.postMessage {
+.post-message {
   &:focus {
     outline: none;
   }

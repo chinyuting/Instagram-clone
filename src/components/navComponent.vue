@@ -5,9 +5,9 @@ import addPostModalComponent from '../components/addPostModalComponent.vue'
 // 定義addPostModal
 const addPostModal = ref(null)
 /**
-   ＊ 由addPostModal開放的showModal開啟addPostModal
-  */
-const openModal = function () {
+ * 由addPostModal開放的showModal開啟addPostModal
+ */
+const openAddPostModal = function () {
   addPostModal.value.showModal()
 }
 </script>
@@ -16,11 +16,13 @@ const openModal = function () {
   <nav class="col-md-1 col-lg-2 nav-all p-md-3 overflow-hidden position-relative">
     <div class="position-relative width-inherit">
       <div class="navbar navbar-light header-nav width-inherit start-0">
+        <!-- d-md時不顯示img -->
         <img
           src="@/assets/images/Instagram_logo_light.png"
           alt=""
           class="header-logo d-md-none d-lg-block d-sm-block ms-md-3"
         />
+        <!-- d-md時顯示svg -->
         <svg
           aria-label="Instagram"
           class="d-none d-lg-none d-md-block header-logo header-logo-icon"
@@ -52,10 +54,11 @@ const openModal = function () {
       </div>
 
       <div class="nav-item rounded px-2 mx-md-3">
+        <!-- 開啟addPostModal -->
         <a
           href="#"
           class="text-decoration-none text-secondary d-flex text-dark justify-content-md-center justify-content-lg-start"
-          @click.prevent="openModal"
+          @click.prevent="openAddPostModal"
         >
           <div><i class="bi bi-plus-square icon-size m-0"></i></div>
           <div class="position-absolute ms-4"><span class="d-none d-lg-inline p-2">建立</span></div>
@@ -127,10 +130,12 @@ const openModal = function () {
     height: 50px;
     transition: all 0.2s ease-in-out;
     transform-origin: center;
+    // nav-item hover時改變背景顏色
     &:hover {
       color: rgb(0, 0, 0);
       background-color: rgb(220, 220, 220);
     }
+    // nav-item hover時改變icon大小
     &:hover i {
       font-size: 22px;
     }

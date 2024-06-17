@@ -4,9 +4,11 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 
-// getTokenModal 定義showModal function
 const modal = ref(null)
 const getTokenModal = ref(null)
+/**
+ * 由addPostModal開放的showModal開啟addPostModal
+ */
 const showModal = function () {
   modal.value.show()
 }
@@ -31,8 +33,8 @@ const instance = axios.create({
   transformRequest: [(data) => qs.stringify(data)] // 將 data (body 內容) 轉型
 })
 /**
-   ＊ 取得code後 取得短期token 再取得長期token
-  */
+ * 取得code後 取得短期token 再取得長期token
+ */
 const getToken = () => {
   if (location.search) {
     // 取得code
@@ -42,7 +44,6 @@ const getToken = () => {
     // 補充else todo
     if (code) {
       getAccessToken()
-
       // code則轉換為token
     } else {
       console.error('Failed to get code from URL')
@@ -51,8 +52,8 @@ const getToken = () => {
 }
 
 /**
-   ＊ 取得短期token
-  */
+ * 取得短期token
+ */
 async function getAccessToken() {
   try {
     const response = await instance.post(

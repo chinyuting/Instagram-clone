@@ -1,18 +1,21 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
+// 從MainView prop 取得此story storyOwner資料
 const props = defineProps({
   ownerItem: Object
 })
+
+const storyOutline = ref(null)
 /** 
   限動外框繪製 使用canvas
 */
-const canvas = ref(null)
 const drawStoryOutline = function () {
-  if (canvas.value.getContext) {
-    const ctx = canvas.value.getContext('2d')
+  if (storyOutline.value.getContext) {
+    const ctx = storyOutline.value.getContext('2d')
     ctx.beginPath()
     var grd = ctx.createLinearGradient(0, 0, 175, 0)
+    // 外框顏色設定
     grd.addColorStop(0, 'red')
     grd.addColorStop(0.5, 'yellow')
     // 外框圖形設定：圓型
@@ -42,16 +45,16 @@ onMounted(() => {
 <template>
   <div>
     <!-- 外框 -->
-    <canvas width="78" height="78" ref="canvas" class="position-absolute"></canvas>
+    <canvas width="78" height="78" ref="storyOutline" class="position-absolute"></canvas>
     <!-- 圖片圓形遮蔽 -->
-    <div class="rounded-circle story m-1 flex-shrink-0 p-1">
+    <div class="rounded-circle story-owner-circle-cover m-1 flex-shrink-0 p-1">
       <img :src="ownerItem.user_media_url" alt="" />
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.story {
+.story-owner-circle-cover {
   height: 70px;
   width: 70px;
   overflow: hidden;

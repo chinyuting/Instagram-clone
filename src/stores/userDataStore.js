@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import { db, firebaseRef, onValue, push, firebaseApp } from '../firebaseSetUp'
 
+// 定義pinia store useUserDataStore
 export const useUserDataStore = defineStore('userDataList', () => {
+  // 定義state userData {Array}
   const userData = ref(null)
 
   async function getUserData() {
@@ -22,20 +24,6 @@ export const useUserDataStore = defineStore('userDataList', () => {
     } catch (error) {
       console.error('Error fetching user data:', error)
     }
-    // const access_token = localStorage.getItem('long-lived-access-token');
-    // axios
-    // .get(
-    //   `https://graph.instagram.com/7089654107806386?fields=account_type,id,media_count,username&access_token=${access_token}`
-    // )
-    // .then((res) => {
-    //   console.log(res)
-    //   console.log(res.data)
-    //   userData.value = res.data
-    //   console.log('user', userData.value)
-    // })
-    // .catch((err) => {
-    //   console.log(err)
-    // })
   }
 
   async function getUserDataFromFirebase(userId) {
