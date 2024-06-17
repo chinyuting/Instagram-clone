@@ -133,7 +133,7 @@ onMounted(() => {
 })
 
 // 確認IG api連結
-// const getTokenModal = ref(null)
+
 const route = useRoute()
 // 取得網址參數並移除'#_''
 let code = location.search.slice(6)
@@ -156,6 +156,7 @@ if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
 /**
  * 開啟getTokenModal取得token
  */
+ const getTokenModal = ref(null)
 const openGetTokenModal = function () {
   getTokenModal.value.showModal()
 }
