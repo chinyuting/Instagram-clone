@@ -93,9 +93,9 @@ const openModal = function (id) {
           <img :src="userData.userData.media_url" alt="" />
         </div>
         <div class="align-self-center ms-md-5 ms-sm-1">
-          <div class="d-flex my-1 align-self-center flex-column">
+          <div class="d-flex my-1 align-self-center">
             <h4 class="userName p-2">{{ userData.userData.username }}</h4>
-            <div>
+            <div class="d-flex flex-sm-row flex-column">
               <button class="btn btn-light" type="button">編輯個人檔案</button>
               <div class="p-2 cursor-pointer">
                 <svg
