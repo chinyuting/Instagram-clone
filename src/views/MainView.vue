@@ -156,14 +156,14 @@ if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
 /**
  * 開啟getTokenModal取得token
  */
- const getTokenModal = ref(null)
+const getTokenModal = ref(null)
 const openGetTokenModal = function () {
   getTokenModal.value.showModal()
 }
 
 // token已取得且未過期 初始user資料
-if (tokenExpireTime &&  Date.now() < parseInt(tokenExpireTime, 10)) {
-  onMounted(()=> {
+if (tokenExpireTime && Date.now() < parseInt(tokenExpireTime, 10)) {
+  onMounted(() => {
     initUserData()
   })
 }

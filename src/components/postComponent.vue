@@ -7,17 +7,17 @@ import { debounce } from 'lodash'
 const props = defineProps({
   postDataList: {
     type: Array,
-    default: [],
+    default: []
   },
   postIdDirection: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const postDataList = ref(props.postDataList)
 const sortedPostsDataList = computed(() => {
-  if(!Array.isArray(postDataList.value)) return []
+  if (!Array.isArray(postDataList.value)) return []
   // 複製原post data，以免修改
   const sortedPosts = [...postDataList.value]
   // 根据timestamp進行post排序（ISO 8601 格式）
@@ -127,14 +127,6 @@ let matchedUser = false
 const getPostOwnerPic = (postOwnerId) => {
   const user = userDataList.value.find((user) => user.id === postOwnerId)
   return user ? user.media_url : ''
-  // for (const i in userDataList.value) {
-  //   matchedUser = userDataList.value[i].id === postOwnerId
-  //   // 用id判斷是否為同一使用者 並回傳post owner 頭像圖片
-  //   if (matchedUser) {
-  //     return userDataList.value[i].media_url
-  //   }
-  // }
-  // return ''
 }
 
 const messageInput = ref({})
@@ -285,11 +277,14 @@ const ThumbsUp = debounce(function (post) {
       </button>
     </div>
     <div class="card-body px-sm-0 py-1 mb-1">
-      <a href="" @click.prevent="ThumbsUp(post)">
+      <!-- 按讚 -->
+      <a href="" @click.prevent="ThumbsUp(post)" v-if="!post.permalink">
         <i class="bi bi-heart icon-size text-danger" v-if="!post.isThumb"></i>
         <i class="bi bi-heart-fill icon-size text-danger" v-if="post.isThumb"></i>
       </a>
       <!-- <p class="card-text mb-2">{{ post.thumbNum }}個讚</p> -->
+
+      <!-- caption -->
       <div v-if="post.caption">
         <span class="card-text d-inline fw-bold">{{ post.username }}</span>
         <!-- post caption僅顯示20字 -->

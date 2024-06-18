@@ -1,6 +1,6 @@
 <script setup>
 import Modal from 'bootstrap/js/dist/modal'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, onBeforeUnmount, ref, computed } from 'vue'
 import { db, firebaseRef, onValue } from '../firebaseSetUp'
 
 const modal = ref(null)
@@ -34,16 +34,16 @@ const initTimer = () => {
  */
 const countTime = ref(null)
 const startTimer = function () {
+  const durationTime = storyContent.value[0]?.duration || 5000
   countTime.value = setInterval(() => {
     const newTime = new Date()
-    const durationTime = storyContent.value[0].duration
-    // duration時間到則關閉Modal
-    if (newTime - storyStartTime >= durationTime) {
-      hideModal()
-    }
     // 計算story時長比例
     const percentage = Math.round(((newTime - storyStartTime) / durationTime) * 100)
     storyProgress.value = percentage
+    // 到100%時關閉Modal
+    if (storyProgress.value >= 100) {
+      hideModal()
+    }
   }, 100)
 }
 
@@ -58,10 +58,16 @@ const storyProgressWidth = computed(() => {
 const hideModal = function () {
   // 停止setInterval
   if (countTime.value) {
-    clearInterval(countTime)
+    clearInterval(countTime.value)
+    countTime.value = null
   }
   modal.value.hide()
 }
+
+onBeforeUnmount(() => {
+  // 確保清除計時器
+  hideModal()
+})
 
 // 從MainView prop 取得此story storyOwner資料
 const props = defineProps({
@@ -108,12 +114,12 @@ const storyContent = computed(() => {
           :key="story.id"
         >
           <!-- 時間進度條 -->
-          <div class="story-progress" style="height: 2px">
+          <div class="story-progress progress">
             <!-- style 設置時間進度條長度 -->
             <div
               class="progress-bar"
               role="progressbar"
-              aria-valuenow="0"
+              aria-valuenow="storyProgress"
               aria-valuemin="0"
               aria-valuemax="100"
               :style="storyProgressWidth"
@@ -159,6 +165,11 @@ const storyContent = computed(() => {
 }
 .story-progress {
   background-color: rgb(169, 169, 169);
+  height: 2px;
+}
+.progress-bar {
+  background-color: rgb(255, 255, 255);
+  height: 100%;
 }
 .story-pic-area {
   width: 100%;
