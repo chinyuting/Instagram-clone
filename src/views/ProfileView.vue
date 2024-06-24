@@ -6,6 +6,7 @@ import { db, firebaseRef, onValue } from '../firebaseSetUp'
 
 import navComponent from '../components/navComponent.vue'
 import profilePostModalComponent from '../components/profilePostModalComponent.vue'
+import editUserImageModalComponent from '../components/editUserImageModalComponent.vue'
 
 /**
  * 引入 usePostDataStore 寫入postData
@@ -63,9 +64,18 @@ const mergedPostData = computed(() => {
 const profilePostModal = ref(null)
 const openPostId = ref('')
 
-const openModal = function (id) {
+const openPostListModal = function (id) {
   openPostId.value = id
   profilePostModal.value.showModal()
+}
+
+/**
+ * 開啟modal
+ * @param {String} id - 滑動至指定post的post id
+ */
+const editUserImageModal = ref(null)
+const openEditUserImageModal = function (id) {
+  editUserImageModal.value.showModal()
 }
 // 滑動至指定post
 // watch(
@@ -89,14 +99,16 @@ const openModal = function (id) {
     <navComponent />
     <main class="col m-0 border-start min-vh-100">
       <div class="profile mx-auto py-md-4 d-flex">
-        <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1">
+        <div class="rounded-circle profile-pic m-1 flex-shrink-0 p-1 my-auto">
           <img :src="userData.userData.media_url" alt="" />
         </div>
-        <div class="align-self-center ms-md-5 ms-sm-1">
-          <div class="d-flex my-1 align-self-center">
-            <h4 class="userName p-2">{{ userData.userData.username }}</h4>
-            <div class="d-flex flex-sm-row flex-column">
-              <button class="btn btn-light" type="button">編輯個人檔案</button>
+        <div class="align-self-center ms-md-5 ms-sm-2">
+          <div class="d-flex my-1 align-self-center flex-column flex-md-row">
+            <h4 class="userName p-2 m-0">{{ userData.userData.username }}</h4>
+            <div class="d-flex flex-row">
+              <button class="btn btn-light" type="button" @click="openEditUserImageModal">
+                編輯個人檔案
+              </button>
               <div class="p-2 cursor-pointer">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +137,7 @@ const openModal = function (id) {
 
       <article class="row mx-auto border-top">
         <div class="mt-1 col-4 px-0 ps-1" v-for="(post, index) in mergedPostData" :key="index">
-          <div class="profile-post" @click="openModal(post.id)">
+          <div class="profile-post" @click="openPostListModal(post.id)">
             <div class="post-pic position-absolute w-100 h-100">
               <img
                 :src="post.media_url"
@@ -137,7 +149,6 @@ const openModal = function (id) {
           </div>
         </div>
       </article>
-      <button class="btn"></button>
     </main>
   </div>
   <profilePostModalComponent
@@ -145,11 +156,12 @@ const openModal = function (id) {
     :postsData="mergedPostData"
     ref="profilePostModal"
   />
+  <editUserImageModalComponent ref="editUserImageModal" :userData="userData.userData" />
 </template>
 <style lang="scss">
 .profile-pic {
-  height: 90px;
-  width: 90px;
+  height: 100px;
+  width: 100px;
   overflow: hidden;
   object-fit: contain;
   position: relative;
