@@ -30,6 +30,7 @@ const showModal = function () {
 const initModal = () => {
   imgSrc.value = ''
   selectedImage.value = null
+  isDragged.value = false
 }
 
 // showModal開放父層使用
@@ -109,6 +110,7 @@ const toNextStep = function () {
  */
 const backToPreviousStep = () => {
   imgSrc.value = null
+  isDragged.value = false
 }
 
 /**
@@ -157,6 +159,7 @@ const editUserImage = function (imageUrl) {
   //  建立post資料
   update(itemsRef, newUserData)
     .then(() => {
+      modal.value.hide()
       console.log('Data updated successfully!')
     })
     .catch((error) => {

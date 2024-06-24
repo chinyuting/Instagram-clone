@@ -27,6 +27,7 @@ const initModal = () => {
   isSideModalShow.value = false
   modalDialog.value.style.maxWidth = '700px'
   selectedImage.value = null
+  isDragged.value = false
 }
 
 // showModal開放父層使用
@@ -119,6 +120,7 @@ const backToPreviousStep = () => {
     modalDialog.value.style.maxWidth = '700px'
     isSideModalShow.value = false
   }
+  isDragged.value = false
   imgSrc.value = null
 }
 
