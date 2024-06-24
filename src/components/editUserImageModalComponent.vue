@@ -151,10 +151,11 @@ const uploadImage = async () => {
  */
 const editUserImage = function (imageUrl) {
   // 設定上傳路徑
-  const itemsRef = firebaseRef(db, `userData/${userData.key}`)
-  userData.media_url = imageUrl
+  const newUserData = {...props.userData}
+  const itemsRef = firebaseRef(db, `userData/${props.userData.key}`)
+  newUserData.media_url = imageUrl
   //  建立post資料
-  update(itemsRef, post)
+  update(itemsRef, newUserData)
     .then(() => {
       console.log('Data updated successfully!')
     })
