@@ -57,6 +57,8 @@ onMounted(() => {
     })
     // 取得story owner存入storyOwnerData
     storyOwnerData.value = fetchedStoryOwners
+    // storyOwnerData排序 未讀排前
+    storyOwnerData.value.sort((a, b) => a.isRead - b.isRead)
   })
 })
 
@@ -149,7 +151,7 @@ if (!tokenExpireTime || Date.now() >= parseInt(tokenExpireTime, 10)) {
   } else {
     // 未有code則ig api轉址
     window.location.href =
-      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-Imitation/&scope=user_profile,user_media&response_type=code'
+      'https://api.instagram.com/oauth/authorize?client_id=461541476203224&redirect_uri=https://chinyuting.github.io/Instagram-clone/&scope=user_profile,user_media&response_type=code'
   }
 }
 

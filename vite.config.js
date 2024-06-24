@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  base: '/Instagram-Imitation/',
+  base: '/Instagram-clone/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -53,7 +53,7 @@ export const useUserDataStore = defineStore('userDataList', () => {
     }
     const newUserData = {
       id: userId.toString(),
-      media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-imitation-180e8.appspot.com/o/user%2Fkarsten-winegeart-NE0XGVKTmcA-unsplash.jpg?alt=media&token=9f250d7f-e2e5-46fa-bad9-bcae3001951f',
+      media_url:'https://firebasestorage.googleapis.com/v0/b/instagram-clone-180e8.appspot.com/o/user%2Fkarsten-winegeart-NE0XGVKTmcA-unsplash.jpg?alt=media&token=9f250d7f-e2e5-46fa-bad9-bcae3001951f',
       username: userData.value.username,
     }
     try {

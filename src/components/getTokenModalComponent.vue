@@ -62,7 +62,7 @@ async function getAccessToken() {
         client_id: '461541476203224',
         client_secret: client_secret.value,
         grant_type: 'authorization_code',
-        redirect_uri: 'https://chinyuting.github.io/Instagram-Imitation/',
+        redirect_uri: 'https://chinyuting.github.io/Instagram-clone/',
         code: code
       }
     )

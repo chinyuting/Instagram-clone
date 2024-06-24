@@ -247,7 +247,7 @@ const pushPostToFirebase = function (imageUrl) {
               class="d-flex flex-column align-items-center justify-content-center"
               :class="isDragged ? 'text-primary' : ''"
             >
-              <i class="bi bi-image pic-icon"></i>
+              <i class="bi bi-person-square pic-icon"></i>
               <span>將相片和影片拖曳到這裡</span>
               <label for="file-input" class="file-input-button btn btn-primary m-3"
                 >從電腦選擇</label
